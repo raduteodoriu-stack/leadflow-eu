@@ -213,3 +213,180 @@ Corrections create traceable changes rather than silently replacing evidence.
 - CRM retries and redirect attempts remain traceable.
 
 ## Keys and integrity rules
+
+### Identifier conventions
+
+- Use system-generated UUIDs for internal business and history records.
+- Keep external CRM and source identifiers as text.
+- Internal identifiers remain stable when names, emails or source values change.
+- Primary keys cannot be null.
+- A nullable foreign key means the relationship is not yet resolved or does not apply.
+
+### Primary keys and references
+
+| Table | Primary key | Main foreign-key references |
+|---|---|---|
+| ingestion_events | ingestion_event_id | lead_id → leads, optional |
+| companies | company_id | None |
+| leads | lead_id | company_id → companies, optional |
+| qualification_evidence | evidence_id | company_id → companies; ingestion_event_id → ingestion_events, optional |
+| engagement_events | engagement_event_id | lead_id → leads, optional until resolved |
+| engagement_coverage | coverage_id | None; extraction scope is recorded explicitly |
+| owners | owner_id | manager_id → owners, optional |
+| owner_eligibility_history | eligibility_id | owner_id → owners |
+| routing_state | country_code | last_assigned_owner_id → owners, optional |
+| rule_versions | rule_version | None; readable text identifier such as LF-RULES-v1.0 |
+| processing_decisions | decision_id | ingestion_event_id → ingestion_events, optional; lead_id → leads, optional; rule_version → rule_versions; selected_owner_id → owners, optional |
+| assignments | assignment_id | lead_id → leads; owner_id → owners; decision_id → processing_decisions; review_action_id → review_actions, optional |
+| review_cases | review_case_id | ingestion_event_id → ingestion_events, optional; lead_id → leads, optional |
+| review_actions | review_action_id | review_case_id → review_cases; selected_owner_id → owners, optional |
+| followup_activities | activity_id | lead_id → leads, optional until resolved; performed_by_owner_id → owners, optional until resolved |
+| sla_tracking | sla_id | lead_id → leads; initial_assignment_id → assignments; rule_version → rule_versions; qualifying_activity_id → followup_activities, optional |
+| sla_history | sla_history_id | sla_id → sla_tracking; decision_id → processing_decisions, optional; activity_id → followup_activities, optional |
+| supplier_redirect_rules | redirect_rule_id | None |
+| participant_redirects | redirect_attempt_id | ingestion_event_id → ingestion_events; redirect_rule_id → supplier_redirect_rules, optional |
+| crm_write_log | write_attempt_id | decision_id → processing_decisions |
+
+owners also stores a unique readable staff code, such as ES-01 or SALES-MANAGER.
+
+A processing decision must reference an ingestion event, a lead, or both.
+
+A review case must reference an ingestion event, a lead, or both.
+
+Reviewer identifiers are stored as actor references. They are not restricted to owners because RevOps reviewers may not be sales staff.
+
+### Duplicate-prevention rules
+
+| Record | Uniqueness rule |
+|---|---|
+| Ingestion event | source_system + source_event_id |
+| Canonical lead | normalised_email |
+| CRM contact mapping on leads | crm_contact_id, when populated, within the single HubSpot test account |
+| CRM company mapping on companies | crm_company_id, when populated, within the single HubSpot test account |
+| Engagement event | source_system + source_event_id |
+| Follow-up activity | source_system + source_activity_id |
+| Owner | staff_code |
+| CRM owner mapping | crm_owner_id, when populated |
+| Processing decision | evaluation_key |
+| SLA obligation | lead_id |
+| CRM update attempt | logical_update_id + attempt_number |
+| Participant redirect attempt | ingestion_event_id + attempt_number |
+
+Canonical email uniqueness is an MVP identity policy. Ambiguous or conflicting source identities remain in ingestion and review until resolved.
+
+Do not apply email-provider-specific transformations such as removing dots or plus-address tags.
+
+Company names and domains are not unique keys.
+
+Duplicate source CRM contacts must not create duplicate canonical leads. Their original identifiers remain preserved in ingestion payloads and review history.
+
+An evaluation_key identifies one intended evaluation. Retries reuse it; an explicit reassessment receives a new key.
+
+When an enquiry and an engagement feed describe the same sales request, link them through a shared submission reference and score the request once.
+
+### Current records and effective periods
+
+- A lead can have at most one current assignment.
+- Current assignments have no effective end timestamp.
+- Assignment periods for the same lead must not overlap.
+- Owner eligibility periods for the same owner must not overlap in this MVP.
+- Effective periods use an inclusive start and exclusive end.
+- An end timestamp, when present, must be later than its start.
+- Country-specific supplier redirect rules must not overlap for the same country.
+- Default supplier redirect rules must not overlap with other default rules.
+- A country-specific rule takes precedence over the default rule.
+
+Historical reassignment closes the previous assignment period and creates a new assignment record in the same transaction.
+
+### Value and status checks
+
+- Normalised email must be present and nonblank on canonical leads.
+- Invalid emails can remain in ingestion but cannot create assignment-ready canonical leads.
+- Exact employee counts must be positive when populated.
+- Fit and engagement totals must remain between 0 and 100.
+- Priority must be P1, P2, P3 or null when not applicable.
+- Unknown qualification values remain null or explicitly unknown according to the data dictionary.
+- Missing values must not silently become false.
+- Country routing state is restricted to ES, PT and FR.
+- Attempt numbers start at 1.
+- SLA business-minute allowances are P1: 60, P2: 240 and P3: 480 under the initial policy.
+- Extraction coverage end must be later than coverage start.
+- Status fields accept only the controlled values defined for that record type.
+
+A known zero score is distinguishable from an incomplete assessment.
+
+### Relationship consistency
+
+- A selected owner on a decision must exist.
+- An automatic assignment must select an active representative eligible for that territory at assignment time.
+- An assignment's decision and lead must refer to the same lead.
+- An SLA's initial assignment must belong to that SLA's lead.
+- A qualifying activity linked to an SLA must belong to the same lead.
+- SLA history references must be consistent with the obligation's lead.
+- A review action used to justify an assignment must belong to a case concerning that lead or its originating event.
+- Supplier-only and participant enquiries must not create buyer follow-up SLA obligations.
+- Unresolved engagement or follow-up records cannot satisfy scoring or SLA requirements until identity is resolved.
+
+Use composite foreign keys where practical to enforce same-lead relationships.
+
+Eligibility and other cross-record business checks are validated within the processing transaction and covered by integration tests.
+
+### Atomic assignment and retry handling
+
+For a new automatic assignment:
+
+1. Lock the country's routing_state record.
+2. Check whether the intended evaluation was already completed.
+3. Select the next eligible representative.
+4. Save the decision and assignment.
+5. Advance round-robin state.
+6. Commit all changes together.
+
+If the transaction fails, none of these changes should persist.
+
+CRM API calls happen outside this transaction. Their logical update identifiers and attempts are recorded separately.
+
+Database uniqueness prevents duplicate internal operations. CRM retries must also check the desired external state before applying an update again.
+
+### SLA integrity
+
+- One lead has at most one first-follow-up obligation in the MVP.
+- Reassignment and duplicate submissions do not create a new obligation.
+- The initial deadline is calculated from first successful assignment using the applicable priority and working calendar.
+- A priority upgrade can shorten but never extend the deadline.
+- A priority downgrade cannot extend the deadline.
+- A qualifying activity must occur at or after first assignment.
+- An activity at the deadline qualifies as on time.
+- Late follow-up preserves the breach.
+- Late-arriving evidence can correct the assessed outcome, with the previous assessment and correction preserved in history.
+
+Business-hour calculations and deadline-transition rules are implemented and tested in the processing layer.
+
+### Raw data and rejected records
+
+- Apply strict business constraints to canonical and operational records.
+- Preserve invalid source values in the original payload.
+- Missing source identifiers or malformed timestamps must produce a traceable ingestion error.
+- Use the internal ingestion identifier to track rejected records.
+- Only events with valid source identities are eligible for normal idempotent processing.
+- Future-dated engagement events do not contribute before their occurrence time.
+
+### Deletion policy
+
+- Do not cascade-delete operational history when a company, lead or owner is removed.
+- Referenced records are restricted from deletion.
+- Use inactive or archived status where appropriate for the synthetic MVP.
+- Destructive database resets are permitted only in the disposable development environment.
+
+### Enforcement responsibilities
+
+| Mechanism | Examples |
+|---|---|
+| Primary and foreign keys | Stable identity and valid references |
+| Unique constraints and indexes | Duplicate-event prevention and one current assignment |
+| Check constraints | Score ranges, positive counts and valid period boundaries |
+| Exclusion constraints | Non-overlapping effective periods |
+| Processing transactions | Owner eligibility, round-robin and assignment consistency |
+| Application validation and tests | Email validity, scoring, business calendars and SLA transitions |
+
+Document the actual enforcement mechanism when writing the PostgreSQL schema.
