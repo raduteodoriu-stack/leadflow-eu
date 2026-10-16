@@ -212,4 +212,4 @@ Corrections create traceable changes rather than silently replacing evidence.
 - SLA changes preserve previous deadlines and outcomes.
 - CRM retries and redirect attempts remain traceable.
 
-Primary keys, foreign keys, uniqueness constraints and PostgreSQL data types will be defined in the next step.
+## Keys and integrity rules
