@@ -282,6 +282,118 @@ CREATE INDEX IF NOT EXISTS ingestion_events_lead_id_idx
 CREATE INDEX IF NOT EXISTS ingestion_events_status_received_idx
     ON public.ingestion_events (processing_status, received_at);
 
+-- Enables equality comparisons in the eligibility exclusion constraint.
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
+-- Sales representatives and managers.
+CREATE TABLE IF NOT EXISTS public.owners (
+    owner_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    staff_code TEXT NOT NULL UNIQUE,
+    display_name TEXT NOT NULL,
+    owner_role TEXT NOT NULL,
+    crm_owner_id TEXT UNIQUE,
+
+    manager_id UUID
+        REFERENCES public.owners (owner_id)
+        ON DELETE RESTRICT,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT owners_staff_code_valid
+        CHECK (
+            btrim(staff_code) <> ''
+            AND staff_code = upper(btrim(staff_code))
+        ),
+
+    CONSTRAINT owners_display_name_nonblank
+        CHECK (btrim(display_name) <> ''),
+
+    CONSTRAINT owners_role_valid
+        CHECK (
+            owner_role IN ('sales_rep', 'sales_manager')
+        ),
+
+    CONSTRAINT owners_crm_id_nonblank
+        CHECK (
+            crm_owner_id IS NULL
+            OR btrim(crm_owner_id) <> ''
+        ),
+
+    CONSTRAINT owners_manager_not_self
+        CHECK (manager_id <> owner_id)
+);
+
+CREATE INDEX IF NOT EXISTS owners_manager_id_idx
+    ON public.owners (manager_id);
+
+
+-- Territory and assignment eligibility over time.
+CREATE TABLE IF NOT EXISTS public.owner_eligibility_history (
+    eligibility_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    owner_id UUID NOT NULL
+        REFERENCES public.owners (owner_id)
+        ON DELETE RESTRICT,
+
+    country_code TEXT NOT NULL,
+    is_eligible BOOLEAN NOT NULL,
+
+    effective_from TIMESTAMPTZ NOT NULL,
+    effective_to TIMESTAMPTZ,
+
+    change_reason TEXT NOT NULL,
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT owner_eligibility_country_valid
+        CHECK (country_code IN ('ES', 'PT', 'FR')),
+
+    CONSTRAINT owner_eligibility_period_valid
+        CHECK (
+            effective_to IS NULL
+            OR effective_to > effective_from
+        ),
+
+    CONSTRAINT owner_eligibility_reason_nonblank
+        CHECK (btrim(change_reason) <> ''),
+
+    -- One territory/status period per owner at any moment.
+    -- '[)' means inclusive start and exclusive end.
+    -- A NULL end represents an ongoing period.
+    CONSTRAINT owner_eligibility_no_overlap
+        EXCLUDE USING gist (
+            owner_id WITH =,
+            tstzrange(effective_from, effective_to, '[)') WITH &&
+        )
+);
+
+CREATE INDEX IF NOT EXISTS owner_eligibility_country_start_idx
+    ON public.owner_eligibility_history (
+        country_code,
+        effective_from
+    )
+    WHERE is_eligible = TRUE;
+
+
+-- Current round-robin position for each country.
+CREATE TABLE IF NOT EXISTS public.routing_state (
+    country_code TEXT PRIMARY KEY,
+
+    last_assigned_owner_id UUID
+        REFERENCES public.owners (owner_id)
+        ON DELETE RESTRICT,
+
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT routing_state_country_valid
+        CHECK (country_code IN ('ES', 'PT', 'FR'))
+);
+
+-- Initialise each country without resetting existing routing positions.
+INSERT INTO public.routing_state (country_code)
+VALUES ('ES'), ('PT'), ('FR')
+ON CONFLICT (country_code) DO NOTHING;
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -294,6 +406,9 @@ WHERE table_schema = 'public'
   AND table_name IN (
       'companies',
       'leads',
-      'ingestion_events'
+      'ingestion_events',
+      'owners',
+      'owner_eligibility_history',
+      'routing_state'
   )
 ORDER BY table_name;
