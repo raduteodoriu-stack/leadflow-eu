@@ -558,6 +558,113 @@ CREATE INDEX IF NOT EXISTS processing_decisions_rule_version_idx
 CREATE INDEX IF NOT EXISTS processing_decisions_selected_owner_idx
     ON public.processing_decisions (selected_owner_id);
 
+-- Exceptions requiring human review.
+CREATE TABLE IF NOT EXISTS public.review_cases (
+    review_case_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Reuse this key when retrying creation of the same case.
+    case_key TEXT NOT NULL UNIQUE,
+
+    ingestion_event_id UUID
+        REFERENCES public.ingestion_events (ingestion_event_id)
+        ON DELETE RESTRICT,
+
+    lead_id UUID
+        REFERENCES public.leads (lead_id)
+        ON DELETE RESTRICT,
+
+    -- The evaluation that triggered this case, when available.
+    decision_id UUID
+        REFERENCES public.processing_decisions (decision_id)
+        ON DELETE RESTRICT,
+
+    reason_code TEXT NOT NULL,
+    case_details JSONB NOT NULL,
+
+    review_status TEXT NOT NULL DEFAULT 'open',
+
+    -- Responsible reviewer; may be Sales Manager or RevOps.
+    -- Separate from the lead's sales owner.
+    assigned_reviewer TEXT,
+
+    opened_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    resolved_at TIMESTAMPTZ,
+
+    CONSTRAINT review_cases_key_nonblank
+        CHECK (
+            btrim(case_key) <> ''
+            AND case_key = btrim(case_key)
+        ),
+
+    CONSTRAINT review_cases_subject_required
+        CHECK (
+            ingestion_event_id IS NOT NULL
+            OR lead_id IS NOT NULL
+        ),
+
+    CONSTRAINT review_cases_reason_nonblank
+        CHECK (btrim(reason_code) <> ''),
+
+    CONSTRAINT review_cases_details_object
+        CHECK (jsonb_typeof(case_details) = 'object'),
+
+    CONSTRAINT review_cases_status_valid
+        CHECK (
+            review_status IN (
+                'open',
+                'in_progress',
+                'resolved'
+            )
+        ),
+
+    CONSTRAINT review_cases_reviewer_nonblank
+        CHECK (
+            assigned_reviewer IS NULL
+            OR btrim(assigned_reviewer) <> ''
+        ),
+
+    CONSTRAINT review_cases_in_progress_requires_reviewer
+        CHECK (
+            review_status <> 'in_progress'
+            OR assigned_reviewer IS NOT NULL
+        ),
+
+    CONSTRAINT review_cases_resolution_consistent
+        CHECK (
+            (
+                review_status = 'resolved'
+                AND resolved_at IS NOT NULL
+            )
+            OR (
+                review_status IN ('open', 'in_progress')
+                AND resolved_at IS NULL
+            )
+        ),
+
+    CONSTRAINT review_cases_resolution_time_valid
+        CHECK (
+            resolved_at IS NULL
+            OR resolved_at >= opened_at
+        ),
+
+    CONSTRAINT review_cases_updated_time_valid
+        CHECK (updated_at >= opened_at)
+);
+
+CREATE INDEX IF NOT EXISTS review_cases_event_idx
+    ON public.review_cases (ingestion_event_id);
+
+CREATE INDEX IF NOT EXISTS review_cases_lead_idx
+    ON public.review_cases (lead_id);
+
+CREATE INDEX IF NOT EXISTS review_cases_decision_idx
+    ON public.review_cases (decision_id);
+
+CREATE INDEX IF NOT EXISTS review_cases_queue_idx
+    ON public.review_cases (review_status, opened_at)
+    WHERE review_status IN ('open', 'in_progress');
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -575,6 +682,7 @@ WHERE table_schema = 'public'
       'owner_eligibility_history',
       'routing_state',
       'rule_versions',
-      'processing_decisions'
+      'processing_decisions',
+      'review_cases'
   )
 ORDER BY table_name;
