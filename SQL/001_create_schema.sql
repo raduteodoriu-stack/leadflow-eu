@@ -937,6 +937,137 @@ CREATE INDEX IF NOT EXISTS followup_activities_lead_time_idx
 CREATE INDEX IF NOT EXISTS followup_activities_owner_idx
     ON public.followup_activities (performed_by_owner_id);
 
+-- First-follow-up SLA: one record per lead.
+CREATE TABLE IF NOT EXISTS public.sla_tracking (
+    sla_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    lead_id UUID NOT NULL UNIQUE
+        REFERENCES public.leads (lead_id)
+        ON DELETE RESTRICT,
+
+    initial_assignment_id UUID NOT NULL
+        REFERENCES public.assignments (assignment_id)
+        ON DELETE RESTRICT,
+
+    -- Rule version used when the SLA was created.
+    rule_version TEXT NOT NULL
+        REFERENCES public.rule_versions (rule_version)
+        ON DELETE RESTRICT,
+
+    initial_priority TEXT NOT NULL,
+
+    sla_started_at TIMESTAMPTZ NOT NULL,
+    original_deadline_at TIMESTAMPTZ NOT NULL,
+    current_deadline_at TIMESTAMPTZ NOT NULL,
+
+    sla_status TEXT NOT NULL DEFAULT 'pending',
+
+    qualifying_activity_id UUID
+        REFERENCES public.followup_activities (activity_id)
+        ON DELETE RESTRICT,
+
+    -- Occurrence time of the linked qualifying activity.
+    qualifying_activity_at TIMESTAMPTZ,
+
+    -- When the system first detected a breach.
+    -- Retained if late-arriving evidence later corrects the outcome.
+    breach_detected_at TIMESTAMPTZ,
+
+    last_evaluated_at TIMESTAMPTZ NOT NULL
+        DEFAULT CURRENT_TIMESTAMP,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT sla_initial_priority_valid
+        CHECK (initial_priority IN ('P1', 'P2', 'P3')),
+
+    CONSTRAINT sla_status_valid
+        CHECK (
+            sla_status IN ('pending', 'met', 'breached')
+        ),
+
+    CONSTRAINT sla_deadlines_valid
+        CHECK (
+            original_deadline_at > sla_started_at
+            AND current_deadline_at > sla_started_at
+            AND current_deadline_at <= original_deadline_at
+        ),
+
+    CONSTRAINT sla_activity_reference_consistent
+        CHECK (
+            (
+                qualifying_activity_id IS NULL
+                AND qualifying_activity_at IS NULL
+            )
+            OR (
+                qualifying_activity_id IS NOT NULL
+                AND qualifying_activity_at IS NOT NULL
+            )
+        ),
+
+    CONSTRAINT sla_activity_time_valid
+        CHECK (
+            qualifying_activity_at IS NULL
+            OR (
+                qualifying_activity_at >= sla_started_at
+                AND qualifying_activity_at <= last_evaluated_at
+            )
+        ),
+
+    CONSTRAINT sla_evaluation_time_valid
+        CHECK (last_evaluated_at >= sla_started_at),
+
+    CONSTRAINT sla_breach_detection_valid
+        CHECK (
+            breach_detected_at IS NULL
+            OR (
+                breach_detected_at > current_deadline_at
+                AND breach_detected_at <= last_evaluated_at
+            )
+        ),
+
+    CONSTRAINT sla_status_evidence_consistent
+        CHECK (
+            (
+                sla_status = 'pending'
+                AND qualifying_activity_id IS NULL
+                AND breach_detected_at IS NULL
+                AND last_evaluated_at <= current_deadline_at
+            )
+            OR (
+                sla_status = 'met'
+                AND qualifying_activity_id IS NOT NULL
+                AND qualifying_activity_at <= current_deadline_at
+            )
+            OR (
+                sla_status = 'breached'
+                AND breach_detected_at IS NOT NULL
+                AND last_evaluated_at > current_deadline_at
+                AND (
+                    qualifying_activity_id IS NULL
+                    OR qualifying_activity_at > current_deadline_at
+                )
+            )
+        ),
+
+    CONSTRAINT sla_updated_time_valid
+        CHECK (updated_at >= created_at)
+);
+
+CREATE INDEX IF NOT EXISTS sla_tracking_initial_assignment_idx
+    ON public.sla_tracking (initial_assignment_id);
+
+CREATE INDEX IF NOT EXISTS sla_tracking_rule_version_idx
+    ON public.sla_tracking (rule_version);
+
+CREATE INDEX IF NOT EXISTS sla_tracking_activity_idx
+    ON public.sla_tracking (qualifying_activity_id);
+
+CREATE INDEX IF NOT EXISTS sla_tracking_pending_deadline_idx
+    ON public.sla_tracking (current_deadline_at)
+    WHERE sla_status = 'pending';
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -958,6 +1089,8 @@ WHERE table_schema = 'public'
       'review_cases',
       'review_actions',
       'assignments',
-      'followup_activities'
+      'followup_activities',
+      'followup_activities',
+      'sla_tracking'
   )
 ORDER BY table_name;
