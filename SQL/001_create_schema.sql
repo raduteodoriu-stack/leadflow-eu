@@ -394,6 +394,170 @@ INSERT INTO public.routing_state (country_code)
 VALUES ('ES'), ('PT'), ('FR')
 ON CONFLICT (country_code) DO NOTHING;
 
+-- Approved business-rule configurations.
+-- Publish a new version when rules change.
+CREATE TABLE IF NOT EXISTS public.rule_versions (
+    rule_version TEXT PRIMARY KEY,
+    description TEXT NOT NULL,
+    rule_config JSONB NOT NULL,
+
+    approved_by TEXT NOT NULL,
+    approved_at TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT rule_versions_version_nonblank
+        CHECK (
+            btrim(rule_version) <> ''
+            AND rule_version = btrim(rule_version)
+        ),
+
+    CONSTRAINT rule_versions_description_nonblank
+        CHECK (btrim(description) <> ''),
+
+    CONSTRAINT rule_versions_config_object
+        CHECK (
+            jsonb_typeof(rule_config) = 'object'
+            AND rule_config <> '{}'::JSONB
+        ),
+
+    CONSTRAINT rule_versions_approver_nonblank
+        CHECK (btrim(approved_by) <> '')
+);
+
+
+-- Evaluation results and the evidence used to reach them.
+CREATE TABLE IF NOT EXISTS public.processing_decisions (
+    decision_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Reuse the same key when retrying the same evaluation.
+    -- Use a new key for an intentional reassessment.
+    evaluation_key TEXT NOT NULL UNIQUE,
+
+    ingestion_event_id UUID
+        REFERENCES public.ingestion_events (ingestion_event_id)
+        ON DELETE RESTRICT,
+
+    lead_id UUID
+        REFERENCES public.leads (lead_id)
+        ON DELETE RESTRICT,
+
+    rule_version TEXT NOT NULL
+        REFERENCES public.rule_versions (rule_version)
+        ON DELETE RESTRICT,
+
+    evaluated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    -- Snapshot of the exact inputs used during evaluation.
+    input_snapshot JSONB NOT NULL,
+
+    fit_score INTEGER,
+    engagement_score INTEGER,
+
+    fit_data_complete BOOLEAN NOT NULL DEFAULT FALSE,
+    engagement_data_complete BOOLEAN NOT NULL DEFAULT FALSE,
+
+    priority TEXT,
+    decision_outcome TEXT NOT NULL,
+
+    selected_owner_id UUID
+        REFERENCES public.owners (owner_id)
+        ON DELETE RESTRICT,
+
+    reason_codes TEXT[] NOT NULL,
+
+    -- Component scores, missing fields and routing evidence.
+    decision_details JSONB NOT NULL,
+
+    CONSTRAINT decisions_evaluation_key_nonblank
+        CHECK (
+            btrim(evaluation_key) <> ''
+            AND evaluation_key = btrim(evaluation_key)
+        ),
+
+    -- Invalid input can have an event but no lead yet.
+    -- A later reassessment can reference a lead directly.
+    CONSTRAINT decisions_subject_required
+        CHECK (
+            ingestion_event_id IS NOT NULL
+            OR lead_id IS NOT NULL
+        ),
+
+    CONSTRAINT decisions_input_snapshot_object
+        CHECK (
+            jsonb_typeof(input_snapshot) = 'object'
+        ),
+
+    CONSTRAINT decisions_fit_score_range
+        CHECK (fit_score BETWEEN 0 AND 100),
+
+    CONSTRAINT decisions_engagement_score_range
+        CHECK (engagement_score BETWEEN 0 AND 100),
+
+    CONSTRAINT decisions_complete_fit_requires_score
+        CHECK (
+            NOT fit_data_complete
+            OR fit_score IS NOT NULL
+        ),
+
+    CONSTRAINT decisions_complete_engagement_requires_score
+        CHECK (
+            NOT engagement_data_complete
+            OR engagement_score IS NOT NULL
+        ),
+
+    CONSTRAINT decisions_priority_valid
+        CHECK (priority IN ('P1', 'P2', 'P3')),
+
+    -- These describe the intended action.
+    -- Execution will be recorded in assignment/redirect/CRM tables.
+    -- Intended action; execution is recorded separately.
+
+    CONSTRAINT decisions_outcome_valid
+        CHECK (
+            decision_outcome IN (
+                'assignment_required',
+                'review_required',
+                'redirection_required',
+                'rejection_required',
+                'no_change'
+            )
+        ),
+
+    CONSTRAINT decisions_assignment_requires_lead_and_owner
+        CHECK (
+            decision_outcome <> 'assignment_required'
+            OR (
+                lead_id IS NOT NULL
+                AND selected_owner_id IS NOT NULL
+            )
+        ),
+
+    CONSTRAINT decisions_reasons_required
+        CHECK (
+            cardinality(reason_codes) > 0
+            AND array_ndims(reason_codes) = 1
+            AND array_position(reason_codes, NULL) IS NULL
+            AND array_position(reason_codes, '') IS NULL
+        ),
+
+    CONSTRAINT decisions_details_object
+        CHECK (
+            jsonb_typeof(decision_details) = 'object'
+        )
+);
+
+CREATE INDEX IF NOT EXISTS processing_decisions_lead_time_idx
+    ON public.processing_decisions (lead_id, evaluated_at);
+
+CREATE INDEX IF NOT EXISTS processing_decisions_event_idx
+    ON public.processing_decisions (ingestion_event_id);
+
+CREATE INDEX IF NOT EXISTS processing_decisions_rule_version_idx
+    ON public.processing_decisions (rule_version);
+
+CREATE INDEX IF NOT EXISTS processing_decisions_selected_owner_idx
+    ON public.processing_decisions (selected_owner_id);
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -409,6 +573,8 @@ WHERE table_schema = 'public'
       'ingestion_events',
       'owners',
       'owner_eligibility_history',
-      'routing_state'
+      'routing_state',
+      'rule_versions',
+      'processing_decisions'
   )
 ORDER BY table_name;
