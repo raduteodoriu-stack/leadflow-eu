@@ -739,6 +739,92 @@ CREATE INDEX IF NOT EXISTS review_actions_case_time_idx
 CREATE INDEX IF NOT EXISTS review_actions_selected_owner_idx
     ON public.review_actions (selected_owner_id);
 
+-- Actual lead ownership and its history.
+CREATE TABLE IF NOT EXISTS public.assignments (
+    assignment_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Reuse this key when retrying the same assignment.
+    assignment_key TEXT NOT NULL UNIQUE,
+
+    lead_id UUID NOT NULL
+        REFERENCES public.leads (lead_id)
+        ON DELETE RESTRICT,
+
+    owner_id UUID NOT NULL
+        REFERENCES public.owners (owner_id)
+        ON DELETE RESTRICT,
+
+    decision_id UUID NOT NULL
+        REFERENCES public.processing_decisions (decision_id)
+        ON DELETE RESTRICT,
+
+    -- Required for assignments resulting from manual review.
+    review_action_id UUID
+        REFERENCES public.review_actions (review_action_id)
+        ON DELETE RESTRICT,
+
+    assignment_method TEXT NOT NULL,
+    assignment_reason TEXT NOT NULL,
+
+    effective_from TIMESTAMPTZ NOT NULL,
+    effective_to TIMESTAMPTZ,
+
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT assignments_key_nonblank
+        CHECK (
+            btrim(assignment_key) <> ''
+            AND assignment_key = btrim(assignment_key)
+        ),
+
+    CONSTRAINT assignments_method_valid
+        CHECK (
+            assignment_method IN (
+                'round_robin',
+                'manual_review'
+            )
+        ),
+
+    CONSTRAINT assignments_reason_nonblank
+        CHECK (btrim(assignment_reason) <> ''),
+
+    CONSTRAINT assignments_review_action_consistent
+        CHECK (
+            (
+                assignment_method = 'manual_review'
+                AND review_action_id IS NOT NULL
+            )
+            OR (
+                assignment_method = 'round_robin'
+                AND review_action_id IS NULL
+            )
+        ),
+
+    CONSTRAINT assignments_period_valid
+        CHECK (
+            effective_to IS NULL
+            OR effective_to > effective_from
+        ),
+
+    -- A lead cannot have overlapping ownership periods.
+    -- Start is inclusive; end is exclusive.
+    -- NULL end means the period remains open.
+    CONSTRAINT assignments_no_overlap
+        EXCLUDE USING gist (
+            lead_id WITH =,
+            tstzrange(effective_from, effective_to, '[)') WITH &&
+        )
+);
+
+CREATE INDEX IF NOT EXISTS assignments_owner_start_idx
+    ON public.assignments (owner_id, effective_from);
+
+CREATE INDEX IF NOT EXISTS assignments_decision_idx
+    ON public.assignments (decision_id);
+
+CREATE INDEX IF NOT EXISTS assignments_review_action_idx
+    ON public.assignments (review_action_id);
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -758,6 +844,7 @@ WHERE table_schema = 'public'
       'rule_versions',
       'processing_decisions',
       'review_cases',
-      'review_actions'
+      'review_actions',
+      'assignments'
   )
 ORDER BY table_name;
