@@ -825,6 +825,118 @@ CREATE INDEX IF NOT EXISTS assignments_decision_idx
 CREATE INDEX IF NOT EXISTS assignments_review_action_idx
     ON public.assignments (review_action_id);
 
+-- Follow-up evidence used for SLA evaluation.
+CREATE TABLE IF NOT EXISTS public.followup_activities (
+    activity_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    source_system TEXT NOT NULL,
+    source_activity_id TEXT NOT NULL,
+
+    -- Nullable while source records are being matched.
+    lead_id UUID
+        REFERENCES public.leads (lead_id)
+        ON DELETE RESTRICT,
+
+    performed_by_owner_id UUID
+        REFERENCES public.owners (owner_id)
+        ON DELETE RESTRICT,
+
+    -- Preserve source identifiers even before matching succeeds.
+    source_contact_id TEXT,
+    source_owner_id TEXT,
+
+    activity_type TEXT NOT NULL,
+    activity_outcome TEXT NOT NULL,
+
+    -- NULL means automation status has not been established.
+    is_automated BOOLEAN,
+
+    occurred_at TIMESTAMPTZ NOT NULL,
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    activity_details JSONB NOT NULL,
+
+    CONSTRAINT followup_source_system_nonblank
+        CHECK (
+            btrim(source_system) <> ''
+            AND source_system = btrim(source_system)
+        ),
+
+    CONSTRAINT followup_source_activity_nonblank
+        CHECK (
+            btrim(source_activity_id) <> ''
+            AND source_activity_id = btrim(source_activity_id)
+        ),
+
+    CONSTRAINT followup_source_activity_unique
+        UNIQUE (source_system, source_activity_id),
+
+    CONSTRAINT followup_source_contact_nonblank
+        CHECK (
+            source_contact_id IS NULL
+            OR btrim(source_contact_id) <> ''
+        ),
+
+    CONSTRAINT followup_source_owner_nonblank
+        CHECK (
+            source_owner_id IS NULL
+            OR btrim(source_owner_id) <> ''
+        ),
+
+    CONSTRAINT followup_type_valid
+        CHECK (
+            activity_type IN (
+                'call',
+                'email',
+                'administrative',
+                'other'
+            )
+        ),
+
+    CONSTRAINT followup_type_outcome_consistent
+        CHECK (
+            (
+                activity_type = 'call'
+                AND activity_outcome IN (
+                    'connected',
+                    'no_answer',
+                    'voicemail',
+                    'busy',
+                    'failed',
+                    'cancelled',
+                    'unknown'
+                )
+            )
+            OR (
+                activity_type = 'email'
+                AND activity_outcome IN (
+                    'sent',
+                    'draft',
+                    'failed',
+                    'unknown'
+                )
+            )
+            OR (
+                activity_type IN ('administrative', 'other')
+                AND activity_outcome IN (
+                    'completed',
+                    'failed',
+                    'cancelled',
+                    'unknown'
+                )
+            )
+        ),
+
+    CONSTRAINT followup_details_object
+        CHECK (jsonb_typeof(activity_details) = 'object')
+);
+
+CREATE INDEX IF NOT EXISTS followup_activities_lead_time_idx
+    ON public.followup_activities (lead_id, occurred_at);
+
+CREATE INDEX IF NOT EXISTS followup_activities_owner_idx
+    ON public.followup_activities (performed_by_owner_id);
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -845,6 +957,7 @@ WHERE table_schema = 'public'
       'processing_decisions',
       'review_cases',
       'review_actions',
-      'assignments'
+      'assignments',
+      'followup_activities'
   )
 ORDER BY table_name;
