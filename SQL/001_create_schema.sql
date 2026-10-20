@@ -1609,6 +1609,140 @@ CREATE TABLE IF NOT EXISTS public.supplier_redirect_rules (
         )
 );
 
+-- Simulated supplier referrals for paid-survey participant enquiries.
+-- No automated reply is sent by the MVP.
+CREATE TABLE IF NOT EXISTS public.participant_redirects (
+    redirect_attempt_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    ingestion_event_id UUID NOT NULL
+        REFERENCES public.ingestion_events (ingestion_event_id)
+        ON DELETE RESTRICT,
+
+    redirect_rule_id UUID
+        REFERENCES public.supplier_redirect_rules (redirect_rule_id)
+        ON DELETE RESTRICT,
+
+    attempt_number INTEGER NOT NULL,
+
+    -- Preserve the destination selected at the time of this attempt.
+    supplier_code_snapshot TEXT,
+    supplier_name_snapshot TEXT,
+    destination_url_snapshot TEXT,
+
+    referral_method TEXT NOT NULL DEFAULT 'automated_reply',
+
+    attempt_status TEXT NOT NULL,
+    attempted_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    error_code TEXT,
+    error_detail TEXT,
+    attempt_details JSONB NOT NULL,
+
+    CONSTRAINT participant_redirect_attempt_unique
+        UNIQUE (ingestion_event_id, attempt_number),
+
+    CONSTRAINT participant_redirect_attempt_positive
+        CHECK (attempt_number > 0),
+
+    CONSTRAINT participant_redirect_method_valid
+        CHECK (referral_method = 'automated_reply'),
+
+    CONSTRAINT participant_redirect_status_valid
+        CHECK (
+            attempt_status IN (
+                'simulated',
+                'review_required',
+                'failed'
+            )
+        ),
+
+    CONSTRAINT participant_redirect_supplier_code_nonblank
+        CHECK (
+            supplier_code_snapshot IS NULL
+            OR btrim(supplier_code_snapshot) <> ''
+        ),
+
+    CONSTRAINT participant_redirect_supplier_name_nonblank
+        CHECK (
+            supplier_name_snapshot IS NULL
+            OR btrim(supplier_name_snapshot) <> ''
+        ),
+
+    CONSTRAINT participant_redirect_destination_format
+        CHECK (
+            destination_url_snapshot IS NULL
+            OR (
+                destination_url_snapshot = btrim(destination_url_snapshot)
+                AND destination_url_snapshot ~ '^https://[^[:space:]/?#]+'
+                AND destination_url_snapshot !~ '[[:space:]]'
+            )
+        ),
+
+    CONSTRAINT participant_redirect_destination_consistent
+        CHECK (
+            (
+                redirect_rule_id IS NULL
+                AND supplier_code_snapshot IS NULL
+                AND supplier_name_snapshot IS NULL
+                AND destination_url_snapshot IS NULL
+            )
+            OR (
+                redirect_rule_id IS NOT NULL
+                AND supplier_code_snapshot IS NOT NULL
+                AND supplier_name_snapshot IS NOT NULL
+                AND destination_url_snapshot IS NOT NULL
+            )
+        ),
+
+    CONSTRAINT participant_redirect_simulation_requires_destination
+        CHECK (
+            attempt_status <> 'simulated'
+            OR redirect_rule_id IS NOT NULL
+        ),
+
+    CONSTRAINT participant_redirect_error_code_nonblank
+        CHECK (
+            error_code IS NULL
+            OR btrim(error_code) <> ''
+        ),
+
+    CONSTRAINT participant_redirect_error_detail_nonblank
+        CHECK (
+            error_detail IS NULL
+            OR btrim(error_detail) <> ''
+        ),
+
+    CONSTRAINT participant_redirect_outcome_error_consistent
+        CHECK (
+            (
+                attempt_status = 'simulated'
+                AND error_code IS NULL
+                AND error_detail IS NULL
+            )
+            OR (
+                attempt_status IN ('review_required', 'failed')
+                AND error_code IS NOT NULL
+            )
+        ),
+
+    CONSTRAINT participant_redirect_details_object
+        CHECK (jsonb_typeof(attempt_details) = 'object')
+);
+
+CREATE INDEX IF NOT EXISTS participant_redirects_rule_idx
+    ON public.participant_redirects (redirect_rule_id);
+
+CREATE INDEX IF NOT EXISTS participant_redirects_supplier_time_idx
+    ON public.participant_redirects (
+        supplier_code_snapshot,
+        attempted_at
+    );
+
+-- Prevent multiple successful simulations for the same enquiry.
+CREATE UNIQUE INDEX IF NOT EXISTS participant_redirects_one_simulation_idx
+    ON public.participant_redirects (ingestion_event_id)
+    WHERE attempt_status = 'simulated';
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -1647,6 +1781,7 @@ WHERE table_schema = 'public'
       'engagement_coverage',
       'engagement_events',
       'engagement_coverage',
-      'supplier_redirect_rules'
+      'supplier_redirect_rules',
+       'participant_redirects'
   )
 ORDER BY table_name;
