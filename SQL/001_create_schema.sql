@@ -1068,6 +1068,149 @@ CREATE INDEX IF NOT EXISTS sla_tracking_pending_deadline_idx
     ON public.sla_tracking (current_deadline_at)
     WHERE sla_status = 'pending';
 
+-- Audit history for SLA creation and subsequent changes.
+CREATE TABLE IF NOT EXISTS public.sla_history (
+    sla_history_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Reuse this key when retrying the same history event.
+    history_key TEXT NOT NULL UNIQUE,
+
+    sla_id UUID NOT NULL
+        REFERENCES public.sla_tracking (sla_id)
+        ON DELETE RESTRICT,
+
+    decision_id UUID
+        REFERENCES public.processing_decisions (decision_id)
+        ON DELETE RESTRICT,
+
+    activity_id UUID
+        REFERENCES public.followup_activities (activity_id)
+        ON DELETE RESTRICT,
+
+    event_type TEXT NOT NULL,
+
+    previous_status TEXT,
+    new_status TEXT NOT NULL,
+
+    previous_deadline_at TIMESTAMPTZ,
+    new_deadline_at TIMESTAMPTZ NOT NULL,
+
+    change_reason TEXT NOT NULL,
+    changed_by TEXT NOT NULL,
+
+    -- Snapshot of relevant evidence and additional changed fields.
+    change_details JSONB NOT NULL,
+
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT sla_history_key_nonblank
+        CHECK (
+            btrim(history_key) <> ''
+            AND history_key = btrim(history_key)
+        ),
+
+    CONSTRAINT sla_history_event_type_valid
+        CHECK (
+            event_type IN (
+                'sla_created',
+                'deadline_shortened',
+                'status_changed',
+                'evidence_corrected',
+                'followup_recorded'
+            )
+        ),
+
+    CONSTRAINT sla_history_previous_status_valid
+        CHECK (
+            previous_status IN ('pending', 'met', 'breached')
+        ),
+
+    CONSTRAINT sla_history_new_status_valid
+        CHECK (
+            new_status IN ('pending', 'met', 'breached')
+        ),
+
+    CONSTRAINT sla_history_reason_nonblank
+        CHECK (btrim(change_reason) <> ''),
+
+    CONSTRAINT sla_history_actor_nonblank
+        CHECK (
+            btrim(changed_by) <> ''
+            AND changed_by = btrim(changed_by)
+        ),
+
+    CONSTRAINT sla_history_details_object
+        CHECK (jsonb_typeof(change_details) = 'object'),
+
+    CONSTRAINT sla_history_creation_consistent
+        CHECK (
+            (
+                event_type = 'sla_created'
+                AND previous_status IS NULL
+                AND previous_deadline_at IS NULL
+            )
+            OR (
+                event_type <> 'sla_created'
+                AND previous_status IS NOT NULL
+                AND previous_deadline_at IS NOT NULL
+            )
+        ),
+
+    CONSTRAINT sla_history_deadline_change_consistent
+        CHECK (
+            event_type = 'sla_created'
+            OR (
+                event_type = 'deadline_shortened'
+                AND new_deadline_at < previous_deadline_at
+                AND decision_id IS NOT NULL
+            )
+            OR (
+                event_type IN (
+                    'status_changed',
+                    'evidence_corrected',
+                    'followup_recorded'
+                )
+                AND new_deadline_at = previous_deadline_at
+            )
+        ),
+
+    CONSTRAINT sla_history_status_change_required
+        CHECK (
+            event_type <> 'status_changed'
+            OR new_status <> previous_status
+        ),
+
+    CONSTRAINT sla_history_followup_requires_activity
+        CHECK (
+            event_type <> 'followup_recorded'
+            OR activity_id IS NOT NULL
+        ),
+
+    CONSTRAINT sla_history_breach_correction_explicit
+        CHECK (
+            previous_status IS DISTINCT FROM 'breached'
+            OR new_status <> 'met'
+            OR (
+                event_type = 'evidence_corrected'
+                AND activity_id IS NOT NULL
+            )
+        )
+);
+
+-- Each SLA has only one creation event.
+CREATE UNIQUE INDEX IF NOT EXISTS sla_history_one_creation_idx
+    ON public.sla_history (sla_id)
+    WHERE event_type = 'sla_created';
+
+CREATE INDEX IF NOT EXISTS sla_history_sla_time_idx
+    ON public.sla_history (sla_id, recorded_at);
+
+CREATE INDEX IF NOT EXISTS sla_history_decision_idx
+    ON public.sla_history (decision_id);
+
+CREATE INDEX IF NOT EXISTS sla_history_activity_idx
+    ON public.sla_history (activity_id);
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -1091,6 +1234,9 @@ WHERE table_schema = 'public'
       'assignments',
       'followup_activities',
       'followup_activities',
-      'sla_tracking'
+      'sla_tracking',
+      'followup_activities',
+      'sla_tracking',
+      'sla_history'
   )
 ORDER BY table_name;
