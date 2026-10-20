@@ -665,6 +665,80 @@ CREATE INDEX IF NOT EXISTS review_cases_queue_idx
     ON public.review_cases (review_status, opened_at)
     WHERE review_status IN ('open', 'in_progress');
 
+-- Human actions taken on review cases.
+CREATE TABLE IF NOT EXISTS public.review_actions (
+    review_action_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Reuse this key when retrying the same action.
+    action_key TEXT NOT NULL UNIQUE,
+
+    review_case_id UUID NOT NULL
+        REFERENCES public.review_cases (review_case_id)
+        ON DELETE RESTRICT,
+
+    -- Stable identifier, e.g. SM-01 or REVOPS-01.
+    performed_by TEXT NOT NULL,
+    performed_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    action_type TEXT NOT NULL,
+    action_reason TEXT NOT NULL,
+    action_details JSONB NOT NULL,
+
+    selected_owner_id UUID
+        REFERENCES public.owners (owner_id)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT review_actions_key_nonblank
+        CHECK (
+            btrim(action_key) <> ''
+            AND action_key = btrim(action_key)
+        ),
+
+    CONSTRAINT review_actions_actor_nonblank
+        CHECK (
+            btrim(performed_by) <> ''
+            AND performed_by = btrim(performed_by)
+        ),
+
+    CONSTRAINT review_actions_type_valid
+        CHECK (
+            action_type IN (
+                'review_started',
+                'information_requested',
+                'data_corrected',
+                'owner_selected',
+                'reprocessing_requested',
+                'case_resolved',
+                'case_reopened',
+                'note_added'
+            )
+        ),
+
+    CONSTRAINT review_actions_reason_nonblank
+        CHECK (btrim(action_reason) <> ''),
+
+    CONSTRAINT review_actions_details_object
+        CHECK (jsonb_typeof(action_details) = 'object'),
+
+    CONSTRAINT review_actions_owner_selection_consistent
+        CHECK (
+            (
+                action_type = 'owner_selected'
+                AND selected_owner_id IS NOT NULL
+            )
+            OR (
+                action_type <> 'owner_selected'
+                AND selected_owner_id IS NULL
+            )
+        )
+);
+
+CREATE INDEX IF NOT EXISTS review_actions_case_time_idx
+    ON public.review_actions (review_case_id, performed_at);
+
+CREATE INDEX IF NOT EXISTS review_actions_selected_owner_idx
+    ON public.review_actions (selected_owner_id);
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -683,6 +757,7 @@ WHERE table_schema = 'public'
       'routing_state',
       'rule_versions',
       'processing_decisions',
-      'review_cases'
+      'review_cases',
+      'review_actions'
   )
 ORDER BY table_name;
