@@ -1533,6 +1533,82 @@ CREATE INDEX IF NOT EXISTS engagement_coverage_lookup_idx
         checked_at
     );
 
+-- Time-bounded destinations for paid-survey participant enquiries.
+CREATE TABLE IF NOT EXISTS public.supplier_redirect_rules (
+    redirect_rule_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Unique identifier for this version of a destination rule.
+    rule_key TEXT NOT NULL UNIQUE,
+
+    -- 'default' provides a fallback when no country rule matches.
+    territory_code TEXT NOT NULL,
+
+    supplier_code TEXT NOT NULL,
+    supplier_name TEXT NOT NULL,
+
+    destination_url TEXT NOT NULL,
+
+    effective_from TIMESTAMPTZ NOT NULL,
+    effective_to TIMESTAMPTZ,
+
+    change_reason TEXT NOT NULL,
+    approved_by TEXT NOT NULL,
+    approved_at TIMESTAMPTZ NOT NULL,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT supplier_redirect_rule_key_nonblank
+        CHECK (
+            btrim(rule_key) <> ''
+            AND rule_key = btrim(rule_key)
+        ),
+
+    CONSTRAINT supplier_redirect_territory_valid
+        CHECK (
+            territory_code IN ('ES', 'PT', 'FR', 'default')
+        ),
+
+    CONSTRAINT supplier_redirect_code_nonblank
+        CHECK (
+            btrim(supplier_code) <> ''
+            AND supplier_code = btrim(supplier_code)
+        ),
+
+    CONSTRAINT supplier_redirect_name_nonblank
+        CHECK (btrim(supplier_name) <> ''),
+
+    -- Basic format check; full URL validation belongs in the application.
+    CONSTRAINT supplier_redirect_url_format
+        CHECK (
+            destination_url = btrim(destination_url)
+            AND destination_url ~ '^https://[^[:space:]/?#]+'
+            AND destination_url !~ '[[:space:]]'
+        ),
+
+    CONSTRAINT supplier_redirect_period_valid
+        CHECK (
+            effective_to IS NULL
+            OR effective_to > effective_from
+        ),
+
+    CONSTRAINT supplier_redirect_reason_nonblank
+        CHECK (btrim(change_reason) <> ''),
+
+    CONSTRAINT supplier_redirect_approver_nonblank
+        CHECK (btrim(approved_by) <> ''),
+
+    CONSTRAINT supplier_redirect_approval_time_valid
+        CHECK (approved_at <= effective_from),
+
+    -- Only one destination rule per territory at any moment.
+    -- Country-specific and default rules can coexist.
+    CONSTRAINT supplier_redirect_no_overlap
+        EXCLUDE USING gist (
+            territory_code WITH =,
+            tstzrange(effective_from, effective_to, '[)') WITH &&
+        )
+);
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -1568,6 +1644,9 @@ WHERE table_schema = 'public'
       'engagement_events',
       'qualification_evidence',
       'engagement_events',
-      'engagement_coverage'
+      'engagement_coverage',
+      'engagement_events',
+      'engagement_coverage',
+      'supplier_redirect_rules'
   )
 ORDER BY table_name;
