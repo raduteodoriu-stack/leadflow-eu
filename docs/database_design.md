@@ -4,8 +4,6 @@ Operational tables, relationships and history requirements for the LeadFlow EU M
 
 Status: Tables and relationships defined. Keys, constraints and SQL implementation pending.
 
-# LeadFlow EU — Database Design
-
 Operational tables, relationships and history requirements for the LeadFlow EU MVP.
 
 Status: Tables and relationships defined. Keys, constraints and SQL implementation pending.
@@ -30,7 +28,7 @@ Invalid submissions and participant enquiries can be recorded without creating a
 | ingestion_events | One unique source event | Preserve the original payload, source identifiers, timestamps and processing status |
 | companies | One canonical company | Store current company identity and company-level qualification attributes |
 | leads | One canonical business contact | Store contact identity, business country and relationship classification |
-| qualification_evidence | One recorded observation supporting a qualification field | Preserve the value, source, observation time and reviewer |
+| qualification_evidence | One recorded observation supporting a qualification field | Preserve the value, source, observation time and evidence method and supporting detail |
 | engagement_events | One unique prospect action | Support engagement scoring without counting duplicate events |
 | engagement_coverage | One extraction coverage record for a source and defined scope | Distinguish complete activity data from partial or failed extraction |
 | owners | One sales representative or Sales Manager | Store staff identity and CRM owner mapping |
@@ -104,7 +102,7 @@ Preserve supporting observations and corrections in qualification_evidence, incl
 - Field name and observed value.
 - Evidence source and reference.
 - Observation timestamp.
-- Recording actor.
+- Evidence method; actor information may be included in evidence_details when available.
 - Explanation where needed.
 
 Each processing decision also preserves the input values and evidence references used in that evaluation.
@@ -115,7 +113,7 @@ Later corrections must not change the explanation of an earlier decision.
 
 Each engagement_coverage record identifies:
 - Source system.
-- Covered event types.
+- One covered event type per record.
 - Covered population or extraction scope.
 - Coverage start and end.
 - Extraction status.
@@ -140,38 +138,65 @@ Assignment records preserve:
 - Owner.
 - Effective start and end.
 - Automatic or manual assignment method.
-- Originating decision or review action.
+- Required originating decision and, for manual assignments, a required review action.
 - Assignment reason.
 
 ## SLA history
 
-sla_tracking stores the current first-follow-up obligation.
+sla_tracking stores one first-follow-up obligation per lead, including:
 
-sla_history preserves:
-- Initial priority, allowance and deadline.
-- Priority upgrades and resulting deadline changes.
-- Owner changes relevant to the audit.
-- Recorded breaches.
-- Qualifying follow-up and completion.
-- Corrections, including late-arriving activity evidence.
+- Initial assignment, rule version and initial priority.
+- SLA start time.
+- Original and current deadline.
+- Latest evaluated status.
+- Qualifying activity reference and occurrence time, when available.
+- Breach-detection and last-evaluation timestamps.
 
-Reassignment and duplicate submissions do not create another first-follow-up obligation.
+sla_history records creation, deadline shortening, status changes,
+evidence corrections and follow-up recording.
 
-Priority downgrades do not extend the deadline.
+History rows preserve previous and new status and deadline values.
+Additional context, such as priority changes and the applicable allowance,
+is stored in change_details when relevant.
 
-Preserve both activity occurrence time and recording time. If late-arriving evidence changes the assessed outcome, retain the earlier assessment and correction history.
+Ownership changes are preserved in assignments. They do not restart the SLA.
 
-## Participant redirects
+The initial allowances are P1: 60, P2: 240 and P3: 480 business minutes.
+The processing layer will calculate deadlines using the agreed calendar.
 
-Participant enquiries are recorded through ingestion_events and participant_redirects without requiring a sales lead.
+Reassignment, duplicate submissions and priority downgrades must not
+extend the deadline. A priority upgrade may shorten it.
 
-supplier_redirect_rules contains country-specific destinations and an optional default destination.
+Activity occurrence time determines timeliness. Late-arriving evidence
+may correct an assessed outcome, while preserving the earlier assessment
+and correction history.
 
-Each attempt records the destination actually selected so configuration changes do not rewrite history.
+The database validates individual SLA and history records. Automatic
+history creation, consistency between history and current state, and
+deadline-transition enforcement remain processing-layer responsibilities.
 
-If no usable destination exists, record a redirect exception for review.
+## Participant referrals
 
-Redirects are simulated in the MVP. Submitted personal data is not transferred to the supplier.
+Paid-survey participant enquiries are recorded through ingestion_events
+and participant_redirects without requiring a sales lead.
+
+supplier_redirect_rules defines effective country-specific destinations
+and an optional default. The processing layer will select the country
+rule first, then the default.
+
+The intended business process is an automated reply directing the
+participant to the selected supplier. Sending that reply is outside
+the MVP; only the referral is simulated.
+
+Each attempt preserves the selected supplier code, supplier name and
+destination URL. Outcomes are simulated, review_required or failed.
+
+An enquiry with no usable destination is recorded for review.
+Submitted personal data is not transferred to the supplier.
+
+Reporting counts distinct ingestion events rather than attempts.
+The metric is "Participant referrals simulated"; it does not represent
+emails sent or unique people.
 
 ## CRM update attempts
 
@@ -259,7 +284,7 @@ Reviewer identifiers are stored as actor references. They are not restricted to 
 
 | Record | Uniqueness rule |
 |---|---|
-| Ingestion event | source_system + source_event_id |
+|| Ingestion event | source_system + source_event_id, when source_event_id is populated |
 | Canonical lead | normalised_email |
 | CRM contact mapping on leads | crm_contact_id, when populated, within the single HubSpot test account |
 | CRM company mapping on companies | crm_company_id, when populated, within the single HubSpot test account |
@@ -271,6 +296,21 @@ Reviewer identifiers are stored as actor references. They are not restricted to 
 | SLA obligation | lead_id |
 | CRM update attempt | logical_update_id + attempt_number |
 | Participant redirect attempt | ingestion_event_id + attempt_number |
+| Qualification evidence | evidence_key |
+| Engagement coverage attempt | coverage_key |
+| Review case | case_key |
+| Review action | action_key |
+| Assignment | assignment_key |
+| SLA history event | history_key |
+| SLA creation history | At most one sla_created event per sla_id |
+| Supplier redirect rule version | rule_key |
+| Successful participant simulation | At most one simulated attempt per ingestion_event_id |
+| Recorded CRM success | At most one succeeded attempt per logical_update_id |
+
+Ingestion events without a source_event_id remain traceable through
+ingestion_event_id. The source-system/event-ID unique constraint does
+not deduplicate these records. They require validation or review before
+normal idempotent processing.
 
 Canonical email uniqueness is an MVP identity policy. Ambiguous or conflicting source identities remain in ingestion and review until resolved.
 
@@ -287,7 +327,7 @@ When an enquiry and an engagement feed describe the same sales request, link the
 ### Current records and effective periods
 
 - A lead can have at most one current assignment.
-- Current assignments have no effective end timestamp.
+- An assignment is effective at a given time when its start has been reached and its end is either absent or later than that time.
 - Assignment periods for the same lead must not overlap.
 - Owner eligibility periods for the same owner must not overlap in this MVP.
 - Effective periods use an inclusive start and exclusive end.
@@ -327,7 +367,11 @@ A known zero score is distinguishable from an incomplete assessment.
 - Supplier-only and participant enquiries must not create buyer follow-up SLA obligations.
 - Unresolved engagement or follow-up records cannot satisfy scoring or SLA requirements until identity is resolved.
 
-Use composite foreign keys where practical to enforce same-lead relationships.
+The current schema uses individual foreign keys to verify that referenced
+records exist. It does not yet enforce same-lead consistency across
+assignments, decisions, SLA records and activities through composite
+foreign keys. These relationships require processing-layer validation
+and integration tests.
 
 Eligibility and other cross-record business checks are validated within the processing transaction and covered by integration tests.
 
@@ -360,7 +404,7 @@ Database uniqueness prevents duplicate internal operations. CRM retries must als
 - Late follow-up preserves the breach.
 - Late-arriving evidence can correct the assessed outcome, with the previous assessment and correction preserved in history.
 
-Business-hour calculations and deadline-transition rules are implemented and tested in the processing layer.
+Business-hour calculations and deadline-transition rules will be implemented and tested in the processing layer. They are not implemented by the current schema.
 
 ### Raw data and rejected records
 
@@ -375,18 +419,32 @@ Business-hour calculations and deadline-transition rules are implemented and tes
 
 - Do not cascade-delete operational history when a company, lead or owner is removed.
 - Referenced records are restricted from deletion.
-- Use inactive or archived status where appropriate for the synthetic MVP.
+- Retain referenced records. Use owner eligibility history to stop new assignments to unavailable representatives. General archival fields are not currently implemented across all tables.
 - Destructive database resets are permitted only in the disposable development environment.
 
 ### Enforcement responsibilities
 
-| Mechanism | Examples |
+| Mechanism | Implemented responsibility |
 |---|---|
-| Primary and foreign keys | Stable identity and valid references |
-| Unique constraints and indexes | Duplicate-event prevention and one current assignment |
-| Check constraints | Score ranges, positive counts and valid period boundaries |
-| Exclusion constraints | Non-overlapping effective periods |
-| Processing transactions | Owner eligibility, round-robin and assignment consistency |
-| Application validation and tests | Email validity, scoring, business calendars and SLA transitions |
+| Primary and foreign keys | Stable identity and existence of referenced records |
+| Unique constraints and indexes | Unique event and operation keys, one SLA per lead, and selected duplicate-success protections |
+| Check constraints | Controlled statuses, score ranges, required evidence and valid time boundaries |
+| Exclusion constraints | Non-overlapping assignment, eligibility and supplier-rule periods |
 
-Document the actual enforcement mechanism when writing the PostgreSQL schema.
+### Processing and access controls still to implement
+
+- Validate email syntax and field-specific qualification values.
+- Resolve identities and conflicting evidence.
+- Enforce same-lead relationships across linked records.
+- Check owner roles and historical eligibility.
+- Lock routing state and save assignments atomically.
+- Calculate scores, priorities and business-hour deadlines.
+- Preserve the initial SLA anchor and prevent deadline extensions.
+- Update operational state and its audit history in one transaction.
+- Maintain updated_at timestamps; their defaults only apply on insertion.
+- Protect historical records and approved rule versions against unauthorised edits.
+- Select effective supplier rules and copy destination snapshots.
+- Reconcile uncertain CRM outcomes and enforce retry limits.
+- Prevent duplicate external updates; local uniqueness alone cannot guarantee this.
+
+These controls require implementation and integration tests in later work.
