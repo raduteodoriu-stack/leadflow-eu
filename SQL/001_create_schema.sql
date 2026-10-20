@@ -1743,6 +1743,189 @@ CREATE UNIQUE INDEX IF NOT EXISTS participant_redirects_one_simulation_idx
     ON public.participant_redirects (ingestion_event_id)
     WHERE attempt_status = 'simulated';
 
+-- CRM update attempts and their outcomes.
+CREATE TABLE IF NOT EXISTS public.crm_write_log (
+    write_attempt_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Generated once per intended update and reused across retries.
+    logical_update_id UUID NOT NULL,
+    attempt_number INTEGER NOT NULL,
+
+    decision_id UUID NOT NULL
+        REFERENCES public.processing_decisions (decision_id)
+        ON DELETE RESTRICT,
+
+    target_system TEXT NOT NULL,
+    target_object_type TEXT NOT NULL,
+    target_record_id TEXT NOT NULL,
+
+    -- MVP scope: update existing CRM records.
+    operation_type TEXT NOT NULL DEFAULT 'update',
+
+    -- Intended field changes only; never credentials or auth headers.
+    request_payload JSONB NOT NULL,
+
+    attempt_status TEXT NOT NULL DEFAULT 'in_progress',
+
+    started_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMPTZ,
+
+    http_status_code INTEGER,
+
+    -- NULL means retry suitability has not been established.
+    is_retryable BOOLEAN,
+    next_retry_at TIMESTAMPTZ,
+
+    error_code TEXT,
+    error_detail TEXT,
+
+    -- Sanitised response metadata, not authentication information.
+    response_details JSONB NOT NULL DEFAULT '{}'::JSONB,
+
+    CONSTRAINT crm_write_attempt_unique
+        UNIQUE (logical_update_id, attempt_number),
+
+    CONSTRAINT crm_write_attempt_positive
+        CHECK (attempt_number > 0),
+
+    CONSTRAINT crm_write_target_system_nonblank
+        CHECK (
+            btrim(target_system) <> ''
+            AND target_system = btrim(target_system)
+        ),
+
+    CONSTRAINT crm_write_object_type_valid
+        CHECK (target_object_type IN ('contact', 'company')),
+
+    CONSTRAINT crm_write_record_id_nonblank
+        CHECK (
+            btrim(target_record_id) <> ''
+            AND target_record_id = btrim(target_record_id)
+        ),
+
+    CONSTRAINT crm_write_operation_valid
+        CHECK (operation_type = 'update'),
+
+    CONSTRAINT crm_write_payload_valid
+        CHECK (
+            jsonb_typeof(request_payload) = 'object'
+            AND request_payload <> '{}'::JSONB
+        ),
+
+    CONSTRAINT crm_write_status_valid
+        CHECK (
+            attempt_status IN (
+                'in_progress',
+                'succeeded',
+                'failed',
+                'unknown',
+                'simulated'
+            )
+        ),
+
+    CONSTRAINT crm_write_completion_consistent
+        CHECK (
+            (
+                attempt_status = 'in_progress'
+                AND completed_at IS NULL
+            )
+            OR (
+                attempt_status <> 'in_progress'
+                AND completed_at IS NOT NULL
+            )
+        ),
+
+    CONSTRAINT crm_write_completion_time_valid
+        CHECK (
+            completed_at IS NULL
+            OR completed_at >= started_at
+        ),
+
+    CONSTRAINT crm_write_http_status_valid
+        CHECK (http_status_code BETWEEN 100 AND 599),
+
+    CONSTRAINT crm_write_success_http_valid
+        CHECK (
+            attempt_status <> 'succeeded'
+            OR (
+                http_status_code IS NOT NULL
+                AND http_status_code BETWEEN 200 AND 299
+            )
+        ),
+
+    CONSTRAINT crm_write_simulation_without_http
+        CHECK (
+            attempt_status <> 'simulated'
+            OR http_status_code IS NULL
+        ),
+
+    CONSTRAINT crm_write_error_code_nonblank
+        CHECK (
+            error_code IS NULL
+            OR btrim(error_code) <> ''
+        ),
+
+    CONSTRAINT crm_write_error_detail_nonblank
+        CHECK (
+            error_detail IS NULL
+            OR btrim(error_detail) <> ''
+        ),
+
+    CONSTRAINT crm_write_outcome_error_consistent
+        CHECK (
+            (
+                attempt_status IN ('failed', 'unknown')
+                AND error_code IS NOT NULL
+            )
+            OR (
+                attempt_status IN (
+                    'in_progress', 'succeeded', 'simulated'
+                )
+                AND error_code IS NULL
+                AND error_detail IS NULL
+            )
+        ),
+
+    CONSTRAINT crm_write_retry_flag_consistent
+        CHECK (
+            attempt_status IN ('failed', 'unknown')
+            OR is_retryable IS DISTINCT FROM TRUE
+        ),
+
+    CONSTRAINT crm_write_retry_schedule_valid
+        CHECK (
+            next_retry_at IS NULL
+            OR (
+                attempt_status = 'failed'
+                AND is_retryable IS TRUE
+                AND completed_at IS NOT NULL
+                AND next_retry_at >= completed_at
+            )
+        ),
+
+    CONSTRAINT crm_write_response_object
+        CHECK (jsonb_typeof(response_details) = 'object')
+);
+
+CREATE INDEX IF NOT EXISTS crm_write_log_decision_idx
+    ON public.crm_write_log (decision_id);
+
+CREATE INDEX IF NOT EXISTS crm_write_log_target_idx
+    ON public.crm_write_log (
+        target_system,
+        target_object_type,
+        target_record_id
+    );
+
+CREATE INDEX IF NOT EXISTS crm_write_log_retry_idx
+    ON public.crm_write_log (next_retry_at)
+    WHERE next_retry_at IS NOT NULL;
+
+-- At most one locally recorded success per intended update.
+CREATE UNIQUE INDEX IF NOT EXISTS crm_write_log_one_success_idx
+    ON public.crm_write_log (logical_update_id)
+    WHERE attempt_status = 'succeeded';
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -1782,6 +1965,7 @@ WHERE table_schema = 'public'
       'engagement_events',
       'engagement_coverage',
       'supplier_redirect_rules',
-       'participant_redirects'
+      'participant_redirects',
+      'crm_write_log'
   )
 ORDER BY table_name;
