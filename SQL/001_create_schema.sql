@@ -1315,6 +1315,90 @@ CREATE INDEX IF NOT EXISTS qualification_evidence_company_field_time_idx
 CREATE INDEX IF NOT EXISTS qualification_evidence_ingestion_event_idx
     ON public.qualification_evidence (ingestion_event_id);
 
+-- Lead engagement evidence used for prioritisation.
+CREATE TABLE IF NOT EXISTS public.engagement_events (
+    engagement_event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    source_system TEXT NOT NULL,
+    source_event_id TEXT NOT NULL,
+
+    -- Nullable until the source contact is matched to a lead.
+    lead_id UUID
+        REFERENCES public.leads (lead_id)
+        ON DELETE RESTRICT,
+
+    source_contact_id TEXT,
+
+    event_type TEXT NOT NULL,
+
+    -- When the engagement happened.
+    occurred_at TIMESTAMPTZ NOT NULL,
+
+    -- When it was stored in this database.
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    -- Optional reference to a webinar, resource or page.
+    related_content_id TEXT,
+
+    event_details JSONB NOT NULL,
+
+    CONSTRAINT engagement_source_system_nonblank
+        CHECK (
+            btrim(source_system) <> ''
+            AND source_system = btrim(source_system)
+        ),
+
+    CONSTRAINT engagement_source_event_nonblank
+        CHECK (
+            btrim(source_event_id) <> ''
+            AND source_event_id = btrim(source_event_id)
+        ),
+
+    CONSTRAINT engagement_source_event_unique
+        UNIQUE (source_system, source_event_id),
+
+    CONSTRAINT engagement_source_contact_nonblank
+        CHECK (
+            source_contact_id IS NULL
+            OR btrim(source_contact_id) <> ''
+        ),
+
+    CONSTRAINT engagement_identity_required
+        CHECK (
+            lead_id IS NOT NULL
+            OR source_contact_id IS NOT NULL
+        ),
+
+    CONSTRAINT engagement_event_type_valid
+        CHECK (
+            event_type IN (
+                'demo_requested',
+                'sales_contact_requested',
+                'quote_requested',
+                'pricing_page_visited',
+                'webinar_attended',
+                'guide_downloaded',
+                'case_study_downloaded'
+            )
+        ),
+
+    CONSTRAINT engagement_content_nonblank
+        CHECK (
+            related_content_id IS NULL
+            OR btrim(related_content_id) <> ''
+        ),
+
+    CONSTRAINT engagement_details_object
+        CHECK (jsonb_typeof(event_details) = 'object')
+);
+
+CREATE INDEX IF NOT EXISTS engagement_events_lead_time_idx
+    ON public.engagement_events (lead_id, occurred_at);
+
+CREATE INDEX IF NOT EXISTS engagement_events_unresolved_contact_idx
+    ON public.engagement_events (source_system, source_contact_id)
+    WHERE lead_id IS NULL;
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -1344,6 +1428,9 @@ WHERE table_schema = 'public'
       'sla_history'
       'sla_tracking',
       'sla_history',
-      'qualification_evidence'
+      'qualification_evidence',
+      'sla_history',
+      'qualification_evidence',
+      'engagement_events'
   )
 ORDER BY table_name;
