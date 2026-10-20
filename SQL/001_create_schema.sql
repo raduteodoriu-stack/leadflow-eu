@@ -1211,6 +1211,110 @@ CREATE INDEX IF NOT EXISTS sla_history_decision_idx
 CREATE INDEX IF NOT EXISTS sla_history_activity_idx
     ON public.sla_history (activity_id);
 
+-- Source evidence supporting company qualification.
+CREATE TABLE IF NOT EXISTS public.qualification_evidence (
+    evidence_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Reuse this key when retrying the same field observation.
+    evidence_key TEXT NOT NULL UNIQUE,
+
+    company_id UUID NOT NULL
+        REFERENCES public.companies (company_id)
+        ON DELETE RESTRICT,
+
+    ingestion_event_id UUID
+        REFERENCES public.ingestion_events (ingestion_event_id)
+        ON DELETE RESTRICT,
+
+    field_name TEXT NOT NULL,
+
+    -- JSON scalar: string, number or boolean.
+    -- SQL NULL represents an explicitly unknown value.
+    observed_value JSONB,
+
+    source_system TEXT NOT NULL,
+
+    -- Source record ID, URL or another traceable reference.
+    source_reference TEXT NOT NULL,
+
+    evidence_method TEXT NOT NULL,
+
+    -- When the information was observed at the source.
+    observed_at TIMESTAMPTZ NOT NULL,
+
+    -- When it was stored in this database.
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    evidence_details JSONB NOT NULL,
+
+    CONSTRAINT qualification_evidence_key_nonblank
+        CHECK (
+            btrim(evidence_key) <> ''
+            AND evidence_key = btrim(evidence_key)
+        ),
+
+    CONSTRAINT qualification_evidence_field_valid
+        CHECK (
+            field_name IN (
+                'employee_count',
+                'employee_band_declared',
+                'industry_raw',
+                'industry_code',
+                'research_use_case',
+                'research_frequency',
+                'ongoing_panel_management_need',
+                'relevant_need_confirmed',
+                'uses_digital_research_tools',
+                'integration_required',
+                'technical_resource_available',
+                'adoption_owner_confirmed',
+                'onboarding_support_needed',
+                'adoption_interest_confirmed',
+                'adoption_unwilling_or_unable'
+            )
+        ),
+
+    CONSTRAINT qualification_evidence_value_scalar
+        CHECK (
+            observed_value IS NULL
+            OR jsonb_typeof(observed_value) IN (
+                'string', 'number', 'boolean'
+            )
+        ),
+
+    CONSTRAINT qualification_evidence_source_nonblank
+        CHECK (
+            btrim(source_system) <> ''
+            AND source_system = btrim(source_system)
+        ),
+
+    CONSTRAINT qualification_evidence_reference_nonblank
+        CHECK (btrim(source_reference) <> ''),
+
+    CONSTRAINT qualification_evidence_method_valid
+        CHECK (
+            evidence_method IN (
+                'self_reported',
+                'sales_confirmed',
+                'external_source',
+                'rule_derived'
+            )
+        ),
+
+    CONSTRAINT qualification_evidence_details_object
+        CHECK (jsonb_typeof(evidence_details) = 'object')
+);
+
+CREATE INDEX IF NOT EXISTS qualification_evidence_company_field_time_idx
+    ON public.qualification_evidence (
+        company_id,
+        field_name,
+        observed_at
+    );
+
+CREATE INDEX IF NOT EXISTS qualification_evidence_ingestion_event_idx
+    ON public.qualification_evidence (ingestion_event_id);
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -1238,5 +1342,8 @@ WHERE table_schema = 'public'
       'followup_activities',
       'sla_tracking',
       'sla_history'
+      'sla_tracking',
+      'sla_history',
+      'qualification_evidence'
   )
 ORDER BY table_name;
