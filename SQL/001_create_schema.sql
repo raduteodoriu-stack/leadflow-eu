@@ -1399,6 +1399,140 @@ CREATE INDEX IF NOT EXISTS engagement_events_unresolved_contact_idx
     ON public.engagement_events (source_system, source_contact_id)
     WHERE lead_id IS NULL;
 
+-- Records how completely engagement data was collected.
+CREATE TABLE IF NOT EXISTS public.engagement_coverage (
+    coverage_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    -- Reuse for retries of the same recorded collection attempt.
+    -- A genuinely new collection attempt gets a new key.
+    coverage_key TEXT NOT NULL UNIQUE,
+
+    source_system TEXT NOT NULL,
+    event_type TEXT NOT NULL,
+
+    -- Stable identifier for the population being checked.
+    -- Example: synthetic_all_contacts_v1.
+    population_key TEXT NOT NULL,
+
+    -- Exact population definition, filters or snapshot reference.
+    population_details JSONB NOT NULL,
+
+    -- Inclusive start, exclusive end.
+    window_start_at TIMESTAMPTZ NOT NULL,
+    window_end_at TIMESTAMPTZ NOT NULL,
+
+    coverage_status TEXT NOT NULL,
+
+    -- Number of distinct source events collected in this attempt.
+    -- NULL means the count is unknown.
+    collected_event_count INTEGER,
+
+    checked_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    error_code TEXT,
+    error_detail TEXT,
+
+    -- Collection evidence, such as pagination completion.
+    coverage_details JSONB NOT NULL,
+
+    CONSTRAINT engagement_coverage_key_nonblank
+        CHECK (
+            btrim(coverage_key) <> ''
+            AND coverage_key = btrim(coverage_key)
+        ),
+
+    CONSTRAINT engagement_coverage_source_nonblank
+        CHECK (
+            btrim(source_system) <> ''
+            AND source_system = btrim(source_system)
+        ),
+
+    CONSTRAINT engagement_coverage_event_type_valid
+        CHECK (
+            event_type IN (
+                'demo_requested',
+                'sales_contact_requested',
+                'quote_requested',
+                'pricing_page_visited',
+                'webinar_attended',
+                'guide_downloaded',
+                'case_study_downloaded'
+            )
+        ),
+
+    CONSTRAINT engagement_coverage_population_nonblank
+        CHECK (
+            btrim(population_key) <> ''
+            AND population_key = btrim(population_key)
+        ),
+
+    CONSTRAINT engagement_coverage_population_details_valid
+        CHECK (
+            jsonb_typeof(population_details) = 'object'
+            AND population_details <> '{}'::JSONB
+        ),
+
+    CONSTRAINT engagement_coverage_window_valid
+        CHECK (window_end_at > window_start_at),
+
+    CONSTRAINT engagement_coverage_check_time_valid
+        CHECK (checked_at >= window_end_at),
+
+    CONSTRAINT engagement_coverage_status_valid
+        CHECK (
+            coverage_status IN ('complete', 'partial', 'failed')
+        ),
+
+    CONSTRAINT engagement_coverage_count_valid
+        CHECK (collected_event_count >= 0),
+
+    CONSTRAINT engagement_coverage_complete_requires_count
+        CHECK (
+            coverage_status <> 'complete'
+            OR collected_event_count IS NOT NULL
+        ),
+
+    CONSTRAINT engagement_coverage_error_code_nonblank
+        CHECK (
+            error_code IS NULL
+            OR btrim(error_code) <> ''
+        ),
+
+    CONSTRAINT engagement_coverage_error_detail_nonblank
+        CHECK (
+            error_detail IS NULL
+            OR btrim(error_detail) <> ''
+        ),
+
+    CONSTRAINT engagement_coverage_failure_requires_error
+        CHECK (
+            coverage_status <> 'failed'
+            OR error_code IS NOT NULL
+        ),
+
+    CONSTRAINT engagement_coverage_complete_without_error
+        CHECK (
+            coverage_status <> 'complete'
+            OR (
+                error_code IS NULL
+                AND error_detail IS NULL
+            )
+        ),
+
+    CONSTRAINT engagement_coverage_details_object
+        CHECK (jsonb_typeof(coverage_details) = 'object')
+);
+
+CREATE INDEX IF NOT EXISTS engagement_coverage_lookup_idx
+    ON public.engagement_coverage (
+        source_system,
+        event_type,
+        population_key,
+        window_start_at,
+        window_end_at,
+        checked_at
+    );
+
 COMMIT;
 
 -- Confirm the tables exist in the intended database.
@@ -1431,6 +1565,9 @@ WHERE table_schema = 'public'
       'qualification_evidence',
       'sla_history',
       'qualification_evidence',
-      'engagement_events'
+      'engagement_events',
+      'qualification_evidence',
+      'engagement_events',
+      'engagement_coverage'
   )
 ORDER BY table_name;
