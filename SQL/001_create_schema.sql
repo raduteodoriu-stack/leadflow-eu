@@ -1928,44 +1928,80 @@ CREATE UNIQUE INDEX IF NOT EXISTS crm_write_log_one_success_idx
 
 COMMIT;
 
--- Confirm the tables exist in the intended database.
+-- =========================================================
+-- Post-migration inventory check (DR-005)
+-- One authoritative list of the 20 expected tables.
+-- 1. Report: one row per expected table with present/MISSING.
+-- 2. Gate: raise an error if any table is missing or the list
+--    itself is not exactly 20 unique names. Run psql with
+--    -v ON_ERROR_STOP=1 so a failure gives a non-zero exit code.
+-- =========================================================
+
+CREATE TEMP TABLE expected_tables (table_name TEXT PRIMARY KEY);
+
+INSERT INTO expected_tables (table_name) VALUES
+    ('companies'),
+    ('leads'),
+    ('ingestion_events'),
+    ('owners'),
+    ('owner_eligibility_history'),
+    ('routing_state'),
+    ('rule_versions'),
+    ('processing_decisions'),
+    ('review_cases'),
+    ('review_actions'),
+    ('assignments'),
+    ('followup_activities'),
+    ('sla_tracking'),
+    ('sla_history'),
+    ('qualification_evidence'),
+    ('engagement_events'),
+    ('engagement_coverage'),
+    ('supplier_redirect_rules'),
+    ('participant_redirects'),
+    ('crm_write_log');
+
 SELECT
     current_database() AS database_name,
-    table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-  AND table_type = 'BASE TABLE'
-  AND table_name IN (
-      'companies',
-      'leads',
-      'ingestion_events',
-      'owners',
-      'owner_eligibility_history',
-      'routing_state',
-      'rule_versions',
-      'processing_decisions',
-      'review_cases',
-      'review_actions',
-      'assignments',
-      'followup_activities',
-      'followup_activities',
-      'sla_tracking',
-      'followup_activities',
-      'sla_tracking',
-      'sla_history'
-      'sla_tracking',
-      'sla_history',
-      'qualification_evidence',
-      'sla_history',
-      'qualification_evidence',
-      'engagement_events',
-      'qualification_evidence',
-      'engagement_events',
-      'engagement_coverage',
-      'engagement_events',
-      'engagement_coverage',
-      'supplier_redirect_rules',
-      'participant_redirects',
-      'crm_write_log'
-  )
-ORDER BY table_name;
+    e.table_name,
+    CASE WHEN t.table_name IS NULL THEN 'MISSING' ELSE 'present' END AS status
+FROM expected_tables AS e
+LEFT JOIN information_schema.tables AS t
+       ON t.table_schema = 'public'
+      AND t.table_type   = 'BASE TABLE'
+      AND t.table_name   = e.table_name
+ORDER BY status, e.table_name;
+
+DO $$
+DECLARE
+    v_expected INTEGER;
+    v_missing  TEXT;
+BEGIN
+    SELECT count(*) INTO v_expected FROM expected_tables;
+
+    IF v_expected <> 20 THEN
+        RAISE EXCEPTION
+            'Inventory list has % names; expected 20.', v_expected;
+    END IF;
+
+    SELECT string_agg(e.table_name, ', ' ORDER BY e.table_name)
+      INTO v_missing
+      FROM expected_tables AS e
+     WHERE NOT EXISTS (
+            SELECT 1
+              FROM information_schema.tables AS t
+             WHERE t.table_schema = 'public'
+               AND t.table_type   = 'BASE TABLE'
+               AND t.table_name   = e.table_name
+           );
+
+    IF v_missing IS NOT NULL THEN
+        RAISE EXCEPTION 'Schema inventory failed. Missing tables: %', v_missing;
+    END IF;
+
+    RAISE NOTICE 'Schema inventory OK: all 20 expected tables present in %.',
+        current_database();
+END
+$$;
+
+DROP TABLE expected_tables;
