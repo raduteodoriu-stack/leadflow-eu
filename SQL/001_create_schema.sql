@@ -8,6 +8,8 @@
 -- Constraint tests are in SQL/tests/ (not yet written for the first three
 -- tables: companies, leads, ingestion_events).
 --
+-- Unknown values are stored as 'unknown', never NULL (DR-018).
+--
 -- Run this entire script against an EMPTY leadflow_eu database:
 --   psql -d leadflow_eu -v ON_ERROR_STOP=1 -f SQL/001_create_schema.sql
 -- It refuses to run against any other database name. The final section
@@ -38,12 +40,12 @@ CREATE TABLE IF NOT EXISTS public.companies (
     company_domain TEXT,
 
     employee_count INTEGER,
-    employee_band_declared TEXT,
+    employee_band_declared TEXT NOT NULL DEFAULT 'unknown',
     industry_raw TEXT,
-    industry_code TEXT,
+    industry_code TEXT NOT NULL DEFAULT 'unknown',
 
-    research_use_case TEXT,
-    research_frequency TEXT,
+    research_use_case TEXT NOT NULL DEFAULT 'unknown',
+    research_frequency TEXT NOT NULL DEFAULT 'unknown',
     ongoing_panel_management_need BOOLEAN,
     relevant_need_confirmed BOOLEAN,
 
@@ -139,8 +141,8 @@ CREATE TABLE IF NOT EXISTS public.leads (
     first_name TEXT,
     last_name TEXT,
     job_title TEXT,
-    contact_function TEXT,
-    preferred_language TEXT,
+    contact_function TEXT NOT NULL DEFAULT 'unknown',
+    preferred_language TEXT NOT NULL DEFAULT 'unknown',
     business_country_code TEXT,
 
     relationship_type TEXT NOT NULL DEFAULT 'unknown',
@@ -152,6 +154,8 @@ CREATE TABLE IF NOT EXISTS public.leads (
         CHECK (
             normalised_email <> ''
             AND normalised_email = lower(btrim(normalised_email))
+            -- Minimal safety net (DR-017); full format checks are in Python.
+            AND normalised_email LIKE '%_@_%'
         ),
 
     CONSTRAINT leads_country_format
@@ -211,7 +215,7 @@ CREATE TABLE IF NOT EXISTS public.ingestion_events (
     source_record_id TEXT,
 
     event_type TEXT,
-    source_channel TEXT,
+    source_channel TEXT NOT NULL DEFAULT 'unknown',
     source_occurred_at TIMESTAMPTZ,
     received_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
