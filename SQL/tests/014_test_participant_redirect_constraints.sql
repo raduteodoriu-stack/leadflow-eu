@@ -185,6 +185,31 @@ BEGIN
             INSERT INTO participant_test_results VALUES
                 (9, 'Real-send status rejected', 'PASS');
     END;
+
+    -- 10. The default referral method is the panelist auto-reply (DR-007).
+    IF (SELECT referral_method
+          FROM public.participant_redirects
+         WHERE redirect_attempt_id = successful_attempt)
+       = 'automated_reply_panelists'
+    THEN
+        INSERT INTO participant_test_results VALUES
+            (10, 'Default referral method is automated_reply_panelists', 'PASS');
+    ELSE
+        RAISE EXCEPTION 'FAIL: unexpected default referral_method';
+    END IF;
+
+    -- 11. The retired value is no longer accepted (DR-007).
+    BEGIN
+        UPDATE public.participant_redirects
+        SET referral_method = 'automated_reply'
+        WHERE redirect_attempt_id = successful_attempt;
+
+        RAISE EXCEPTION 'FAIL: retired referral method accepted';
+    EXCEPTION
+        WHEN check_violation THEN
+            INSERT INTO participant_test_results VALUES
+                (11, 'Retired referral method automated_reply rejected', 'PASS');
+    END;
 END
 $$;
 

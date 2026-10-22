@@ -185,8 +185,10 @@ and an optional default. The processing layer will select the country
 rule first, then the default.
 
 The intended business process is an automated reply directing the
-participant to the selected supplier. Sending that reply is outside
-the MVP; only the referral is simulated.
+participant to the selected supplier, which provided the respondent and
+handles their questions. referral_method records this process as
+automated_reply_panelists. Sending that reply is outside the MVP; only
+the referral is simulated, and attempt_status records the outcome.
 
 Each attempt preserves the selected supplier code, supplier name and
 destination URL. Outcomes are simulated, review_required or failed.

@@ -1620,7 +1620,12 @@ CREATE TABLE IF NOT EXISTS public.supplier_redirect_rules (
 );
 
 -- Simulated supplier referrals for paid-survey participant enquiries.
--- No automated reply is sent by the MVP.
+-- referral_method names the intended business process: an automated reply
+-- that redirects panelists/respondents to the supplier (partner) who
+-- provided them; suppliers handle questions from their own respondents.
+-- The MVP only simulates it: no reply is sent and no submitted personal
+-- data is transferred. The outcome is recorded in attempt_status
+-- ('simulated'), never as sent. (DR-007)
 CREATE TABLE IF NOT EXISTS public.participant_redirects (
     redirect_attempt_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
@@ -1639,7 +1644,7 @@ CREATE TABLE IF NOT EXISTS public.participant_redirects (
     supplier_name_snapshot TEXT,
     destination_url_snapshot TEXT,
 
-    referral_method TEXT NOT NULL DEFAULT 'automated_reply',
+    referral_method TEXT NOT NULL DEFAULT 'automated_reply_panelists',
 
     attempt_status TEXT NOT NULL,
     attempted_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1655,7 +1660,7 @@ CREATE TABLE IF NOT EXISTS public.participant_redirects (
         CHECK (attempt_number > 0),
 
     CONSTRAINT participant_redirect_method_valid
-        CHECK (referral_method = 'automated_reply'),
+        CHECK (referral_method = 'automated_reply_panelists'),
 
     CONSTRAINT participant_redirect_status_valid
         CHECK (

@@ -140,7 +140,11 @@ A survey_participation_request identifies a paid-survey participant enquiry.
 Exclude it from sales assignment, buyer scoring and buyer SLA metrics.
 
 The intended business process is an automated reply directing the
-participant to the designated supplier's participation page.
+participant to the designated supplier's participation page. Suppliers
+(partners) provide the panelists/respondents and handle questions from
+their own respondents. This is stored as
+participant_redirects.referral_method = automated_reply_panelists
+(the only allowed value; renamed from automated_reply on 2026-10-22, DR-007).
 
 The MVP simulates this reply request without sending email or transferring
 submitted personal data. participant_redirects records the selected
@@ -565,6 +569,7 @@ These values match the current SQL constraints.
 | sla_tracking.sla_status | pending, met, breached |
 | sla_history.event_type | sla_created, deadline_shortened, status_changed, evidence_corrected, followup_recorded |
 | engagement_coverage.coverage_status | complete, partial, failed |
+| participant_redirects.referral_method | automated_reply_panelists |
 | participant_redirects.attempt_status | simulated, review_required, failed |
 | crm_write_log.attempt_status | in_progress, succeeded, failed, unknown, simulated |
 
