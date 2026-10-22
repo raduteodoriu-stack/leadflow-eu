@@ -450,3 +450,16 @@ Business-hour calculations and deadline-transition rules will be implemented and
 - Prevent duplicate external updates; local uniqueness alone cannot guarantee this.
 
 These controls require implementation and integration tests in later work.
+
+## Known limitations and open decisions
+
+Recorded 2026-10-22. These are deliberate gaps in what the database
+enforces today. Each needs a decision before it is closed; until then
+the proposed handling applies.
+
+| ID | Limitation | Current behaviour | Proposed handling | Status |
+|---|---|---|---|---|
+| DR-016 | Ingestion events without a `source_event_id` are not deduplicated | They are stored (so malformed input is kept), and repeats are allowed because the `(source_system, source_event_id)` unique key ignores NULLs. Documented by test 26 in `SQL/tests/001_test_core_constraints.sql` | Keep storing them. Detect repeats in the Python ingestion layer, e.g. by a hash of the raw payload, and send them to review | Open |
+| DR-017 | Lead email format is not validated | `leads.normalised_email` must be non-empty, trimmed and lower-case, but a value such as `abc` is accepted | Validate email format in the Python ingestion layer. Optionally add a minimal SQL check that the value contains `@` | Open |
+| DR-018 | "Unknown" has two representations | Allowed-value columns (e.g. `industry_code`, `research_frequency`, `preferred_language`) accept both `NULL` and `'unknown'` | Choose one policy before reporting work, so Power BI never shows unknown as zero or as two different categories (see DR-012) | Open |
+
