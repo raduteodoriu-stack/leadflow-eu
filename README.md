@@ -1,6 +1,6 @@
 # LeadFlow EU
 
-Lead validation, prioritisation and routing for a simulated B2B research-technology vendor (**BCN Cloud**) selling in Spain, Portugal and France.
+Lead validation, prioritisation and routing for a simulated B2B research-technology vendor (**MoP Cloud**) selling in Spain, Portugal and France.
 
 **Business problem:** inconsistent lead data and manual assignment delay sales follow-up.
 **Objective:** validate, prioritise and route leads with explainable, deterministic decisions and a full audit trail.
