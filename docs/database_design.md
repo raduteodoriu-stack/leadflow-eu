@@ -2,11 +2,7 @@
 
 Operational tables, relationships and history requirements for the LeadFlow EU MVP.
 
-Status: Tables and relationships defined. Keys, constraints and SQL implementation pending.
-
-Operational tables, relationships and history requirements for the LeadFlow EU MVP.
-
-Status: Tables and relationships defined. Keys, constraints and SQL implementation pending.
+Status (2026-10-22): Implemented and tested in PostgreSQL. `SQL/001_create_schema.sql` creates all 20 tables, and `SQL/tests/` holds constraint tests for each (15 files; evidence logs in `docs/evidence/`). Known gaps and open decisions are listed at the end of this document. Cross-table consistency rules that SQL does not enforce stay with the processing layer (see the integrity section).
 
 ## Design approach
 
@@ -462,4 +458,4 @@ the proposed handling applies.
 | DR-016 | Ingestion events without a `source_event_id` are not deduplicated | They are stored (so malformed input is kept), and repeats are allowed because the `(source_system, source_event_id)` unique key ignores NULLs. Documented by test 26 in `SQL/tests/001_test_core_constraints.sql` | Keep storing them. Detect repeats in the Python ingestion layer, e.g. by a hash of the raw payload, and send them to review | **Decided 2026-10-22**: Python dedupe; to implement in Gate 3 |
 | DR-017 | Lead email format is not validated | `leads.normalised_email` must be non-empty, trimmed and lower-case, but a value such as `abc` is accepted | Validate email format in the Python ingestion layer. Optionally add a minimal SQL check that the value contains `@` | **Decided 2026-10-22**: SQL now requires text@text (`LIKE '%_@_%'`); full validation in Python (Gate 3) |
 | DR-018 | "Unknown" has two representations | Allowed-value columns (e.g. `industry_code`, `research_frequency`, `preferred_language`) accept both `NULL` and `'unknown'` | Choose one policy before reporting work, so Power BI never shows unknown as zero or as two different categories (see DR-012) | **Resolved 2026-10-22**: always `'unknown'`. The 7 affected columns are now `NOT NULL DEFAULT 'unknown'` |
-
+| DR-002 | Earlier engagement event names differ from stored values | The data dictionary maps earlier names (e.g. `demo_request`) to stored names (e.g. `demo_requested`). The database accepts only stored names | The Python ingestion adapter applies the mapping; pytest checks every earlier value maps to an allowed stored value | **Decided 2026-10-22**: Python adapter; test planned for Gate 3 |

@@ -68,12 +68,12 @@ Malformed input must remain traceable in ingestion with an error status.
 | first_name | Text | No | Contact’s given name |
 | last_name | Text | No | Contact’s family name |
 | job_title | Text | No | Original job title supplied by the contact or CRM |
-| contact_function | Controlled text | No | Standardised professional function |
+| contact_function | Controlled text | No | Standardised professional function; stored as unknown when not provided |
 | company_name | Text | No | Submitted company name |
 | company_domain | Text | No | Submitted company website or domain |
 | crm_contact_id | Text | When available | Existing HubSpot contact identifier |
 | crm_company_id | Text | When available | Existing HubSpot company identifier |
-| preferred_language | Controlled text | No | es, pt, fr, en, other or unknown |
+| preferred_language | Controlled text | No | es, pt, fr, en, other or unknown; stored as unknown when not provided |
 
 Allowed contact_function values:
 - research_insights
@@ -175,11 +175,11 @@ These fields support scoring. Missing values do not block country-based assignme
 | Field | Type | Allowed values or meaning |
 |---|---|---|
 | employee_count | Integer | Exact employee count, if known; must be at least 1 |
-| employee_band_declared | Controlled text | 1-10, 11-49, 50-249, 250-999, 1000_plus or unknown |
+| employee_band_declared | Controlled text | 1-10, 11-49, 50-249, 250-999, 1000_plus or unknown; stored as unknown when not provided |
 | industry_raw | Text | Original industry description |
-| industry_code | Controlled text | Standardised industry classification listed below |
-| research_use_case | Controlled text | respondents_fieldwork, panel_management, both, other or unknown |
-| research_frequency | Controlled text | monthly_or_more, recurring_less_than_monthly, one_off, none or unknown |
+| industry_code | Controlled text | Standardised industry classification listed below; stored as unknown when not provided |
+| research_use_case | Controlled text | respondents_fieldwork, panel_management, both, other or unknown; stored as unknown when not provided |
+| research_frequency | Controlled text | monthly_or_more, recurring_less_than_monthly, one_off, none or unknown; stored as unknown when not provided |
 | ongoing_panel_management_need | Boolean or null | Confirmed ongoing need; null means unknown |
 | relevant_need_confirmed | Boolean or null | Whether a relevant product need has been established |
 | uses_digital_research_tools | Boolean or null | Whether digital research or panel tools are currently used |
@@ -311,6 +311,12 @@ Canonical event_type values:
 | related_submission_id | event_details.related_submission_id |
 | contact_email | Used for identity resolution; may be preserved in event_details |
 | received_at | Source receipt time may be preserved in event_details; recorded_at is database storage time |
+
+Applying this mapping is the responsibility of the Python ingestion adapter
+(decided 2026-10-22, DR-002). The database accepts only the stored values on
+the right, so an unmapped earlier value is rejected by the engagement event
+check. The adapter must have a pytest test that every earlier value maps to
+an allowed stored value (planned for Gate 3).
 
 An event must have a resolved lead_id or a nonblank source_contact_id.
 An email-only event must resolve to a lead before insertion, or remain
@@ -641,3 +647,4 @@ They do not implement the complete workflow or authorise transitions.
 | 2026-10-22 | ingestion_events: rejected/failed require a non-blank error_code | Exception reporting must say why an event was not processed |
 | 2026-10-22 | Unknown stored as 'unknown', never NULL: companies (employee_band_declared, industry_code, research_use_case, research_frequency), leads (preferred_language, contact_function), ingestion_events.source_channel are NOT NULL DEFAULT 'unknown' (DR-018) | One representation of unknown for reporting |
 | 2026-10-22 | leads.normalised_email must match text@text (DR-017) | Minimal safety net; full validation in Python |
+| 2026-10-22 | Earlier-to-stored event name mapping assigned to the Python ingestion adapter (DR-002) | The database enforces stored values only; mapping belongs in the input adapter |
