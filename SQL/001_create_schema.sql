@@ -1,7 +1,17 @@
--- LeadFlow EU: initial PostgreSQL schema
+-- LeadFlow EU: PostgreSQL schema
 -- LF-003: data foundation
--- Current scope: companies, leads and ingestion events.
--- Run this entire script against the leadflow_eu database.
+-- Scope: 20 tables covering companies, leads and ingestion, owners and
+-- routing state, rule versions and processing decisions, review cases and
+-- actions, assignments, follow-up activities, SLA tracking and history,
+-- qualification evidence, engagement events and coverage, supplier
+-- redirect rules, simulated participant referrals, and CRM write logging.
+-- Constraint tests are in SQL/tests/ (not yet written for the first three
+-- tables: companies, leads, ingestion_events).
+--
+-- Run this entire script against an EMPTY leadflow_eu database:
+--   psql -d leadflow_eu -v ON_ERROR_STOP=1 -f SQL/001_create_schema.sql
+-- It refuses to run against any other database name. The final section
+-- checks that all 20 tables exist and fails if any is missing.
 
 BEGIN;
 
