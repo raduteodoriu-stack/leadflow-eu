@@ -569,6 +569,73 @@ BEGIN
 
     INSERT INTO core_test_results VALUES
         (32, 'Rejected/failed need error code; coded rejection accepted', 'PASS');
+
+    -- 33. Unknown is stored as 'unknown', never NULL (DR-018).
+    --     Test 2 inserted a company with DEFAULT VALUES.
+    IF (
+        SELECT count(*) FROM public.companies
+         WHERE company_id <> test_company
+           AND employee_band_declared = 'unknown'
+           AND industry_code = 'unknown'
+           AND research_use_case = 'unknown'
+           AND research_frequency = 'unknown'
+    ) < 1
+    THEN
+        RAISE EXCEPTION 'FAIL: unknown defaults not applied';
+    END IF;
+
+    BEGIN
+        UPDATE public.companies SET industry_code = NULL
+        WHERE company_id = test_company;
+
+        RAISE EXCEPTION 'FAIL: NULL industry accepted';
+    EXCEPTION
+        WHEN not_null_violation THEN
+            NULL;
+    END;
+
+    BEGIN
+        UPDATE public.leads SET preferred_language = NULL
+        WHERE lead_id = test_lead;
+
+        RAISE EXCEPTION 'FAIL: NULL language accepted';
+    EXCEPTION
+        WHEN not_null_violation THEN
+            NULL;
+    END;
+
+    BEGIN
+        UPDATE public.ingestion_events SET source_channel = NULL
+        WHERE ingestion_event_id = test_event;
+
+        RAISE EXCEPTION 'FAIL: NULL source channel accepted';
+    EXCEPTION
+        WHEN not_null_violation THEN
+            INSERT INTO core_test_results VALUES
+                (33, 'Unknown defaults applied; NULL rejected', 'PASS');
+    END;
+
+    -- 34. Email must contain @ with text on both sides (DR-017).
+    BEGIN
+        INSERT INTO public.leads (normalised_email)
+        VALUES ('noatsign.' || run_tag);
+
+        RAISE EXCEPTION 'FAIL: email without @ accepted';
+    EXCEPTION
+        WHEN check_violation THEN
+            NULL;
+    END;
+
+    BEGIN
+        INSERT INTO public.leads (normalised_email)
+        VALUES ('@synthetic.example');
+
+        RAISE EXCEPTION 'FAIL: email with nothing before @ accepted';
+    EXCEPTION
+        WHEN check_violation THEN
+            INSERT INTO core_test_results VALUES
+                (34, 'Email without @ or local part rejected', 'PASS');
+    END;
 END
 $$;
 
