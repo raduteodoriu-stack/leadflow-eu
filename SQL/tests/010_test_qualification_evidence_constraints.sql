@@ -171,6 +171,23 @@ BEGIN
 
     INSERT INTO evidence_test_results VALUES
         (9, 'Additional observation of the same field accepted', 'PASS');
+
+    -- 10. Source system must be trimmed lower-case (idempotency).
+    BEGIN
+        UPDATE public.qualification_evidence
+        SET source_system = 'Synthetic_Test'
+        WHERE evidence_id = test_evidence;
+
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'FAIL: test row for source system check not found';
+        END IF;
+
+        RAISE EXCEPTION 'FAIL: mixed-case source system accepted';
+    EXCEPTION
+        WHEN check_violation THEN
+            INSERT INTO evidence_test_results VALUES
+                (10, 'Mixed-case source system rejected', 'PASS');
+    END;
 END
 $$;
 

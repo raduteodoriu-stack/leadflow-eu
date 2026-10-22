@@ -174,6 +174,23 @@ BEGIN
 
     INSERT INTO followup_test_results VALUES
         (10, 'Automated, draft and failed evidence retained', 'PASS');
+
+    -- 11. Source system must be trimmed lower-case (idempotency).
+    BEGIN
+        UPDATE public.followup_activities
+        SET source_system = 'Synthetic_Test'
+        WHERE activity_id = test_activity;
+
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'FAIL: test row for source system check not found';
+        END IF;
+
+        RAISE EXCEPTION 'FAIL: mixed-case source system accepted';
+    EXCEPTION
+        WHEN check_violation THEN
+            INSERT INTO followup_test_results VALUES
+                (11, 'Mixed-case source system rejected', 'PASS');
+    END;
 END
 $$;
 

@@ -39,7 +39,7 @@ These fields come from the source system or ingestion service, not the prospect.
 
 | Field | PostgreSQL type | Required in storage? | Definition |
 |---|---|---|---|
-| source_system | TEXT | Yes; nonblank | Source identifier; intended adapters include synthetic_fixture and hubspot. SQL does not restrict it to these values |
+| source_system | TEXT | Yes; nonblank, trimmed lower-case | Source identifier; intended adapters include synthetic_fixture and hubspot. SQL does not restrict it to these values, but requires lower-case so one source cannot appear under two spellings (e.g. HubSpot vs hubspot) |
 | source_event_id | TEXT | No at ingestion; required for normal processing | Stable identifier for the event or source-record version |
 | source_record_id | TEXT | No | Source contact or submission identifier |
 | event_type | TEXT | No at ingestion; required for normal processing | lead_created or lead_updated |
@@ -51,6 +51,8 @@ These fields come from the source system or ingestion service, not the prospect.
 The combination of source_system and source_event_id is unique when source_event_id is populated. Events without it remain traceable through ingestion_event_id but are not deduplicated by that constraint.
 
 The database requires source_event_id, source_occurred_at and event_type for processing_status values processing, processed and redirected.
+
+Rejected and failed events must carry a non-blank error_code explaining why.
 
 Repeated delivery of the same event must preserve that identity.
 
@@ -250,7 +252,7 @@ qualification field.
 | ingestion_event_id | UUID | Optional reference to the originating ingestion event |
 | field_name | TEXT | Supported qualification field |
 | observed_value | JSONB | String, number or boolean; SQL NULL means explicitly unknown |
-| source_system | TEXT | Required nonblank source identifier |
+| source_system | TEXT | Required trimmed lower-case source identifier |
 | source_reference | TEXT | Required source record, URL or other traceable reference |
 | evidence_method | TEXT | self_reported, sales_confirmed, external_source or rule_derived |
 | observed_at | TIMESTAMPTZ | Required observation timestamp |
@@ -274,7 +276,7 @@ engagement_events stores individual prospect actions.
 | Column | PostgreSQL type | Definition |
 |---|---|---|
 | engagement_event_id | UUID | Generated primary key |
-| source_system | TEXT | Required nonblank source identifier |
+| source_system | TEXT | Required trimmed lower-case source identifier |
 | source_event_id | TEXT | Required nonblank event identifier; unique with source_system |
 | lead_id | UUID | Optional resolved lead reference |
 | source_contact_id | TEXT | Source contact identifier; required when lead_id is absent |
@@ -338,7 +340,7 @@ type, population and time window.
 |---|---|---|
 | coverage_id | UUID | Generated primary key |
 | coverage_key | TEXT | Required unique collection-attempt key |
-| source_system | TEXT | Required source identifier |
+| source_system | TEXT | Required trimmed lower-case source identifier |
 | event_type | TEXT | One canonical engagement event type from section 7 |
 | population_key | TEXT | Stable identifier for the covered population |
 | population_details | JSONB | Required nonempty object defining the population or snapshot |
@@ -414,7 +416,7 @@ followup_activities stores sales activity evidence separately from prospect enga
 | Column | PostgreSQL type | Definition |
 |---|---|---|
 | activity_id | UUID | Generated primary key |
-| source_system | TEXT | Required source identifier |
+| source_system | TEXT | Required trimmed lower-case source identifier |
 | source_activity_id | TEXT | Required activity identifier; unique with source_system |
 | lead_id | UUID | Optional until the contact is resolved |
 | performed_by_owner_id | UUID | Optional until the performer is resolved |
@@ -629,3 +631,11 @@ updated_at on subsequent changes.
 
 Status checks restrict allowed values and selected field combinations.
 They do not implement the complete workflow or authorise transitions.
+
+## Change log
+
+| Date | Change | Reason |
+|---|---|---|
+| 2026-10-22 | participant_redirects.referral_method renamed automated_reply → automated_reply_panelists (DR-007) | Names the intended panelist-to-supplier auto-reply; outcome stays simulated |
+| 2026-10-22 | source_system must be trimmed lower-case in ingestion_events, followup_activities, qualification_evidence, engagement_events, engagement_coverage | Prevent the same source under two spellings bypassing idempotency keys |
+| 2026-10-22 | ingestion_events: rejected/failed require a non-blank error_code | Exception reporting must say why an event was not processed |

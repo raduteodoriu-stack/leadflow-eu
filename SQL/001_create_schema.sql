@@ -226,8 +226,14 @@ CREATE TABLE IF NOT EXISTS public.ingestion_events (
     error_detail TEXT,
     processed_at TIMESTAMPTZ,
 
+    -- Source system codes are trimmed lower-case (e.g. 'hubspot'), so the
+    -- same source cannot be stored under two spellings and bypass the
+    -- (source_system, source_event_id) idempotency key.
     CONSTRAINT ingestion_source_system_nonblank
-        CHECK (btrim(source_system) <> ''),
+        CHECK (
+            btrim(source_system) <> ''
+            AND source_system = lower(btrim(source_system))
+        ),
 
     CONSTRAINT ingestion_source_event_nonblank
         CHECK (
@@ -283,6 +289,19 @@ CREATE TABLE IF NOT EXISTS public.ingestion_events (
                 AND source_occurred_at IS NOT NULL
                 AND event_type IS NOT NULL
             )
+        ),
+
+    CONSTRAINT ingestion_error_code_nonblank
+        CHECK (
+            error_code IS NULL
+            OR btrim(error_code) <> ''
+        ),
+
+    -- Rejected and failed events must say why, for exception reporting.
+    CONSTRAINT ingestion_failure_requires_error_code
+        CHECK (
+            processing_status NOT IN ('rejected', 'failed')
+            OR error_code IS NOT NULL
         )
 );
 
@@ -869,7 +888,7 @@ CREATE TABLE IF NOT EXISTS public.followup_activities (
     CONSTRAINT followup_source_system_nonblank
         CHECK (
             btrim(source_system) <> ''
-            AND source_system = btrim(source_system)
+            AND source_system = lower(btrim(source_system))
         ),
 
     CONSTRAINT followup_source_activity_nonblank
@@ -1295,7 +1314,7 @@ CREATE TABLE IF NOT EXISTS public.qualification_evidence (
     CONSTRAINT qualification_evidence_source_nonblank
         CHECK (
             btrim(source_system) <> ''
-            AND source_system = btrim(source_system)
+            AND source_system = lower(btrim(source_system))
         ),
 
     CONSTRAINT qualification_evidence_reference_nonblank
@@ -1355,7 +1374,7 @@ CREATE TABLE IF NOT EXISTS public.engagement_events (
     CONSTRAINT engagement_source_system_nonblank
         CHECK (
             btrim(source_system) <> ''
-            AND source_system = btrim(source_system)
+            AND source_system = lower(btrim(source_system))
         ),
 
     CONSTRAINT engagement_source_event_nonblank
@@ -1454,7 +1473,7 @@ CREATE TABLE IF NOT EXISTS public.engagement_coverage (
     CONSTRAINT engagement_coverage_source_nonblank
         CHECK (
             btrim(source_system) <> ''
-            AND source_system = btrim(source_system)
+            AND source_system = lower(btrim(source_system))
         ),
 
     CONSTRAINT engagement_coverage_event_type_valid

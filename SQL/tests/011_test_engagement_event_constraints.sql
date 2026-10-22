@@ -147,6 +147,23 @@ BEGIN
 
     INSERT INTO engagement_test_results VALUES
         (9, 'Distinct same-day pricing visits retained', 'PASS');
+
+    -- 10. Source system must be trimmed lower-case (idempotency).
+    BEGIN
+        UPDATE public.engagement_events
+        SET source_system = 'Synthetic_Test'
+        WHERE engagement_event_id = test_event;
+
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'FAIL: test row for source system check not found';
+        END IF;
+
+        RAISE EXCEPTION 'FAIL: mixed-case source system accepted';
+    EXCEPTION
+        WHEN check_violation THEN
+            INSERT INTO engagement_test_results VALUES
+                (10, 'Mixed-case source system rejected', 'PASS');
+    END;
 END
 $$;
 
