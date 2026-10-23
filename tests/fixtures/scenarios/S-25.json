@@ -1,0 +1,98 @@
+{
+  "id": "S-25",
+  "title": "Portuguese lead when no Portuguese rep is active",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0025",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:30:00+01:00",
+    "email": "pedro.nunes@estudos-ok.example",
+    "business_country": "PT",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "estudos-ok.example",
+      "industry_code": "market_research",
+      "employee_band_declared": "50-249",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "recurring_less_than_monthly",
+      "uses_digital_research_tools": true,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "guide_downloaded",
+        "occurred_at": "2026-11-02T10:00:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "pedro.nunes@estudos-ok.example",
+    "country_code": "PT",
+    "lead_created": true,
+    "outcome": "review",
+    "owner": null,
+    "review_queue": "unassigned_review",
+    "action_owner": "sales_manager",
+    "round_robin_advanced": false,
+    "round_robin_next_after": "PT-01",
+    "fit": {
+      "components": {
+        "industry": 40,
+        "size": 10,
+        "need": 15,
+        "readiness": 10
+      },
+      "total": 75,
+      "status": "complete",
+      "band": "high"
+    },
+    "engagement": {
+      "total": 5,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P2",
+    "priority_rule": 5,
+    "reason_codes": [
+      "NO_ELIGIBLE_OWNER",
+      "PRIORITY_STANDARD_FIT"
+    ],
+    "sla": null,
+    "response_target": null,
+    "waiting_since": "2026-11-03T10:00:00+01:00"
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Exceptions: NO_ELIGIBLE_OWNER",
+      "LF-002 No automatic assignment to inactive reps",
+      "Decision 2026-10-23: unassigned_review"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "PT-01 and PT-02 are both inactive. The Sales Manager assigns manually; the SLA starts at that assignment."
+  }
+}

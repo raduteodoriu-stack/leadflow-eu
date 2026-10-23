@@ -1,0 +1,101 @@
+{
+  "id": "S-23",
+  "title": "Two different business countries supplied",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0023",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:30:00+01:00",
+    "email": "marc.puig@consultora-media.example",
+    "business_country": "Spain",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "consultora-media.example",
+      "industry_code": "management_consultancy",
+      "employee_band_declared": "50-249",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "one_off",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": true,
+      "adoption_interest_confirmed": true,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "webinar_attended",
+        "occurred_at": "2026-10-29T12:00:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete",
+    "crm_business_country": "Portugal"
+  },
+  "expected": {
+    "normalised_email": "marc.puig@consultora-media.example",
+    "country_code": null,
+    "lead_created": true,
+    "outcome": "review",
+    "owner": null,
+    "review_queue": "unassigned_review",
+    "action_owner": "revops",
+    "round_robin_advanced": false,
+    "round_robin_next_after": null,
+    "fit": {
+      "components": {
+        "industry": 30,
+        "size": 10,
+        "need": 5,
+        "readiness": 5
+      },
+      "total": 50,
+      "status": "complete",
+      "band": "medium"
+    },
+    "engagement": {
+      "total": 15,
+      "status": "complete",
+      "band": "medium"
+    },
+    "priority": "P2",
+    "priority_rule": 5,
+    "reason_codes": [
+      "COUNTRY_CONFLICT",
+      "PRIORITY_STANDARD_FIT"
+    ],
+    "sla": null,
+    "response_target": null,
+    "waiting_since": "2026-11-03T10:00:00+01:00"
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Exceptions: COUNTRY_CONFLICT (do not guess)",
+      "Decision 2026-10-23: unassigned_review",
+      "Clarification Q2"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "Form says Spain, CRM record says Portugal. No country is chosen until RevOps resolves it."
+  }
+}

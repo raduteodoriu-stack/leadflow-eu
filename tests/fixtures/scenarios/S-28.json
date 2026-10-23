@@ -1,0 +1,105 @@
+{
+  "id": "S-28",
+  "title": "Relationship unknown, low fit and low engagement",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0028",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:30:00+01:00",
+    "email": "remi.faure@boutique-ok.example",
+    "business_country": "FR",
+    "relationship_type": "unknown",
+    "company": {
+      "company_domain": "boutique-ok.example",
+      "industry_code": "other",
+      "employee_band_declared": "11-49",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "one_off",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": true
+    },
+    "engagement_events": [
+      {
+        "type": "guide_downloaded",
+        "occurred_at": "2026-11-02T10:00:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "remi.faure@boutique-ok.example",
+    "country_code": "FR",
+    "lead_created": true,
+    "outcome": "assigned",
+    "owner": "FR-01",
+    "review_queue": null,
+    "round_robin_advanced": true,
+    "round_robin_next_after": "FR-02",
+    "fit": {
+      "components": {
+        "industry": 0,
+        "size": 5,
+        "need": 5,
+        "readiness": 0
+      },
+      "total": 10,
+      "status": "complete",
+      "band": "low"
+    },
+    "engagement": {
+      "total": 5,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P2",
+    "priority_rule": 6,
+    "reason_codes": [
+      "RELATIONSHIP_UNKNOWN",
+      "PRIORITY_MISSING_INFO"
+    ],
+    "sla": {
+      "starts": "2026-11-03T10:00:00+01:00",
+      "allowance_business_minutes": 480,
+      "deadline": "2026-11-03T18:00:00+01:00"
+    },
+    "response_target": {
+      "priority": "P2",
+      "allowance_business_minutes": 240,
+      "target_at": "2026-11-03T14:00:00+01:00"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Exceptions: RELATIONSHIP_UNKNOWN (assign for qualification)",
+      "LF-002 Priority rule 6"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "Without the unknown relationship this would be P3 (rule 7). Rule 6 lifts it to P2 so the rep qualifies the purpose."
+  }
+}

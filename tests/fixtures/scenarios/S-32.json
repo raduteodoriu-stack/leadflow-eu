@@ -1,0 +1,115 @@
+{
+  "id": "S-32",
+  "title": "Already followed-up contact sends a new demo request",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "tiago.rocha@empresa-ok.example",
+        "owner": "PT-01",
+        "first_contact_at": "2026-10-26T10:00:00+01:00",
+        "assigned_at": "2026-10-26T10:00:00+01:00",
+        "priority": "P3",
+        "sla_deadline": "2026-10-26T18:00:00+01:00",
+        "response_target_at": "2026-10-26T18:00:00+01:00",
+        "first_qualifying_followup": {
+          "type": "call",
+          "at": "2026-10-26T15:00:00+01:00"
+        },
+        "sla_outcome": "met"
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-02",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0032",
+    "event_type": "lead_updated",
+    "source_occurred_at": "2026-11-03T09:30:00+01:00",
+    "email": "tiago.rocha@empresa-ok.example",
+    "business_country": "PT",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "empresa-ok.example",
+      "industry_code": "other",
+      "employee_band_declared": "11-49",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "one_off",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": true
+    },
+    "engagement_events": [
+      {
+        "type": "demo_requested",
+        "occurred_at": "2026-11-03T09:28:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "tiago.rocha@empresa-ok.example",
+    "country_code": "PT",
+    "lead_created": false,
+    "outcome": "existing_owner_kept",
+    "owner": "PT-01",
+    "review_queue": null,
+    "round_robin_advanced": false,
+    "round_robin_next_after": "PT-02",
+    "fit": {
+      "components": {
+        "industry": 0,
+        "size": 5,
+        "need": 5,
+        "readiness": 0
+      },
+      "total": 10,
+      "status": "complete",
+      "band": "low"
+    },
+    "engagement": {
+      "total": 60,
+      "status": "complete",
+      "band": "high"
+    },
+    "priority": "P1",
+    "priority_rule": 2,
+    "reason_codes": [
+      "EXISTING_CONTACT",
+      "PRIORITY_EXPLICIT_REQUEST"
+    ],
+    "sla": {
+      "new_sla_created": false,
+      "existing_outcome": "met"
+    },
+    "response_target": null
+  },
+  "label": {
+    "rule_refs": [
+      "Clarification Q8: P1 recorded for visibility, no new first-follow-up SLA",
+      "LF-002 Re-engagement SLAs are outside the MVP"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "First contact a week earlier (well over 8 business hours), so EXISTING_CONTACT, not a recontact."
+  }
+}
