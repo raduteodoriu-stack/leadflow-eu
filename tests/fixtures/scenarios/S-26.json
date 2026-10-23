@@ -1,0 +1,115 @@
+{
+  "id": "S-26",
+  "title": "Existing lead whose owner has become inactive",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "lea.girard@etudes-ok.example",
+        "owner": "FR-02",
+        "first_contact_at": "2026-10-26T10:00:00+01:00",
+        "assigned_at": "2026-10-26T10:00:00+01:00",
+        "priority": "P2",
+        "sla_deadline": "2026-10-26T18:00:00+01:00",
+        "response_target_at": "2026-10-26T14:00:00+01:00",
+        "first_qualifying_followup": {
+          "type": "call",
+          "at": "2026-10-26T11:00:00+01:00"
+        },
+        "sla_outcome": "met"
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0026",
+    "event_type": "lead_updated",
+    "source_occurred_at": "2026-11-03T09:30:00+01:00",
+    "email": "lea.girard@etudes-ok.example",
+    "business_country": "FR",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "etudes-ok.example",
+      "industry_code": "market_research",
+      "employee_band_declared": "50-249",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "recurring_less_than_monthly",
+      "uses_digital_research_tools": true,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "pricing_page_visited",
+        "occurred_at": "2026-11-03T09:25:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "lea.girard@etudes-ok.example",
+    "country_code": "FR",
+    "lead_created": false,
+    "outcome": "review",
+    "owner": "FR-02",
+    "review_queue": "unassigned_review",
+    "action_owner": "sales_manager",
+    "round_robin_advanced": false,
+    "round_robin_next_after": "FR-01",
+    "fit": {
+      "components": {
+        "industry": 40,
+        "size": 10,
+        "need": 15,
+        "readiness": 10
+      },
+      "total": 75,
+      "status": "complete",
+      "band": "high"
+    },
+    "engagement": {
+      "total": 10,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P2",
+    "priority_rule": 5,
+    "reason_codes": [
+      "EXISTING_CONTACT",
+      "OWNER_REVIEW",
+      "PRIORITY_STANDARD_FIT"
+    ],
+    "sla": {
+      "new_sla_created": false,
+      "existing_outcome": "met"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Exceptions: OWNER_REVIEW (Sales Manager reviews reassignment)",
+      "LF-002 Owner reassignment does not reset the SLA"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "Agreed in review: FR-02 stays the owner on record until the Sales Manager reassigns; the engine never reassigns automatically. Already followed up, so no new SLA."
+  }
+}
