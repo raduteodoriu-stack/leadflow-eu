@@ -74,6 +74,7 @@
     "round_robin_advanced": false,
     "round_robin_next_after": "ES-02",
     "priority": "P1",
+    "priority_rule": 2,
     "reason_codes": [
       "DUPLICATE_EVENT_RECONTACT"
     ],

@@ -1,0 +1,97 @@
+{
+  "id": "B-03",
+  "title": "Engagement 10 (top of low) with complete medium fit",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-B003",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:00:00+01:00",
+    "email": "b03@b-medium.example",
+    "business_country": "ES",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "b-medium.example",
+      "industry_code": "management_consultancy",
+      "employee_band_declared": "50-249",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "one_off",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": true,
+      "adoption_interest_confirmed": true,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "pricing_page_visited",
+        "occurred_at": "2026-11-02T10:00:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "b03@b-medium.example",
+    "country_code": "ES",
+    "lead_created": true,
+    "outcome": "assigned",
+    "owner": "ES-01",
+    "review_queue": null,
+    "round_robin_advanced": true,
+    "round_robin_next_after": "ES-02",
+    "fit": {
+      "components": {
+        "industry": 30,
+        "size": 10,
+        "need": 5,
+        "readiness": 5
+      },
+      "total": 50,
+      "status": "complete",
+      "band": "medium"
+    },
+    "engagement": {
+      "total": 10,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P3",
+    "priority_rule": 7,
+    "reason_codes": [
+      "PRIORITY_DEFAULT"
+    ],
+    "sla": {
+      "starts": "2026-11-03T10:00:00+01:00",
+      "allowance_business_minutes": 480,
+      "deadline": "2026-11-03T18:00:00+01:00"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Engagement bands: low 0-14"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": null
+  }
+}
