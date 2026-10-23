@@ -8,6 +8,7 @@
       {
         "normalised_email": "rui.costa@estudos-sinteticos.example",
         "owner": "PT-02",
+        "first_contact_at": "2026-11-03T09:00:00+01:00",
         "assigned_at": "2026-11-03T09:00:00+01:00",
         "priority": "P3",
         "sla_deadline": "2026-11-03T17:00:00+01:00",
@@ -87,7 +88,7 @@
     "priority": "P1",
     "priority_rule": 2,
     "reason_codes": [
-      "EXISTING_CONTACT",
+      "DUPLICATE_EVENT_RECONTACT",
       "PRIORITY_EXPLICIT_REQUEST"
     ],
     "sla": {
@@ -109,11 +110,13 @@
     "rule_refs": [
       "LF-002 priority-change rule, now applied to the response target",
       "LF-002 Territory: preserve existing assignment",
-      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches",
+      "Decision 2026-10-23: same person within 8 business hours = DUPLICATE_EVENT_RECONTACT (corrected during review)"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
-    "notes": "P3 assigned 09:00: SLA due 17:00 (unchanged). Becomes P1 at 11:00: response target moves from 17:00 to the earlier of 17:00 and 11:00 + 1 h = 12:00."
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "P3 assigned 09:00: SLA due 17:00 (unchanged). Becomes P1 at 11:00: response target moves from 17:00 to the earlier of 17:00 and 11:00 + 1 h = 12:00. Review 2026-10-23: code corrected from EXISTING_CONTACT to DUPLICATE_EVENT_RECONTACT (2 business hours after first contact)."
   }
 }

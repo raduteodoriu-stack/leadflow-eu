@@ -56,7 +56,8 @@
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "SLA deadline is inclusive. The P1 target (10:00) was still missed."
   }
 }

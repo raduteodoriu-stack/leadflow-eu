@@ -98,11 +98,13 @@
     "rule_refs": [
       "Decision 2026-10-23: ambiguous identity with a matching CRM contact ID goes to that contact's owner",
       "LF-002 No automatic merge",
-      "LF-002 SLA: no reset"
+      "LF-002 SLA: no reset",
+      "Decision 2026-10-23: for an existing contact, use its stored company data when the event carries none (engine rule for Gate 3)"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "Event attached to CRM-C-2001 (owner FR-01); stored email not overwritten; RevOps confirms identity in parallel. Contact already followed up, so no new SLA."
   }
 }

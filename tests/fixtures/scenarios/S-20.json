@@ -102,7 +102,8 @@
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "Counted once = 10 (low) -> P3. Counting twice would give 20 (medium) and wrongly P2 via rule 5."
   }
 }

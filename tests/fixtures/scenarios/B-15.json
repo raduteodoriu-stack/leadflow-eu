@@ -103,11 +103,13 @@
   "label": {
     "rule_refs": [
       "Decision 2026-10-23",
-      "LF-002 Exceptions: EXISTING_CONTACT"
+      "LF-002 Exceptions: EXISTING_CONTACT",
+      "Decision 2026-10-23: the 8-business-hour recontact window is measured to when the new event occurred (source_occurred_at), not when it was processed"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "Monday 10:00-18:00 = 8 h, plus Tuesday 09:00-09:30 = 8 h 30. Not under 8 h, so a normal existing-contact update."
   }
 }

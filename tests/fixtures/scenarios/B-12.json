@@ -62,7 +62,8 @@
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "Your example: a P1 contacted at minute 90 (63 would behave the same). The 09:30 automated email does not qualify. SLA due 17:00 is met; the 10:00 P1 target is missed."
   }
 }
