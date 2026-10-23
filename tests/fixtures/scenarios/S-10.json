@@ -15,7 +15,8 @@
           "type": "call",
           "at": "2026-11-02T15:00:00+01:00"
         },
-        "sla_outcome": "met"
+        "sla_outcome": "met",
+        "response_target_at": "2026-11-02T18:00:00+01:00"
       }
     ],
     "round_robin_next": {

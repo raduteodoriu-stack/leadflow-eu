@@ -78,12 +78,18 @@
       "starts": "2026-11-03T10:00:00+01:00",
       "allowance_business_minutes": 480,
       "deadline": "2026-11-03T18:00:00+01:00"
+    },
+    "response_target": {
+      "priority": "P3",
+      "allowance_business_minutes": 480,
+      "target_at": "2026-11-03T18:00:00+01:00"
     }
   },
   "label": {
     "rule_refs": [
       "LF-002 Priority rule 7",
-      "LF-002 Engagement scoring (0 is valid only with complete data)"
+      "LF-002 Engagement scoring (0 is valid only with complete data)",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",

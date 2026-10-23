@@ -10,8 +10,9 @@
         "owner": "ES-01",
         "assigned_at": "2026-11-03T10:00:00+01:00",
         "priority": "P1",
-        "sla_deadline": "2026-11-03T11:00:00+01:00",
-        "first_qualifying_followup": null
+        "sla_deadline": "2026-11-03T18:00:00+01:00",
+        "first_qualifying_followup": null,
+        "response_target_at": "2026-11-03T11:00:00+01:00"
       }
     ],
     "round_robin_next": {
@@ -79,8 +80,13 @@
       "DUPLICATE_EVENT_RECONTACT"
     ],
     "sla": {
-      "deadline": "2026-11-03T11:00:00+01:00",
+      "deadline": "2026-11-03T18:00:00+01:00",
       "deadline_changed": false
+    },
+    "response_target": {
+      "priority": "P1",
+      "target_at": "2026-11-03T11:00:00+01:00",
+      "target_changed": false
     }
   },
   "label": {
@@ -89,7 +95,8 @@
       "LF-002 Duplicate processing must not advance rotation",
       "LF-002 SLA: duplicates do not reset",
       "LF-001 Reprocessing creates no duplicates",
-      "Decision 2026-10-23: one code DUPLICATE_EVENT_RECONTACT for replays and recontacts within 8 business hours"
+      "Decision 2026-10-23: one code DUPLICATE_EVENT_RECONTACT for replays and recontacts within 8 business hours",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",

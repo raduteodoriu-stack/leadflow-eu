@@ -11,12 +11,13 @@
         "first_contact_at": "2026-11-02T10:00:00+01:00",
         "assigned_at": "2026-11-02T10:00:00+01:00",
         "priority": "P2",
-        "sla_deadline": "2026-11-02T14:00:00+01:00",
+        "sla_deadline": "2026-11-02T18:00:00+01:00",
         "first_qualifying_followup": {
           "type": "call",
           "at": "2026-11-02T11:00:00+01:00"
         },
-        "sla_outcome": "met"
+        "sla_outcome": "met",
+        "response_target_at": "2026-11-02T14:00:00+01:00"
       }
     ],
     "round_robin_next": {

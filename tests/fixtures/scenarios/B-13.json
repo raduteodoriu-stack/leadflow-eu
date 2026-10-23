@@ -1,6 +1,6 @@
 {
   "id": "B-13",
-  "title": "Call at exactly the deadline meets the SLA",
+  "title": "Call exactly at the P1 target time meets the target",
   "rule_version": "LF-RULES-v1.0",
   "evaluation_time": "2026-11-03T10:01:00+01:00",
   "prior_state": {
@@ -10,8 +10,9 @@
         "owner": "ES-01",
         "assigned_at": "2026-11-03T09:00:00+01:00",
         "priority": "P1",
-        "sla_deadline": "2026-11-03T10:00:00+01:00",
-        "first_qualifying_followup": null
+        "sla_deadline": "2026-11-03T17:00:00+01:00",
+        "first_qualifying_followup": null,
+        "response_target_at": "2026-11-03T10:00:00+01:00"
       }
     ],
     "round_robin_next": {
@@ -44,11 +45,14 @@
   "expected": {
     "sla_outcome": "met",
     "qualifying_followup_at": "2026-11-03T10:00:00+01:00",
-    "late_followup": false
+    "late_followup": false,
+    "response_target_outcome": "met",
+    "response_target_at": "2026-11-03T10:00:00+01:00"
   },
   "label": {
     "rule_refs": [
-      "LF-001/LF-002 Deadline inclusive"
+      "LF-001/LF-002 Deadline inclusive",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",

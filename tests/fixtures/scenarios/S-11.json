@@ -11,12 +11,13 @@
         "owner": "FR-01",
         "assigned_at": "2026-10-20T10:00:00+02:00",
         "priority": "P2",
-        "sla_deadline": "2026-10-20T14:00:00+02:00",
+        "sla_deadline": "2026-10-20T18:00:00+02:00",
         "first_qualifying_followup": {
           "type": "email",
           "at": "2026-10-20T11:30:00+02:00"
         },
-        "sla_outcome": "met"
+        "sla_outcome": "met",
+        "response_target_at": "2026-10-20T14:00:00+02:00"
       }
     ],
     "round_robin_next": {

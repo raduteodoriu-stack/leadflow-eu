@@ -11,7 +11,8 @@
         "assigned_at": "2026-11-03T09:00:00+01:00",
         "priority": "P3",
         "sla_deadline": "2026-11-03T17:00:00+01:00",
-        "first_qualifying_followup": null
+        "first_qualifying_followup": null,
+        "response_target_at": "2026-11-03T17:00:00+01:00"
       }
     ],
     "round_robin_next": {
@@ -91,20 +92,28 @@
     ],
     "sla": {
       "starts": "2026-11-03T09:00:00+01:00",
+      "allowance_business_minutes": 480,
+      "deadline": "2026-11-03T17:00:00+01:00",
+      "deadline_changed": false
+    },
+    "response_target": {
       "previous_priority": "P3",
-      "previous_deadline": "2026-11-03T17:00:00+01:00",
-      "deadline": "2026-11-03T12:00:00+01:00",
-      "deadline_changed": true
+      "previous_target_at": "2026-11-03T17:00:00+01:00",
+      "priority": "P1",
+      "allowance_business_minutes": 60,
+      "target_at": "2026-11-03T12:00:00+01:00",
+      "target_changed": true
     }
   },
   "label": {
     "rule_refs": [
-      "LF-002 SLA: priority increase uses the earlier of existing deadline and upgrade time + new allowance (worked example)",
-      "LF-002 Territory: preserve existing assignment"
+      "LF-002 priority-change rule, now applied to the response target",
+      "LF-002 Territory: preserve existing assignment",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
     "reviewed_by": null,
-    "notes": "Mirrors the LF-002 example: P3 at 09:00 due 17:00; becomes P1 at 11:00, so due 12:00."
+    "notes": "P3 assigned 09:00: SLA due 17:00 (unchanged). Becomes P1 at 11:00: response target moves from 17:00 to the earlier of 17:00 and 11:00 + 1 h = 12:00."
   }
 }

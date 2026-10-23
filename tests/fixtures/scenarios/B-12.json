@@ -1,6 +1,6 @@
 {
   "id": "B-12",
-  "title": "Automated email does not stop the SLA; late call cannot erase the breach",
+  "title": "Automated email does not count; call at 10:30 misses the P1 target but meets the SLA",
   "rule_version": "LF-RULES-v1.0",
   "evaluation_time": "2026-11-03T10:31:00+01:00",
   "prior_state": {
@@ -10,8 +10,9 @@
         "owner": "ES-01",
         "assigned_at": "2026-11-03T09:00:00+01:00",
         "priority": "P1",
-        "sla_deadline": "2026-11-03T10:00:00+01:00",
-        "first_qualifying_followup": null
+        "sla_deadline": "2026-11-03T17:00:00+01:00",
+        "first_qualifying_followup": null,
+        "response_target_at": "2026-11-03T10:00:00+01:00"
       }
     ],
     "round_robin_next": {
@@ -48,19 +49,20 @@
     ]
   },
   "expected": {
-    "sla_outcome": "breached",
-    "breached_at": "2026-11-03T10:00:00+01:00",
+    "sla_outcome": "met",
     "qualifying_followup_at": "2026-11-03T10:30:00+01:00",
-    "late_followup": true
+    "late_followup": false,
+    "response_target_outcome": "missed",
+    "response_target_at": "2026-11-03T10:00:00+01:00"
   },
   "label": {
     "rule_refs": [
       "LF-001 Qualifying follow-up: human call attempt or individual sales email",
-      "LF-002 Completion and breaches"
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
     "labelled_on": "2026-10-23",
     "reviewed_by": null,
-    "notes": "The 09:30 automated email does not qualify. The 10:30 call is late; the breach stays."
+    "notes": "Your example: a P1 contacted at minute 90 (63 would behave the same). The 09:30 automated email does not qualify. SLA due 17:00 is met; the 10:00 P1 target is missed."
   }
 }
