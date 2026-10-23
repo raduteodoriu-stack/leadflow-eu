@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Local copies of the handoff notes (the project copy is the source)
+*_LeadFlow_EU_LLM_Handoff.md
+
+# macOS
+.DS_Store

@@ -1,0 +1,6197 @@
+{
+  "metadata": {
+    "rule_version": "LF-RULES-v1.0",
+    "sla_cutoff": "2026-11-06T18:00:00+01:00",
+    "notes": [
+      "Expected outcomes are designed outcome-first from LF-002 and traceable to LF-004 patterns.",
+      "The order of reason_codes is not significant; compare them as sets.",
+      "Event-level expectations describe the state when each event is processed; lead-level outcomes are evaluated at sla_cutoff."
+    ]
+  },
+  "summary": {
+    "events": 100,
+    "events_by_group": {
+      "ambiguous_identity": 2,
+      "blocking_exception": 12,
+      "malformed": 3,
+      "new_buyer_assignable": 55,
+      "participant": 5,
+      "relationship_unknown": 3,
+      "replay": 3,
+      "returning_contact": 10,
+      "supplier_or_both": 7
+    },
+    "events_by_outcome": {
+      "assigned": 65,
+      "assigned_to_company_owner": 2,
+      "attached_to_existing_contact": 2,
+      "duplicate_event_ignored": 3,
+      "existing_owner_kept": 8,
+      "redirected": 4,
+      "rejected": 3,
+      "review": 13
+    },
+    "leads_created": 76,
+    "leads_assigned": 67,
+    "leads_waiting_in_review": 9,
+    "sla_outcomes_at_cutoff": {
+      "breached": 5,
+      "met": 58,
+      "pending": 4
+    },
+    "response_target_outcomes_at_cutoff": {
+      "met": 44,
+      "missed": 21,
+      "pending": 2
+    },
+    "priority_rules": {
+      "2": 14,
+      "3": 7,
+      "4": 7,
+      "5": 19,
+      "6": 20,
+      "7": 22
+    },
+    "followup_activities": 77
+  },
+  "events": [
+    {
+      "seq": 1,
+      "source_event_id": "SYN-L001",
+      "received_at": "2026-10-12T14:12:00+02:00",
+      "group": "blocking_exception",
+      "subtype": "missing_country",
+      "patterns": [
+        "S-12"
+      ],
+      "expected": {
+        "normalised_email": "chloe.girard@donnees-delta.example",
+        "country_code": null,
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 25,
+            "readiness": 10
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 3,
+        "reason_codes": [
+          "COUNTRY_INVALID",
+          "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "round_robin_next_after": null,
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-12T14:12:00+02:00"
+      },
+      "explanation": "fit high (75), engagement high (45) -> P1 (rule 3) shown while waiting; COUNTRY_INVALID -> unassigned_review (revops); no SLA yet."
+    },
+    {
+      "seq": 2,
+      "source_event_id": "SYN-L002",
+      "received_at": "2026-10-13T09:59:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "andre.costa@opiniao-tejo.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 5,
+            "need": 0,
+            "readiness": 5
+          },
+          "total": 50,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-10-13T09:59:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-13T17:59:00+02:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-13T17:59:00+02:00"
+        }
+      },
+      "explanation": "fit medium (50), engagement low (10) -> P3 (rule 7); round-robin -> PT-01; target Tue 13 Oct 17:59, SLA Tue 13 Oct 17:59."
+    },
+    {
+      "seq": 3,
+      "source_event_id": "SYN-L003",
+      "received_at": "2026-10-13T15:23:00+02:00",
+      "group": "blocking_exception",
+      "subtype": "country_conflict",
+      "patterns": [
+        "S-23"
+      ],
+      "expected": {
+        "normalised_email": "nicolas.simon@marches-boussole.example",
+        "country_code": null,
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 25,
+            "readiness": null
+          },
+          "total": 65,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 5,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "COUNTRY_CONFLICT",
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "round_robin_next_after": "FR-01",
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-13T15:23:00+02:00"
+      },
+      "explanation": "fit incomplete (provisional 65), engagement low (5) -> P2 (rule 6) shown while waiting; COUNTRY_CONFLICT -> unassigned_review (revops); no SLA yet."
+    },
+    {
+      "seq": 4,
+      "source_event_id": "SYN-L004",
+      "received_at": "2026-10-14T14:11:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "ines.ortega@panel-vertice.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 0,
+            "need": 0,
+            "readiness": 10
+          },
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-14T14:11:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-15T13:11:00+02:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-15T13:11:00+02:00"
+        }
+      },
+      "explanation": "fit low (10), engagement medium (25) -> P3 (rule 7); round-robin -> ES-01; target Thu 15 Oct 13:11, SLA Thu 15 Oct 13:11."
+    },
+    {
+      "seq": 5,
+      "source_event_id": "SYN-L005",
+      "received_at": "2026-10-14T18:35:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-02"
+      ],
+      "expected": {
+        "normalised_email": "chloe.leroy@panel-prisme.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 10,
+            "need": 25,
+            "readiness": 10
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 3,
+        "reason_codes": [
+          "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-10-14T18:35:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-15T17:00:00+02:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-15T10:00:00+02:00"
+        }
+      },
+      "explanation": "fit high (75), engagement high (45) -> P1 (rule 3); round-robin -> FR-01; target Thu 15 Oct 10:00, SLA Thu 15 Oct 17:00."
+    },
+    {
+      "seq": 6,
+      "source_event_id": "SYN-L006",
+      "received_at": "2026-10-15T10:18:00+02:00",
+      "group": "supplier_or_both",
+      "subtype": "both",
+      "patterns": [
+        "S-30"
+      ],
+      "expected": {
+        "normalised_email": "andre.martins@sondagens-tejo.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 25,
+            "readiness": 5
+          },
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "SUPPLIER_REVIEW",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "parallel_review": {
+          "reason_code": "SUPPLIER_REVIEW",
+          "action_owner": "sales_manager"
+        },
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-10-15T10:18:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-16T09:18:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-15T14:18:00+02:00"
+        }
+      },
+      "explanation": "fit high (70), engagement low (10) -> P2 (rule 5); round-robin -> PT-02; target Thu 15 Oct 14:18, SLA Fri 16 Oct 09:18."
+    },
+    {
+      "seq": 7,
+      "source_event_id": "SYN-L007",
+      "received_at": "2026-10-15T11:02:00+02:00",
+      "group": "participant",
+      "subtype": "participant",
+      "patterns": [
+        "S-09"
+      ],
+      "expected": {
+        "normalised_email": null,
+        "country_code": "FR",
+        "lead_created": false,
+        "owner": null,
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "sla": null,
+        "response_target": null,
+        "outcome": "redirected",
+        "processing_status": "redirected",
+        "review_queue": null,
+        "reason_codes": [
+          "PARTICIPANT_REDIRECT"
+        ],
+        "referral": {
+          "referral_method": "automated_reply_panelists",
+          "attempt_status": "simulated",
+          "supplier_code": "SUP-FR-01",
+          "destination_url": "https://panel-partner-fr.example/rejoindre",
+          "personal_data_transferred": false
+        }
+      },
+      "explanation": "Paid-survey participant: simulated referral to SUP-FR-01; no lead, score or SLA."
+    },
+    {
+      "seq": 8,
+      "source_event_id": "SYN-L008",
+      "received_at": "2026-10-15T12:48:00+02:00",
+      "group": "relationship_unknown",
+      "subtype": "relationship_unknown",
+      "patterns": [
+        "S-28",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "paula.castillo@datos-iberica.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 5,
+            "need": 0,
+            "readiness": 5
+          },
+          "total": 30,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "RELATIONSHIP_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-15T12:48:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-16T11:48:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-15T16:48:00+02:00"
+        }
+      },
+      "explanation": "fit low (30), engagement low (10) -> P2 (rule 6); round-robin -> ES-02; target Thu 15 Oct 16:48, SLA Fri 16 Oct 11:48."
+    },
+    {
+      "seq": 9,
+      "source_event_id": "SYN-L009",
+      "received_at": "2026-10-15T14:17:00+02:00",
+      "group": "supplier_or_both",
+      "subtype": "both",
+      "patterns": [
+        "S-30",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "marta.torres@analisis-brujula.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 15,
+            "need": 15,
+            "readiness": 5
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "SUPPLIER_REVIEW",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "parallel_review": {
+          "reason_code": "SUPPLIER_REVIEW",
+          "action_owner": "sales_manager"
+        },
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-15T14:17:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-16T13:17:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-16T09:17:00+02:00"
+        }
+      },
+      "explanation": "fit high (75), engagement low (10) -> P2 (rule 5); round-robin -> ES-01; target Fri 16 Oct 09:17, SLA Fri 16 Oct 13:17."
+    },
+    {
+      "seq": 10,
+      "source_event_id": "SYN-L010",
+      "received_at": "2026-10-15T15:06:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-02"
+      ],
+      "expected": {
+        "normalised_email": "catarina.martins@opiniao-lusa.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 20,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 3,
+        "reason_codes": [
+          "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-10-15T15:06:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-16T14:06:00+02:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-15T16:06:00+02:00"
+        }
+      },
+      "explanation": "fit high (70), engagement high (45) -> P1 (rule 3); round-robin -> PT-01; target Thu 15 Oct 16:06, SLA Fri 16 Oct 14:06."
+    },
+    {
+      "seq": 11,
+      "source_event_id": "SYN-L011",
+      "received_at": "2026-10-15T15:49:00+02:00",
+      "group": "relationship_unknown",
+      "subtype": "relationship_unknown",
+      "patterns": [
+        "S-28",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "hugo.moreau@conseil-sommet.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 0,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 45,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "RELATIONSHIP_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-01",
+        "sla": {
+          "starts": "2026-10-15T15:49:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-16T14:49:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-16T10:49:00+02:00"
+        }
+      },
+      "explanation": "fit medium (45), engagement low (10) -> P2 (rule 6); round-robin -> FR-02; target Fri 16 Oct 10:49, SLA Fri 16 Oct 14:49."
+    },
+    {
+      "seq": 12,
+      "source_event_id": "SYN-L012",
+      "received_at": "2026-10-15T16:19:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-06"
+      ],
+      "expected": {
+        "normalised_email": "andre.sousa@consultores-lusa.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 5,
+            "need": 0,
+            "readiness": 10
+          },
+          "total": 35,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-10-15T16:19:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-16T15:19:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-16T11:19:00+02:00"
+        }
+      },
+      "explanation": "fit low (35), engagement unknown -> P2 (rule 6); round-robin -> PT-02; target Fri 16 Oct 11:19, SLA Fri 16 Oct 15:19."
+    },
+    {
+      "seq": 13,
+      "source_event_id": "SYN-L013",
+      "received_at": "2026-10-16T09:49:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05"
+      ],
+      "expected": {
+        "normalised_email": "louis.dubois@conseil-boussole.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": null,
+            "need": 0,
+            "readiness": 15
+          },
+          "total": 55,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 35,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-10-16T09:49:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-16T17:49:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-16T13:49:00+02:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 55), engagement medium (35) -> P2 (rule 6); round-robin -> FR-01; target Fri 16 Oct 13:49, SLA Fri 16 Oct 17:49."
+    },
+    {
+      "seq": 14,
+      "source_event_id": null,
+      "received_at": "2026-10-16T16:12:00+02:00",
+      "group": "malformed",
+      "subtype": "malformed",
+      "patterns": [
+        "S-14"
+      ],
+      "expected": {
+        "outcome": "rejected",
+        "event_stored": true,
+        "processing_status": "rejected",
+        "error_code": "SOURCE_EVENT_INVALID",
+        "lead_created": false,
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "reason_codes": [
+          "SOURCE_EVENT_INVALID"
+        ],
+        "sla": null,
+        "response_target": null
+      },
+      "explanation": "No source event ID: stored for traceability, rejected with SOURCE_EVENT_INVALID."
+    },
+    {
+      "seq": 15,
+      "source_event_id": "SYN-L014",
+      "received_at": "2026-10-16T16:39:00+02:00",
+      "group": "blocking_exception",
+      "subtype": "unsupported_territory",
+      "patterns": [
+        "S-13"
+      ],
+      "expected": {
+        "normalised_email": "sara.rossi@sondaggi-faro.example",
+        "country_code": "IT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 15,
+            "need": 15,
+            "readiness": 10
+          },
+          "total": 40,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "UNSUPPORTED_TERRITORY",
+          "PRIORITY_MISSING_INFO",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "sales_manager",
+        "round_robin_advanced": false,
+        "round_robin_next_after": null,
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-16T16:39:00+02:00"
+      },
+      "explanation": "fit medium (40), engagement unknown -> P2 (rule 6) shown while waiting; UNSUPPORTED_TERRITORY -> unassigned_review (sales_manager); no SLA yet."
+    },
+    {
+      "seq": 16,
+      "source_event_id": "SYN-L015",
+      "received_at": "2026-10-19T10:32:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01"
+      ],
+      "expected": {
+        "normalised_email": "raul.navarro@analisis-iberica.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 10,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 50,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 60,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-19T10:32:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-20T09:32:00+02:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-19T11:32:00+02:00"
+        }
+      },
+      "explanation": "fit medium (50), engagement high (60) -> P1 (rule 2); round-robin -> ES-02; target Mon 19 Oct 11:32, SLA Tue 20 Oct 09:32."
+    },
+    {
+      "seq": 17,
+      "source_event_id": "SYN-L016",
+      "received_at": "2026-10-19T11:55:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-03"
+      ],
+      "expected": {
+        "normalised_email": "julie.fournier@opinion-phare.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 0,
+            "need": 0,
+            "readiness": 10
+          },
+          "total": 30,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 40,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P2",
+        "priority_rule": 4,
+        "reason_codes": [
+          "PRIORITY_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-01",
+        "sla": {
+          "starts": "2026-10-19T11:55:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-20T10:55:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-19T15:55:00+02:00"
+        }
+      },
+      "explanation": "fit low (30), engagement high (40) -> P2 (rule 4); round-robin -> FR-02; target Mon 19 Oct 15:55, SLA Tue 20 Oct 10:55."
+    },
+    {
+      "seq": 18,
+      "source_event_id": "SYN-L017",
+      "received_at": "2026-10-19T12:50:00+02:00",
+      "group": "blocking_exception",
+      "subtype": "country_conflict",
+      "patterns": [
+        "S-23"
+      ],
+      "expected": {
+        "normalised_email": "sergio.romero@mercados-iberica.example",
+        "country_code": null,
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 20,
+            "need": 25,
+            "readiness": 10
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 40,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 3,
+        "reason_codes": [
+          "COUNTRY_CONFLICT",
+          "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "round_robin_next_after": "ES-01",
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-19T12:50:00+02:00"
+      },
+      "explanation": "fit high (75), engagement high (40) -> P1 (rule 3) shown while waiting; COUNTRY_CONFLICT -> unassigned_review (revops); no SLA yet."
+    },
+    {
+      "seq": 19,
+      "source_event_id": "SYN-L018",
+      "received_at": "2026-10-19T13:11:00+02:00",
+      "group": "returning_contact",
+      "subtype": "same_company",
+      "patterns": [
+        "S-22",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "andres.navarro@analisis-iberica.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 10,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 50,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "SAME_COMPANY_RECENT_CONTACT",
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned_to_company_owner",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": false,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-19T13:11:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-20T12:11:00+02:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-20T12:11:00+02:00"
+        }
+      },
+      "explanation": "fit medium (50), engagement low (10) -> P3 (rule 7); colleague's owner -> ES-02; target Tue 20 Oct 12:11, SLA Tue 20 Oct 12:11."
+    },
+    {
+      "seq": 20,
+      "source_event_id": "SYN-L019",
+      "received_at": "2026-10-19T15:41:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "joao.ribeiro@tendencias-vertice.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 5,
+            "need": 0,
+            "readiness": 0
+          },
+          "total": 5,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-10-19T15:41:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-20T14:41:00+02:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-20T14:41:00+02:00"
+        }
+      },
+      "explanation": "fit low (5), engagement medium (30) -> P3 (rule 7); round-robin -> PT-01; target Tue 20 Oct 14:41, SLA Tue 20 Oct 14:41."
+    },
+    {
+      "seq": 21,
+      "source_event_id": "SYN-L020",
+      "received_at": "2026-10-19T20:43:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "ivan.navarro@tendencias-brujula.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 15,
+            "need": 15,
+            "readiness": 5
+          },
+          "total": 55,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-19T20:43:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-20T17:00:00+02:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-20T17:00:00+02:00"
+        }
+      },
+      "explanation": "fit medium (55), engagement low (10) -> P3 (rule 7); round-robin -> ES-01; target Tue 20 Oct 17:00, SLA Tue 20 Oct 17:00."
+    },
+    {
+      "seq": 22,
+      "source_event_id": "SYN-L021",
+      "received_at": "2026-10-20T13:24:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "B-04",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "rocio.navarro@panel-iberica.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 5,
+            "need": 0,
+            "readiness": 15
+          },
+          "total": 40,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-20T13:24:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-21T12:24:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-20T17:24:00+02:00"
+        }
+      },
+      "explanation": "fit medium (40), engagement medium (30) -> P2 (rule 5); round-robin -> ES-02; target Tue 20 Oct 17:24, SLA Wed 21 Oct 12:24."
+    },
+    {
+      "seq": 23,
+      "source_event_id": "SYN-L022",
+      "received_at": "2026-10-21T12:02:00+02:00",
+      "group": "blocking_exception",
+      "subtype": "no_eligible_owner",
+      "patterns": [
+        "S-25"
+      ],
+      "expected": {
+        "normalised_email": "leonor.lopes@sondagens-farol.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 15,
+            "readiness": 5
+          },
+          "total": 60,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 60,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "NO_ELIGIBLE_OWNER",
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "sales_manager",
+        "round_robin_advanced": false,
+        "round_robin_next_after": "PT-02",
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-21T12:02:00+02:00"
+      },
+      "explanation": "fit medium (60), engagement high (60) -> P1 (rule 2) shown while waiting; NO_ELIGIBLE_OWNER -> unassigned_review (sales_manager); no SLA yet."
+    },
+    {
+      "seq": 24,
+      "source_event_id": "SYN-L023",
+      "received_at": "2026-10-21T14:53:00+02:00",
+      "group": "supplier_or_both",
+      "subtype": "supplier",
+      "patterns": [
+        "S-08"
+      ],
+      "expected": {
+        "normalised_email": "hugo.garcia@mercados-brujula.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 10,
+            "need": null,
+            "readiness": null
+          },
+          "total": 50,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 0,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "SUPPLIER_REVIEW",
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "parallel_review": {
+          "reason_code": "SUPPLIER_REVIEW",
+          "action_owner": "sales_manager"
+        },
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-21T14:53:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-22T13:53:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-22T09:53:00+02:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 50), engagement low (0) -> P2 (rule 6); round-robin -> ES-01; target Thu 22 Oct 09:53, SLA Thu 22 Oct 13:53."
+    },
+    {
+      "seq": 25,
+      "source_event_id": "SYN-L024",
+      "received_at": "2026-10-22T08:17:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "B-04"
+      ],
+      "expected": {
+        "normalised_email": "duarte.silva@painel-horizonte.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 0,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 40,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 15,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-10-22T08:17:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-22T17:00:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-22T13:00:00+02:00"
+        }
+      },
+      "explanation": "fit medium (40), engagement medium (15) -> P2 (rule 5); round-robin -> PT-02; target Thu 22 Oct 13:00, SLA Thu 22 Oct 17:00."
+    },
+    {
+      "seq": 26,
+      "source_event_id": "SYN-L025",
+      "received_at": "2026-10-22T09:53:00+02:00",
+      "group": "blocking_exception",
+      "subtype": "unsupported_territory",
+      "patterns": [
+        "S-13"
+      ],
+      "expected": {
+        "normalised_email": "oliver.smith@field-harbour.example",
+        "country_code": "GB",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 5,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 35,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "UNSUPPORTED_TERRITORY",
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "sales_manager",
+        "round_robin_advanced": false,
+        "round_robin_next_after": null,
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-22T09:53:00+02:00"
+      },
+      "explanation": "fit low (35), engagement medium (25) -> P3 (rule 7) shown while waiting; UNSUPPORTED_TERRITORY -> unassigned_review (sales_manager); no SLA yet."
+    },
+    {
+      "seq": 27,
+      "source_event_id": "SYN-L026",
+      "received_at": "2026-10-22T12:08:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-04"
+      ],
+      "expected": {
+        "normalised_email": "sergio.iglesias@campo-delta.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 20,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 85,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 35,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-22T12:08:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-23T11:08:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-22T16:08:00+02:00"
+        }
+      },
+      "explanation": "fit high (85), engagement medium (35) -> P2 (rule 5); round-robin -> ES-02; target Thu 22 Oct 16:08, SLA Fri 23 Oct 11:08."
+    },
+    {
+      "seq": 28,
+      "source_event_id": "SYN-L027",
+      "received_at": "2026-10-22T13:57:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-03"
+      ],
+      "expected": {
+        "normalised_email": "javier.moreno@consultora-prisma.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 0,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 55,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 40,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P2",
+        "priority_rule": 4,
+        "reason_codes": [
+          "PRIORITY_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-22T13:57:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-23T12:57:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-22T17:57:00+02:00"
+        }
+      },
+      "explanation": "fit medium (55), engagement high (40) -> P2 (rule 4); round-robin -> ES-01; target Thu 22 Oct 17:57, SLA Fri 23 Oct 12:57."
+    },
+    {
+      "seq": 29,
+      "source_event_id": "SYN-L028",
+      "received_at": "2026-10-22T14:01:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "hugo.bernard@sondages-boussole.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 0,
+            "need": 15,
+            "readiness": 15
+          },
+          "total": 30,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-10-22T14:01:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-23T13:01:00+02:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-23T13:01:00+02:00"
+        }
+      },
+      "explanation": "fit low (30), engagement low (10) -> P3 (rule 7); round-robin -> FR-01; target Fri 23 Oct 13:01, SLA Fri 23 Oct 13:01."
+    },
+    {
+      "seq": 30,
+      "source_event_id": "SYN-L029",
+      "received_at": "2026-10-22T15:28:00+02:00",
+      "group": "relationship_unknown",
+      "subtype": "relationship_unknown",
+      "patterns": [
+        "S-28"
+      ],
+      "expected": {
+        "normalised_email": "paula.vidal@tendencias-norte.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 15,
+            "need": 0,
+            "readiness": 10
+          },
+          "total": 25,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "RELATIONSHIP_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-22T15:28:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-23T14:28:00+02:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-23T10:28:00+02:00"
+        }
+      },
+      "explanation": "fit low (25), engagement medium (30) -> P2 (rule 6); round-robin -> ES-02; target Fri 23 Oct 10:28, SLA Fri 23 Oct 14:28."
+    },
+    {
+      "seq": 31,
+      "source_event_id": "SYN-L030",
+      "received_at": "2026-10-22T15:45:00+02:00",
+      "group": "returning_contact",
+      "subtype": "recontact",
+      "patterns": [
+        "S-21"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "javier.moreno@consultora-prisma.example",
+        "country_code": "ES",
+        "owner": "ES-01",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 0,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 55,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 40,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P2",
+        "priority_rule": 4,
+        "reason_codes": [
+          "DUPLICATE_EVENT_RECONTACT",
+          "PRIORITY_HIGH_ENGAGEMENT"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-23T12:57:00+02:00",
+          "followed_up_before_event": false
+        },
+        "response_target": {
+          "priority": "P2",
+          "target_at": "2026-10-22T17:57:00+02:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "returning contact; fit medium (55), engagement high (40) -> P2 (rule 4); owner ES-01; no new SLA, target Thu 22 Oct 17:57."
+    },
+    {
+      "seq": 32,
+      "source_event_id": "SYN-L031",
+      "received_at": "2026-10-22T16:00:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01"
+      ],
+      "expected": {
+        "normalised_email": "leonor.sousa@analise-norte.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 0,
+            "need": 5,
+            "readiness": 0
+          },
+          "total": 35,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 60,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-10-22T16:00:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-23T15:00:00+02:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-22T17:00:00+02:00"
+        }
+      },
+      "explanation": "fit low (35), engagement high (60) -> P1 (rule 2); round-robin -> PT-01; target Thu 22 Oct 17:00, SLA Fri 23 Oct 15:00."
+    },
+    {
+      "seq": 33,
+      "source_event_id": null,
+      "received_at": "2026-10-22T17:35:00+02:00",
+      "group": "malformed",
+      "subtype": "malformed",
+      "patterns": [
+        "S-14"
+      ],
+      "expected": {
+        "outcome": "rejected",
+        "event_stored": true,
+        "processing_status": "rejected",
+        "error_code": "SOURCE_EVENT_INVALID",
+        "lead_created": false,
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "reason_codes": [
+          "SOURCE_EVENT_INVALID"
+        ],
+        "sla": null,
+        "response_target": null
+      },
+      "explanation": "No source event ID: stored for traceability, rejected with SOURCE_EVENT_INVALID."
+    },
+    {
+      "seq": 34,
+      "source_event_id": "SYN-L032",
+      "received_at": "2026-10-23T10:14:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05"
+      ],
+      "expected": {
+        "normalised_email": "lea.roux@analyse-sommet.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": null,
+            "need": 15,
+            "readiness": 0
+          },
+          "total": 15,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-01",
+        "sla": {
+          "starts": "2026-10-23T10:14:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-26T09:14:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-23T14:14:00+02:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 15), engagement medium (25) -> P2 (rule 6); round-robin -> FR-02; target Fri 23 Oct 14:14, SLA Mon 26 Oct 09:14."
+    },
+    {
+      "seq": 35,
+      "source_event_id": "SYN-L033",
+      "received_at": "2026-10-23T14:19:00+02:00",
+      "group": "supplier_or_both",
+      "subtype": "supplier",
+      "patterns": [
+        "S-08"
+      ],
+      "expected": {
+        "normalised_email": "nuno.costa@campo-horizonte.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 10,
+            "need": null,
+            "readiness": null
+          },
+          "total": 50,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "SUPPLIER_REVIEW",
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "parallel_review": {
+          "reason_code": "SUPPLIER_REVIEW",
+          "action_owner": "sales_manager"
+        },
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-10-23T14:19:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-26T13:19:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-26T09:19:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 50), engagement low (10) -> P2 (rule 6); round-robin -> PT-02; target Mon 26 Oct 09:19, SLA Mon 26 Oct 13:19."
+    },
+    {
+      "seq": 36,
+      "source_event_id": "SYN-L034",
+      "received_at": "2026-10-23T14:21:00+02:00",
+      "group": "blocking_exception",
+      "subtype": "invalid_email",
+      "patterns": [
+        "S-24"
+      ],
+      "expected": {
+        "outcome": "review",
+        "processing_status": "review_required",
+        "normalised_email": null,
+        "country_code": "ES",
+        "lead_created": false,
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 5,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 85,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 5,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "EMAIL_INVALID",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-23T14:21:00+02:00"
+      },
+      "explanation": "fit high (85), engagement low (5) -> P2 (rule 5) shown while waiting; EMAIL_INVALID -> unassigned_review (revops); no SLA yet."
+    },
+    {
+      "seq": 37,
+      "source_event_id": "SYN-L035",
+      "received_at": "2026-10-23T16:25:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05"
+      ],
+      "expected": {
+        "normalised_email": "mario.vidal@campo-sol.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": 15,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 25,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-23T16:25:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-26T15:25:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-26T11:25:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 25), engagement low (10) -> P2 (rule 6); round-robin -> ES-01; target Mon 26 Oct 11:25, SLA Mon 26 Oct 15:25."
+    },
+    {
+      "seq": 38,
+      "source_event_id": "SYN-L036",
+      "received_at": "2026-10-23T17:34:00+02:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05",
+        "S-27",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "lea.girard@courriel-perso.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 10,
+            "need": null,
+            "readiness": 15
+          },
+          "total": 55,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE",
+          "DOMAIN_MISSING"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-10-23T17:34:00+02:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-26T16:34:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-26T12:34:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 55), engagement low (10) -> P2 (rule 6); round-robin -> FR-01; target Mon 26 Oct 12:34, SLA Mon 26 Oct 16:34."
+    },
+    {
+      "seq": 39,
+      "source_event_id": "SYN-L037",
+      "received_at": "2026-10-25T15:33:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01"
+      ],
+      "expected": {
+        "normalised_email": "beatriz.martins@tendencias-bussola.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 20,
+            "need": 15,
+            "readiness": 0
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 60,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-10-25T15:33:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-26T17:00:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-26T10:00:00+01:00"
+        }
+      },
+      "explanation": "fit high (75), engagement high (60) -> P1 (rule 2); round-robin -> PT-01; target Mon 26 Oct 10:00, SLA Mon 26 Oct 17:00."
+    },
+    {
+      "seq": 40,
+      "source_event_id": "SYN-L037",
+      "received_at": "2026-10-25T16:41:00+01:00",
+      "group": "replay",
+      "subtype": "replay",
+      "patterns": [
+        "S-17"
+      ],
+      "expected": {
+        "outcome": "duplicate_event_ignored",
+        "event_stored_again": false,
+        "new_decision": false,
+        "lead_created": false,
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": false,
+        "reason_codes": [
+          "DUPLICATE_EVENT_RECONTACT"
+        ]
+      },
+      "explanation": "Same source event delivered again: ignored, nothing changes."
+    },
+    {
+      "seq": 41,
+      "source_event_id": "SYN-L038",
+      "received_at": "2026-10-26T11:06:00+01:00",
+      "group": "blocking_exception",
+      "subtype": "missing_country",
+      "patterns": [
+        "S-12"
+      ],
+      "expected": {
+        "normalised_email": "julie.roux@terrain-atlas.example",
+        "country_code": null,
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 20,
+            "need": 15,
+            "readiness": 10
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "COUNTRY_INVALID",
+          "PRIORITY_STANDARD_FIT",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "round_robin_next_after": null,
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-26T11:06:00+01:00"
+      },
+      "explanation": "fit high (75), engagement unknown -> P2 (rule 5) shown while waiting; COUNTRY_INVALID -> unassigned_review (revops); no SLA yet."
+    },
+    {
+      "seq": 42,
+      "source_event_id": "SYN-L039",
+      "received_at": "2026-10-26T14:20:00+01:00",
+      "group": "returning_contact",
+      "subtype": "existing",
+      "patterns": [
+        "S-10"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "duarte.silva@painel-horizonte.example",
+        "country_code": "PT",
+        "owner": "PT-02",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 0,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 40,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 20,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "EXISTING_CONTACT",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-22T17:00:00+02:00",
+          "followed_up_before_event": true
+        },
+        "response_target": {
+          "priority": "P2",
+          "target_at": "2026-10-22T13:00:00+02:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "returning contact; fit medium (40), engagement medium (20) -> P2 (rule 5); owner PT-02; no new SLA, target Thu 22 Oct 13:00."
+    },
+    {
+      "seq": 43,
+      "source_event_id": "SYN-L040",
+      "received_at": "2026-10-26T15:01:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "paula.ortega@opinion-prisma.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 0,
+            "need": 15,
+            "readiness": 5
+          },
+          "total": 20,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-26T15:01:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-27T14:01:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-27T14:01:00+01:00"
+        }
+      },
+      "explanation": "fit low (20), engagement low (10) -> P3 (rule 7); round-robin -> ES-02; target Tue 27 Oct 14:01, SLA Tue 27 Oct 14:01."
+    },
+    {
+      "seq": 44,
+      "source_event_id": "SYN-L041",
+      "received_at": "2026-10-26T17:40:00+01:00",
+      "group": "returning_contact",
+      "subtype": "recontact_upgrade",
+      "patterns": [
+        "S-15"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "paula.ortega@opinion-prisma.example",
+        "country_code": "ES",
+        "owner": "ES-02",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 0,
+            "need": 15,
+            "readiness": 5
+          },
+          "total": 20,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "DUPLICATE_EVENT_RECONTACT",
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-27T14:01:00+01:00",
+          "followed_up_before_event": false
+        },
+        "response_target": {
+          "priority": "P1",
+          "target_at": "2026-10-27T09:40:00+01:00",
+          "target_changed": true
+        }
+      },
+      "explanation": "returning contact; fit low (20), engagement high (70) -> P1 (rule 2); owner ES-02; no new SLA, target Tue 27 Oct 09:40 (target shortened)."
+    },
+    {
+      "seq": 45,
+      "source_event_id": "SYN-L042",
+      "received_at": "2026-10-27T12:02:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-04"
+      ],
+      "expected": {
+        "normalised_email": "nicolas.girard@tendances-atlas.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-01",
+        "sla": {
+          "starts": "2026-10-27T12:02:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-28T11:02:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-27T16:02:00+01:00"
+        }
+      },
+      "explanation": "fit high (80), engagement medium (25) -> P2 (rule 5); round-robin -> FR-02; target Tue 27 Oct 16:02, SLA Wed 28 Oct 11:02."
+    },
+    {
+      "seq": 46,
+      "source_event_id": "SYN-L043",
+      "received_at": "2026-10-27T14:43:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "sergio.martin@sondeos-iberica.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 10,
+            "need": 15,
+            "readiness": 10
+          },
+          "total": 35,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 15,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-27T14:43:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-28T13:43:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-28T13:43:00+01:00"
+        }
+      },
+      "explanation": "fit low (35), engagement medium (15) -> P3 (rule 7); round-robin -> ES-01; target Wed 28 Oct 13:43, SLA Wed 28 Oct 13:43."
+    },
+    {
+      "seq": 47,
+      "source_event_id": "SYN-L044",
+      "received_at": "2026-10-28T10:35:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-03"
+      ],
+      "expected": {
+        "normalised_email": "chloe.martin@panel-azur.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": null,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 25,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 40,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P2",
+        "priority_rule": 4,
+        "reason_codes": [
+          "PRIORITY_HIGH_ENGAGEMENT",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-10-28T10:35:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-29T09:35:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-28T14:35:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 25), engagement high (40) -> P2 (rule 4); round-robin -> FR-01; target Wed 28 Oct 14:35, SLA Thu 29 Oct 09:35."
+    },
+    {
+      "seq": 48,
+      "source_event_id": "SYN-L045",
+      "received_at": "2026-10-28T12:45:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05"
+      ],
+      "expected": {
+        "normalised_email": "sergio.vidal@analisis-atlas.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": 20,
+            "need": null,
+            "readiness": 5
+          },
+          "total": 25,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-28T12:45:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-29T11:45:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-28T16:45:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 25), engagement unknown -> P2 (rule 6); round-robin -> ES-02; target Wed 28 Oct 16:45, SLA Thu 29 Oct 11:45."
+    },
+    {
+      "seq": 49,
+      "source_event_id": "SYN-L046",
+      "received_at": "2026-10-28T14:35:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-02",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "laura.sanchez@consultora-delta.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 15,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 40,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 3,
+        "reason_codes": [
+          "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-28T14:35:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-29T13:35:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-28T15:35:00+01:00"
+        },
+        "rotation_skipped": [
+          "ES-01"
+        ]
+      },
+      "explanation": "fit high (80), engagement high (40) -> P1 (rule 3); round-robin -> ES-02, skipped ES-01; target Wed 28 Oct 15:35, SLA Thu 29 Oct 13:35."
+    },
+    {
+      "seq": 50,
+      "source_event_id": "SYN-L047",
+      "received_at": "2026-10-28T15:46:00+01:00",
+      "group": "blocking_exception",
+      "subtype": "missing_country",
+      "patterns": [
+        "S-12"
+      ],
+      "expected": {
+        "normalised_email": "maxime.moreau@sondages-nord.example",
+        "country_code": null,
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 15,
+            "need": 25,
+            "readiness": 10
+          },
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 60,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "COUNTRY_INVALID",
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "round_robin_next_after": null,
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-28T15:46:00+01:00"
+      },
+      "explanation": "fit high (70), engagement high (60) -> P1 (rule 2) shown while waiting; COUNTRY_INVALID -> unassigned_review (revops); no SLA yet."
+    },
+    {
+      "seq": 51,
+      "source_event_id": "SYN-L048",
+      "received_at": "2026-10-28T16:02:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-04",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "alba.martin@analisis-prisma.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 5,
+            "need": 25,
+            "readiness": 10
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-28T16:02:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-29T15:02:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-29T11:02:00+01:00"
+        },
+        "rotation_skipped": [
+          "ES-01"
+        ]
+      },
+      "explanation": "fit high (80), engagement unknown -> P2 (rule 5); round-robin -> ES-02, skipped ES-01; target Thu 29 Oct 11:02, SLA Thu 29 Oct 15:02."
+    },
+    {
+      "seq": 52,
+      "source_event_id": "SYN-L049",
+      "received_at": "2026-10-28T17:06:00+01:00",
+      "group": "returning_contact",
+      "subtype": "recontact",
+      "patterns": [
+        "S-21"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "alba.martin@analisis-prisma.example",
+        "country_code": "ES",
+        "owner": "ES-02",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 5,
+            "need": 25,
+            "readiness": 10
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 20,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "DUPLICATE_EVENT_RECONTACT",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-29T15:02:00+01:00",
+          "followed_up_before_event": false
+        },
+        "response_target": {
+          "priority": "P2",
+          "target_at": "2026-10-29T11:02:00+01:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "returning contact; fit high (80), engagement medium (20) -> P2 (rule 5); owner ES-02; no new SLA, target Thu 29 Oct 11:02."
+    },
+    {
+      "seq": 53,
+      "source_event_id": "SYN-L050",
+      "received_at": "2026-10-28T17:10:00+01:00",
+      "group": "ambiguous_identity",
+      "subtype": "ambiguous_identity",
+      "patterns": [
+        "S-11"
+      ],
+      "expected": {
+        "outcome": "attached_to_existing_contact",
+        "lead_created": false,
+        "normalised_email": "j.ribeiro@tendencias-vertice.example",
+        "country_code": "PT",
+        "owner": "PT-01",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 5,
+            "need": 0,
+            "readiness": 0
+          },
+          "total": 5,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "IDENTITY_REVIEW",
+          "PRIORITY_DEFAULT"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-20T14:41:00+02:00",
+          "followed_up_before_event": true
+        },
+        "response_target": {
+          "priority": "P3",
+          "target_at": "2026-10-20T14:41:00+02:00",
+          "target_changed": false
+        },
+        "stored_email_kept": "joao.ribeiro@tendencias-vertice.example",
+        "parallel_review": {
+          "reason_code": "IDENTITY_REVIEW",
+          "action_owner": "revops"
+        }
+      },
+      "explanation": "matched by CRM contact ID; fit low (5), engagement medium (30) -> P3 (rule 7); owner PT-01; no new SLA, target Tue 20 Oct 14:41."
+    },
+    {
+      "seq": 54,
+      "source_event_id": "SYN-L051",
+      "received_at": "2026-10-29T09:32:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "pedro.sousa@estudos-bussola.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 5,
+            "need": 5,
+            "readiness": 10
+          },
+          "total": 20,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-10-29T09:32:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-29T17:32:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-10-29T17:32:00+01:00"
+        }
+      },
+      "explanation": "fit low (20), engagement medium (25) -> P3 (rule 7); round-robin -> PT-02; target Thu 29 Oct 17:32, SLA Thu 29 Oct 17:32."
+    },
+    {
+      "seq": 55,
+      "source_event_id": "SYN-L052",
+      "received_at": "2026-10-29T10:03:00+01:00",
+      "group": "returning_contact",
+      "subtype": "same_company",
+      "patterns": [
+        "S-22"
+      ],
+      "expected": {
+        "normalised_email": "andres.torres@consultora-delta.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 15,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "SAME_COMPANY_RECENT_CONTACT",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned_to_company_owner",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": false,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-10-29T10:03:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-30T09:03:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-29T14:03:00+01:00"
+        }
+      },
+      "explanation": "fit high (80), engagement medium (30) -> P2 (rule 5); colleague's owner -> ES-02; target Thu 29 Oct 14:03, SLA Fri 30 Oct 09:03."
+    },
+    {
+      "seq": 56,
+      "source_event_id": "SYN-L053",
+      "received_at": "2026-10-29T12:05:00+01:00",
+      "group": "ambiguous_identity",
+      "subtype": "ambiguous_identity",
+      "patterns": [
+        "S-11"
+      ],
+      "expected": {
+        "outcome": "attached_to_existing_contact",
+        "lead_created": false,
+        "normalised_email": "n.girard@tendances-atlas.example",
+        "country_code": "FR",
+        "owner": "FR-02",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 35,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "IDENTITY_REVIEW",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-28T11:02:00+01:00",
+          "followed_up_before_event": true
+        },
+        "response_target": {
+          "priority": "P2",
+          "target_at": "2026-10-27T16:02:00+01:00",
+          "target_changed": false
+        },
+        "stored_email_kept": "nicolas.girard@tendances-atlas.example",
+        "parallel_review": {
+          "reason_code": "IDENTITY_REVIEW",
+          "action_owner": "revops"
+        }
+      },
+      "explanation": "matched by CRM contact ID; fit high (80), engagement medium (35) -> P2 (rule 5); owner FR-02; no new SLA, target Tue 27 Oct 16:02."
+    },
+    {
+      "seq": 57,
+      "source_event_id": "SYN-L054",
+      "received_at": "2026-10-29T12:07:00+01:00",
+      "group": "blocking_exception",
+      "subtype": "invalid_email",
+      "patterns": [
+        "S-24"
+      ],
+      "expected": {
+        "outcome": "review",
+        "processing_status": "review_required",
+        "normalised_email": null,
+        "country_code": "FR",
+        "lead_created": false,
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 0,
+            "need": 25,
+            "readiness": null
+          },
+          "total": 55,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "EMAIL_INVALID",
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-29T12:07:00+01:00"
+      },
+      "explanation": "fit incomplete (provisional 55), engagement unknown -> P2 (rule 6) shown while waiting; EMAIL_INVALID -> unassigned_review (revops); no SLA yet."
+    },
+    {
+      "seq": 58,
+      "source_event_id": "SYN-L055",
+      "received_at": "2026-10-29T12:28:00+01:00",
+      "group": "participant",
+      "subtype": "participant",
+      "patterns": [
+        "S-09"
+      ],
+      "expected": {
+        "normalised_email": null,
+        "country_code": "FR",
+        "lead_created": false,
+        "owner": null,
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "sla": null,
+        "response_target": null,
+        "outcome": "redirected",
+        "processing_status": "redirected",
+        "review_queue": null,
+        "reason_codes": [
+          "PARTICIPANT_REDIRECT"
+        ],
+        "referral": {
+          "referral_method": "automated_reply_panelists",
+          "attempt_status": "simulated",
+          "supplier_code": "SUP-FR-01",
+          "destination_url": "https://panel-partner-fr.example/rejoindre",
+          "personal_data_transferred": false
+        }
+      },
+      "explanation": "Paid-survey participant: simulated referral to SUP-FR-01; no lead, score or SLA."
+    },
+    {
+      "seq": 59,
+      "source_event_id": "SYN-L056",
+      "received_at": "2026-10-29T13:12:00+01:00",
+      "group": "returning_contact",
+      "subtype": "existing",
+      "patterns": [
+        "S-10"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "leonor.sousa@analise-norte.example",
+        "country_code": "PT",
+        "owner": "PT-01",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 0,
+            "need": 5,
+            "readiness": 0
+          },
+          "total": 35,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "EXISTING_CONTACT",
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-23T15:00:00+02:00",
+          "followed_up_before_event": true
+        },
+        "response_target": {
+          "priority": "P1",
+          "target_at": "2026-10-22T17:00:00+02:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "returning contact; fit low (35), engagement high (70) -> P1 (rule 2); owner PT-01; no new SLA, target Thu 22 Oct 17:00."
+    },
+    {
+      "seq": 60,
+      "source_event_id": "SYN-L057",
+      "received_at": "2026-10-29T14:40:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-02"
+      ],
+      "expected": {
+        "normalised_email": "clara.bernard@etudes-nord.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 15,
+            "need": 15,
+            "readiness": 5
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 3,
+        "reason_codes": [
+          "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-01",
+        "sla": {
+          "starts": "2026-10-29T14:40:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-10-30T13:40:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-29T15:40:00+01:00"
+        }
+      },
+      "explanation": "fit high (75), engagement high (45) -> P1 (rule 3); round-robin -> FR-02; target Thu 29 Oct 15:40, SLA Fri 30 Oct 13:40."
+    },
+    {
+      "seq": 61,
+      "source_event_id": "SYN-L058",
+      "received_at": "2026-10-29T15:54:00+01:00",
+      "group": "blocking_exception",
+      "subtype": "unsupported_territory",
+      "patterns": [
+        "S-13"
+      ],
+      "expected": {
+        "normalised_email": "jonas.weber@markt-nord.example",
+        "country_code": "DE",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 5,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 75,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 3,
+        "reason_codes": [
+          "UNSUPPORTED_TERRITORY",
+          "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT"
+        ],
+        "outcome": "review",
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "sales_manager",
+        "round_robin_advanced": false,
+        "round_robin_next_after": null,
+        "sla": null,
+        "response_target": null,
+        "waiting_since": "2026-10-29T15:54:00+01:00"
+      },
+      "explanation": "fit high (75), engagement high (45) -> P1 (rule 3) shown while waiting; UNSUPPORTED_TERRITORY -> unassigned_review (sales_manager); no SLA yet."
+    },
+    {
+      "seq": 62,
+      "source_event_id": "SYN-L059",
+      "received_at": "2026-10-30T10:17:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "catarina.costa@analise-tejo.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 10,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 90,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-10-30T10:17:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-02T09:17:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-10-30T11:17:00+01:00"
+        }
+      },
+      "explanation": "fit high (90), engagement high (70) -> P1 (rule 2); round-robin -> PT-01; target Fri 30 Oct 11:17, SLA Mon 02 Nov 09:17."
+    },
+    {
+      "seq": 63,
+      "source_event_id": "SYN-L060",
+      "received_at": "2026-10-30T12:45:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "B-04",
+        "S-27"
+      ],
+      "expected": {
+        "normalised_email": "andre.ferreira@correio-pessoal.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 0,
+            "readiness": 5
+          },
+          "total": 45,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT",
+          "DOMAIN_MISSING"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-10-30T12:45:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-02T11:45:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-10-30T16:45:00+01:00"
+        }
+      },
+      "explanation": "fit medium (45), engagement medium (25) -> P2 (rule 5); round-robin -> PT-02; target Fri 30 Oct 16:45, SLA Mon 02 Nov 11:45."
+    },
+    {
+      "seq": 64,
+      "source_event_id": "SYN-L061",
+      "received_at": "2026-10-30T14:59:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "matilde.lopes@painel-atlantico.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 5,
+            "need": 5,
+            "readiness": 0
+          },
+          "total": 30,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 20,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-10-30T14:59:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-02T13:59:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-02T13:59:00+01:00"
+        }
+      },
+      "explanation": "fit low (30), engagement medium (20) -> P3 (rule 7); round-robin -> PT-01; target Mon 02 Nov 13:59, SLA Mon 02 Nov 13:59."
+    },
+    {
+      "seq": 65,
+      "source_event_id": "SYN-L062",
+      "received_at": "2026-10-30T16:26:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-03"
+      ],
+      "expected": {
+        "normalised_email": "andres.iglesias@datos-sol.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": null,
+            "need": 0,
+            "readiness": 0
+          },
+          "total": 0,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P2",
+        "priority_rule": 4,
+        "reason_codes": [
+          "PRIORITY_HIGH_ENGAGEMENT",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-10-30T16:26:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-02T15:26:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-02T11:26:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 0), engagement high (45) -> P2 (rule 4); round-robin -> ES-01; target Mon 02 Nov 11:26, SLA Mon 02 Nov 15:26."
+    },
+    {
+      "seq": 66,
+      "source_event_id": "SYN-L063",
+      "received_at": "2026-10-30T19:29:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "julie.michel@etudes-phare.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": 0,
+            "need": 15,
+            "readiness": 15
+          },
+          "total": 30,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-10-30T19:29:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-02T17:00:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-02T13:00:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 30), engagement medium (30) -> P2 (rule 6); round-robin -> FR-01; target Mon 02 Nov 13:00, SLA Mon 02 Nov 17:00."
+    },
+    {
+      "seq": 67,
+      "source_event_id": "SYN-L064",
+      "received_at": "2026-11-01T14:10:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-04"
+      ],
+      "expected": {
+        "normalised_email": "ines.ribeiro@painel-prisma.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 15,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 85,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-11-01T14:10:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-02T17:00:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-02T13:00:00+01:00"
+        }
+      },
+      "explanation": "fit high (85), engagement medium (30) -> P2 (rule 5); round-robin -> PT-02; target Mon 02 Nov 13:00, SLA Mon 02 Nov 17:00."
+    },
+    {
+      "seq": 68,
+      "source_event_id": "SYN-L065",
+      "received_at": "2026-11-02T08:58:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "ines.sousa@analise-atlantico.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 10,
+            "need": 15,
+            "readiness": 0
+          },
+          "total": 25,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-11-02T08:58:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-02T17:00:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-02T17:00:00+01:00"
+        }
+      },
+      "explanation": "fit low (25), engagement medium (25) -> P3 (rule 7); round-robin -> PT-01; target Mon 02 Nov 17:00, SLA Mon 02 Nov 17:00."
+    },
+    {
+      "seq": 69,
+      "source_event_id": "SYN-L066",
+      "received_at": "2026-11-02T12:12:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "julie.laurent@sondages-prisme.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 15,
+            "need": 5,
+            "readiness": 10
+          },
+          "total": 30,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 0,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-02T12:12:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-03T11:12:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-03T11:12:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit low (30), engagement low (0) -> P3 (rule 7); round-robin -> FR-01, skipped FR-02; target Tue 03 Nov 11:12, SLA Tue 03 Nov 11:12."
+    },
+    {
+      "seq": 70,
+      "source_event_id": "SYN-L067",
+      "received_at": "2026-11-02T15:37:00+01:00",
+      "group": "participant",
+      "subtype": "participant",
+      "patterns": [
+        "S-09"
+      ],
+      "expected": {
+        "normalised_email": null,
+        "country_code": "ES",
+        "lead_created": false,
+        "owner": null,
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "sla": null,
+        "response_target": null,
+        "outcome": "redirected",
+        "processing_status": "redirected",
+        "review_queue": null,
+        "reason_codes": [
+          "PARTICIPANT_REDIRECT"
+        ],
+        "referral": {
+          "referral_method": "automated_reply_panelists",
+          "attempt_status": "simulated",
+          "supplier_code": "SUP-ES-01",
+          "destination_url": "https://panel-partner-es.example/join",
+          "personal_data_transferred": false
+        }
+      },
+      "explanation": "Paid-survey participant: simulated referral to SUP-ES-01; no lead, score or SLA."
+    },
+    {
+      "seq": 71,
+      "source_event_id": "SYN-L068",
+      "received_at": "2026-11-02T16:15:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-04",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "emma.bernard@terrain-azur.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 10,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-02T16:15:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-03T15:15:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-03T11:15:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit high (80), engagement low (10) -> P2 (rule 5); round-robin -> FR-01, skipped FR-02; target Tue 03 Nov 11:15, SLA Tue 03 Nov 15:15."
+    },
+    {
+      "seq": 72,
+      "source_event_id": "SYN-L069",
+      "received_at": "2026-11-02T16:46:00+01:00",
+      "group": "returning_contact",
+      "subtype": "existing_after_followup_request",
+      "patterns": [
+        "S-32"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "mario.vidal@campo-sol.example",
+        "country_code": "ES",
+        "owner": "ES-01",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": 15,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 25,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "EXISTING_CONTACT",
+          "PRIORITY_EXPLICIT_REQUEST",
+          "FIT_INCOMPLETE"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-26T15:25:00+01:00",
+          "followed_up_before_event": true
+        },
+        "response_target": {
+          "priority": "P1",
+          "target_at": "2026-10-26T11:25:00+01:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "returning contact; fit incomplete (provisional 25), engagement high (70) -> P1 (rule 2); owner ES-01; no new SLA, target Mon 26 Oct 11:25."
+    },
+    {
+      "seq": 73,
+      "source_event_id": "SYN-L070",
+      "received_at": "2026-11-02T17:03:00+01:00",
+      "group": "supplier_or_both",
+      "subtype": "both",
+      "patterns": [
+        "S-30"
+      ],
+      "expected": {
+        "normalised_email": "carmen.martin@campo-prisma.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 20,
+            "need": 25,
+            "readiness": 5
+          },
+          "total": 90,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 15,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "SUPPLIER_REVIEW",
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "parallel_review": {
+          "reason_code": "SUPPLIER_REVIEW",
+          "action_owner": "sales_manager"
+        },
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-11-02T17:03:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-03T16:03:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-03T12:03:00+01:00"
+        }
+      },
+      "explanation": "fit high (90), engagement medium (15) -> P2 (rule 5); round-robin -> ES-02; target Tue 03 Nov 12:03, SLA Tue 03 Nov 16:03."
+    },
+    {
+      "seq": 74,
+      "source_event_id": "SYN-L071",
+      "received_at": "2026-11-02T21:42:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05",
+        "S-27"
+      ],
+      "expected": {
+        "normalised_email": "carmen.sanchez@correo-personal.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": null,
+            "readiness": 15
+          },
+          "total": 55,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 20,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE",
+          "DOMAIN_MISSING"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-11-02T21:42:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-03T17:00:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-03T13:00:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 55), engagement medium (20) -> P2 (rule 6); round-robin -> ES-01; target Tue 03 Nov 13:00, SLA Tue 03 Nov 17:00."
+    },
+    {
+      "seq": 75,
+      "source_event_id": "SYN-L071",
+      "received_at": "2026-11-02T22:17:00+01:00",
+      "group": "replay",
+      "subtype": "replay",
+      "patterns": [
+        "S-17"
+      ],
+      "expected": {
+        "outcome": "duplicate_event_ignored",
+        "event_stored_again": false,
+        "new_decision": false,
+        "lead_created": false,
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": false,
+        "reason_codes": [
+          "DUPLICATE_EVENT_RECONTACT"
+        ]
+      },
+      "explanation": "Same source event delivered again: ignored, nothing changes."
+    },
+    {
+      "seq": 76,
+      "source_event_id": "SYN-L072",
+      "received_at": "2026-11-03T09:26:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01"
+      ],
+      "expected": {
+        "normalised_email": "carmen.delgado@panel-norte.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": null,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 55,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-11-03T09:26:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-03T17:26:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-11-03T10:26:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 55), engagement high (70) -> P1 (rule 2); round-robin -> ES-02; target Tue 03 Nov 10:26, SLA Tue 03 Nov 17:26."
+    },
+    {
+      "seq": 77,
+      "source_event_id": "SYN-L073",
+      "received_at": "2026-11-03T09:35:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01"
+      ],
+      "expected": {
+        "normalised_email": "marta.ruiz@tendencias-delta.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 15,
+            "need": 0,
+            "readiness": null
+          },
+          "total": 35,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 60,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-11-03T09:35:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-03T17:35:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-11-03T10:35:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 35), engagement high (60) -> P1 (rule 2); round-robin -> ES-01; target Tue 03 Nov 10:35, SLA Tue 03 Nov 17:35."
+    },
+    {
+      "seq": 78,
+      "source_event_id": "SYN-L074",
+      "received_at": "2026-11-03T11:19:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "clara.dubois@terrain-prisme.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 10,
+            "need": 5,
+            "readiness": 15
+          },
+          "total": 30,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-03T11:19:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-04T10:19:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-11-03T12:19:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit low (30), engagement high (70) -> P1 (rule 2); round-robin -> FR-01, skipped FR-02; target Tue 03 Nov 12:19, SLA Wed 04 Nov 10:19."
+    },
+    {
+      "seq": 79,
+      "source_event_id": "SYN-L075",
+      "received_at": "2026-11-03T15:02:00+01:00",
+      "group": "supplier_or_both",
+      "subtype": "supplier",
+      "patterns": [
+        "S-08",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "elena.martin@mercados-vertice.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 5,
+            "need": null,
+            "readiness": null
+          },
+          "total": 45,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "SUPPLIER_REVIEW",
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "parallel_review": {
+          "reason_code": "SUPPLIER_REVIEW",
+          "action_owner": "sales_manager"
+        },
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-11-03T15:02:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-04T14:02:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-04T10:02:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 45), engagement low (10) -> P2 (rule 6); round-robin -> ES-02; target Wed 04 Nov 10:02, SLA Wed 04 Nov 14:02."
+    },
+    {
+      "seq": 80,
+      "source_event_id": "SYN-L076",
+      "received_at": "2026-11-03T17:07:00+01:00",
+      "group": "supplier_or_both",
+      "subtype": "supplier",
+      "patterns": [
+        "S-08"
+      ],
+      "expected": {
+        "normalised_email": "joao.santos@estudos-tejo.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 5,
+            "need": null,
+            "readiness": null
+          },
+          "total": 45,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "SUPPLIER_REVIEW",
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "parallel_review": {
+          "reason_code": "SUPPLIER_REVIEW",
+          "action_owner": "sales_manager"
+        },
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-11-03T17:07:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-04T16:07:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-04T12:07:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 45), engagement low (10) -> P2 (rule 6); round-robin -> PT-02; target Wed 04 Nov 12:07, SLA Wed 04 Nov 16:07."
+    },
+    {
+      "seq": 81,
+      "source_event_id": "SYN-L077",
+      "received_at": "2026-11-03T17:39:00+01:00",
+      "group": "participant",
+      "subtype": "participant_no_rule",
+      "patterns": [
+        "S-29"
+      ],
+      "expected": {
+        "normalised_email": null,
+        "country_code": "PT",
+        "lead_created": false,
+        "owner": null,
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "sla": null,
+        "response_target": null,
+        "outcome": "review",
+        "processing_status": "review_required",
+        "review_queue": "participant_redirect_review",
+        "action_owner": "revops",
+        "reason_codes": [
+          "NO_REDIRECT_RULE"
+        ],
+        "referral": {
+          "referral_method": "automated_reply_panelists",
+          "attempt_status": "review_required",
+          "error_code": "NO_REDIRECT_RULE",
+          "personal_data_transferred": false
+        }
+      },
+      "explanation": "Paid-survey participant from a country without a redirect rule: RevOps handles it; no lead."
+    },
+    {
+      "seq": 82,
+      "source_event_id": "SYN-L078",
+      "received_at": "2026-11-03T19:55:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "theo.martin@marches-seine.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 10,
+            "need": 15,
+            "readiness": 5
+          },
+          "total": 50,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 0,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-03T19:55:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-04T17:00:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-04T17:00:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit medium (50), engagement low (0) -> P3 (rule 7); round-robin -> FR-01, skipped FR-02; target Wed 04 Nov 17:00, SLA Wed 04 Nov 17:00."
+    },
+    {
+      "seq": 83,
+      "source_event_id": "SYN-L079",
+      "received_at": "2026-11-04T09:33:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "maxime.simon@tendances-prisme.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 10,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 40,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-04T09:33:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-04T17:33:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-04T17:33:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit medium (40), engagement low (10) -> P3 (rule 7); round-robin -> FR-01, skipped FR-02; target Wed 04 Nov 17:33, SLA Wed 04 Nov 17:33."
+    },
+    {
+      "seq": 84,
+      "source_event_id": "SYN-L080",
+      "received_at": "2026-11-04T09:50:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-03"
+      ],
+      "expected": {
+        "normalised_email": "elena.vidal@tendencias-vertice-2.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": 5,
+            "need": 25,
+            "readiness": 0
+          },
+          "total": 30,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P2",
+        "priority_rule": 4,
+        "reason_codes": [
+          "PRIORITY_HIGH_ENGAGEMENT",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-11-04T09:50:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-04T17:50:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-04T13:50:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 30), engagement high (45) -> P2 (rule 4); round-robin -> ES-01; target Wed 04 Nov 13:50, SLA Wed 04 Nov 17:50."
+    },
+    {
+      "seq": 85,
+      "source_event_id": "SYN-L081",
+      "received_at": "2026-11-04T11:54:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "camille.roux@analyse-azur.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 0,
+            "need": 0,
+            "readiness": 15
+          },
+          "total": 15,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-04T11:54:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-05T10:54:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-05T10:54:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit low (15), engagement medium (25) -> P3 (rule 7); round-robin -> FR-01, skipped FR-02; target Thu 05 Nov 10:54, SLA Thu 05 Nov 10:54."
+    },
+    {
+      "seq": 86,
+      "source_event_id": "SYN-L082",
+      "received_at": "2026-11-04T14:29:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07",
+        "S-20"
+      ],
+      "expected": {
+        "normalised_email": "andre.lopes@painel-delta.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 0,
+            "need": 0,
+            "readiness": 0
+          },
+          "total": 20,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 20,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-11-04T14:29:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-05T13:29:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-05T13:29:00+01:00"
+        }
+      },
+      "explanation": "fit low (20), engagement medium (20) -> P3 (rule 7); round-robin -> PT-01; target Thu 05 Nov 13:29, SLA Thu 05 Nov 13:29."
+    },
+    {
+      "seq": 87,
+      "source_event_id": "SYN-L083",
+      "received_at": "2026-11-04T15:36:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "nuno.ribeiro@opiniao-vertice.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 10,
+            "need": 5,
+            "readiness": 0
+          },
+          "total": 35,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-11-04T15:36:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-05T14:36:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-05T14:36:00+01:00"
+        }
+      },
+      "explanation": "fit low (35), engagement low (10) -> P3 (rule 7); round-robin -> PT-02; target Thu 05 Nov 14:36, SLA Thu 05 Nov 14:36."
+    },
+    {
+      "seq": 88,
+      "source_event_id": "SYN-L084",
+      "received_at": "2026-11-05T09:46:00+01:00",
+      "group": "returning_contact",
+      "subtype": "existing_stored_company",
+      "patterns": [
+        "S-10"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "ines.sousa@analise-atlantico.example",
+        "country_code": "PT",
+        "owner": "PT-01",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 10,
+            "need": 15,
+            "readiness": 0
+          },
+          "total": 25,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 30,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "EXISTING_CONTACT",
+          "PRIORITY_DEFAULT"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-11-02T17:00:00+01:00",
+          "followed_up_before_event": true
+        },
+        "response_target": {
+          "priority": "P3",
+          "target_at": "2026-11-02T17:00:00+01:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "returning contact; fit low (25), engagement medium (30) -> P3 (rule 7); owner PT-01; no new SLA, target Mon 02 Nov 17:00."
+    },
+    {
+      "seq": 89,
+      "source_event_id": "SYN-L085",
+      "received_at": "2026-11-05T14:13:00+01:00",
+      "group": "blocking_exception",
+      "subtype": "owner_review",
+      "patterns": [
+        "S-26"
+      ],
+      "expected": {
+        "outcome": "review",
+        "lead_created": false,
+        "normalised_email": "lea.roux@analyse-sommet.example",
+        "country_code": "FR",
+        "owner": "FR-02",
+        "review_queue": "unassigned_review",
+        "action_owner": "sales_manager",
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": null,
+            "need": 15,
+            "readiness": 0
+          },
+          "total": 15,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 25,
+          "status": "complete",
+          "band": "medium"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "EXISTING_CONTACT",
+          "OWNER_REVIEW",
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-10-26T09:14:00+01:00",
+          "followed_up_before_event": false
+        },
+        "response_target": {
+          "priority": "P2",
+          "target_at": "2026-10-23T14:14:00+02:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "owner inactive -> Sales Manager review; fit incomplete (provisional 15), engagement medium (25) -> P2 (rule 6); owner FR-02; no new SLA, target Fri 23 Oct 14:14."
+    },
+    {
+      "seq": 90,
+      "source_event_id": null,
+      "received_at": "2026-11-05T14:19:00+01:00",
+      "group": "malformed",
+      "subtype": "malformed",
+      "patterns": [
+        "S-14"
+      ],
+      "expected": {
+        "outcome": "rejected",
+        "event_stored": true,
+        "processing_status": "rejected",
+        "error_code": "SOURCE_EVENT_INVALID",
+        "lead_created": false,
+        "owner": null,
+        "review_queue": "unassigned_review",
+        "action_owner": "revops",
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "reason_codes": [
+          "SOURCE_EVENT_INVALID"
+        ],
+        "sla": null,
+        "response_target": null
+      },
+      "explanation": "No source event ID: stored for traceability, rejected with SOURCE_EVENT_INVALID."
+    },
+    {
+      "seq": 91,
+      "source_event_id": "SYN-L086",
+      "received_at": "2026-11-05T15:03:00+01:00",
+      "group": "participant",
+      "subtype": "participant",
+      "patterns": [
+        "S-09"
+      ],
+      "expected": {
+        "normalised_email": null,
+        "country_code": "ES",
+        "lead_created": false,
+        "owner": null,
+        "round_robin_advanced": false,
+        "fit": null,
+        "engagement": null,
+        "priority": null,
+        "priority_rule": null,
+        "sla": null,
+        "response_target": null,
+        "outcome": "redirected",
+        "processing_status": "redirected",
+        "review_queue": null,
+        "reason_codes": [
+          "PARTICIPANT_REDIRECT"
+        ],
+        "referral": {
+          "referral_method": "automated_reply_panelists",
+          "attempt_status": "simulated",
+          "supplier_code": "SUP-ES-01",
+          "destination_url": "https://panel-partner-es.example/join",
+          "personal_data_transferred": false
+        }
+      },
+      "explanation": "Paid-survey participant: simulated referral to SUP-ES-01; no lead, score or SLA."
+    },
+    {
+      "seq": 92,
+      "source_event_id": "SYN-L087",
+      "received_at": "2026-11-05T16:10:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-01",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "julien.lefevre@etudes-delta.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 5,
+            "readiness": 10
+          },
+          "total": 55,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 60,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-05T16:10:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-06T15:10:00+01:00"
+        },
+        "response_target": {
+          "priority": "P1",
+          "allowance_business_minutes": 60,
+          "target_at": "2026-11-05T17:10:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit medium (55), engagement high (60) -> P1 (rule 2); round-robin -> FR-01, skipped FR-02; target Thu 05 Nov 17:10, SLA Fri 06 Nov 15:10."
+    },
+    {
+      "seq": 93,
+      "source_event_id": "SYN-L088",
+      "received_at": "2026-11-05T16:11:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "mario.garcia@panel-delta.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 20,
+            "size": 5,
+            "need": 5,
+            "readiness": 15
+          },
+          "total": 45,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 0,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-11-05T16:11:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-06T15:11:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-06T15:11:00+01:00"
+        }
+      },
+      "explanation": "fit medium (45), engagement low (0) -> P3 (rule 7); round-robin -> ES-02; target Fri 06 Nov 15:11, SLA Fri 06 Nov 15:11."
+    },
+    {
+      "seq": 94,
+      "source_event_id": "SYN-L089",
+      "received_at": "2026-11-06T10:56:00+01:00",
+      "group": "returning_contact",
+      "subtype": "recontact",
+      "patterns": [
+        "S-21"
+      ],
+      "expected": {
+        "outcome": "existing_owner_kept",
+        "lead_created": false,
+        "normalised_email": "julien.lefevre@etudes-delta.example",
+        "country_code": "FR",
+        "owner": "FR-01",
+        "review_queue": null,
+        "action_owner": null,
+        "round_robin_advanced": false,
+        "fit": {
+          "components": {
+            "industry": 40,
+            "size": 0,
+            "need": 5,
+            "readiness": 10
+          },
+          "total": 55,
+          "status": "complete",
+          "band": "medium"
+        },
+        "engagement": {
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P1",
+        "priority_rule": 2,
+        "reason_codes": [
+          "DUPLICATE_EVENT_RECONTACT",
+          "PRIORITY_EXPLICIT_REQUEST"
+        ],
+        "sla": {
+          "new_sla_created": false,
+          "deadline": "2026-11-06T15:10:00+01:00",
+          "followed_up_before_event": true
+        },
+        "response_target": {
+          "priority": "P1",
+          "target_at": "2026-11-05T17:10:00+01:00",
+          "target_changed": false
+        }
+      },
+      "explanation": "returning contact; fit medium (55), engagement high (70) -> P1 (rule 2); owner FR-01; no new SLA, target Thu 05 Nov 17:10."
+    },
+    {
+      "seq": 95,
+      "source_event_id": "SYN-L090",
+      "received_at": "2026-11-06T11:13:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-04",
+        "S-31"
+      ],
+      "expected": {
+        "normalised_email": "antoine.leroy@marches-horizon.example",
+        "country_code": "FR",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 20,
+            "need": 25,
+            "readiness": 5
+          },
+          "total": 80,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": 10,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT"
+        ],
+        "outcome": "assigned",
+        "owner": "FR-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "FR-02",
+        "sla": {
+          "starts": "2026-11-06T11:13:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-09T10:13:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-06T15:13:00+01:00"
+        },
+        "rotation_skipped": [
+          "FR-02"
+        ]
+      },
+      "explanation": "fit high (80), engagement low (10) -> P2 (rule 5); round-robin -> FR-01, skipped FR-02; target Fri 06 Nov 15:13, SLA Mon 09 Nov 10:13."
+    },
+    {
+      "seq": 96,
+      "source_event_id": "SYN-L091",
+      "received_at": "2026-11-06T12:32:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-04"
+      ],
+      "expected": {
+        "normalised_email": "leonor.pereira@painel-farol.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 30,
+            "size": 10,
+            "need": 25,
+            "readiness": 5
+          },
+          "total": 70,
+          "status": "complete",
+          "band": "high"
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 5,
+        "reason_codes": [
+          "PRIORITY_STANDARD_FIT",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-02",
+        "sla": {
+          "starts": "2026-11-06T12:32:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-09T11:32:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-06T16:32:00+01:00"
+        }
+      },
+      "explanation": "fit high (70), engagement unknown -> P2 (rule 5); round-robin -> PT-01; target Fri 06 Nov 16:32, SLA Mon 09 Nov 11:32."
+    },
+    {
+      "seq": 97,
+      "source_event_id": "SYN-L092",
+      "received_at": "2026-11-06T12:56:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-05"
+      ],
+      "expected": {
+        "normalised_email": "laura.torres@tendencias-prisma.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": 10,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 20,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": null,
+          "status": "unknown",
+          "band": "unknown"
+        },
+        "priority": "P2",
+        "priority_rule": 6,
+        "reason_codes": [
+          "PRIORITY_MISSING_INFO",
+          "FIT_INCOMPLETE",
+          "ENGAGEMENT_UNKNOWN"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-02",
+        "sla": {
+          "starts": "2026-11-06T12:56:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-09T11:56:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-06T16:56:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 20), engagement unknown -> P2 (rule 6); round-robin -> ES-01; target Fri 06 Nov 16:56, SLA Mon 09 Nov 11:56."
+    },
+    {
+      "seq": 98,
+      "source_event_id": "SYN-L092",
+      "received_at": "2026-11-06T13:09:00+01:00",
+      "group": "replay",
+      "subtype": "replay",
+      "patterns": [
+        "S-17"
+      ],
+      "expected": {
+        "outcome": "duplicate_event_ignored",
+        "event_stored_again": false,
+        "new_decision": false,
+        "lead_created": false,
+        "owner": "ES-01",
+        "review_queue": null,
+        "round_robin_advanced": false,
+        "reason_codes": [
+          "DUPLICATE_EVENT_RECONTACT"
+        ]
+      },
+      "explanation": "Same source event delivered again: ignored, nothing changes."
+    },
+    {
+      "seq": 99,
+      "source_event_id": "SYN-L093",
+      "received_at": "2026-11-06T15:55:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-03"
+      ],
+      "expected": {
+        "normalised_email": "alba.sanchez@consultora-sol.example",
+        "country_code": "ES",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": null,
+            "size": 20,
+            "need": 25,
+            "readiness": 15
+          },
+          "total": 60,
+          "status": "incomplete",
+          "band": null
+        },
+        "engagement": {
+          "total": 45,
+          "status": "complete",
+          "band": "high"
+        },
+        "priority": "P2",
+        "priority_rule": 4,
+        "reason_codes": [
+          "PRIORITY_HIGH_ENGAGEMENT",
+          "FIT_INCOMPLETE"
+        ],
+        "outcome": "assigned",
+        "owner": "ES-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "ES-01",
+        "sla": {
+          "starts": "2026-11-06T15:55:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-09T14:55:00+01:00"
+        },
+        "response_target": {
+          "priority": "P2",
+          "allowance_business_minutes": 240,
+          "target_at": "2026-11-09T10:55:00+01:00"
+        }
+      },
+      "explanation": "fit incomplete (provisional 60), engagement high (45) -> P2 (rule 4); round-robin -> ES-02; target Mon 09 Nov 10:55, SLA Mon 09 Nov 14:55."
+    },
+    {
+      "seq": 100,
+      "source_event_id": "SYN-L094",
+      "received_at": "2026-11-06T16:49:00+01:00",
+      "group": "new_buyer_assignable",
+      "subtype": "assignable",
+      "patterns": [
+        "S-07"
+      ],
+      "expected": {
+        "normalised_email": "catarina.santos@campo-lusa.example",
+        "country_code": "PT",
+        "lead_created": true,
+        "fit": {
+          "components": {
+            "industry": 0,
+            "size": 20,
+            "need": 5,
+            "readiness": 5
+          },
+          "total": 30,
+          "status": "complete",
+          "band": "low"
+        },
+        "engagement": {
+          "total": 5,
+          "status": "complete",
+          "band": "low"
+        },
+        "priority": "P3",
+        "priority_rule": 7,
+        "reason_codes": [
+          "PRIORITY_DEFAULT"
+        ],
+        "outcome": "assigned",
+        "owner": "PT-02",
+        "review_queue": null,
+        "round_robin_advanced": true,
+        "round_robin_next_after": "PT-01",
+        "sla": {
+          "starts": "2026-11-06T16:49:00+01:00",
+          "allowance_business_minutes": 480,
+          "deadline": "2026-11-09T15:49:00+01:00"
+        },
+        "response_target": {
+          "priority": "P3",
+          "allowance_business_minutes": 480,
+          "target_at": "2026-11-09T15:49:00+01:00"
+        }
+      },
+      "explanation": "fit low (30), engagement low (5) -> P3 (rule 7); round-robin -> PT-02; target Mon 09 Nov 15:49, SLA Mon 09 Nov 15:49."
+    }
+  ],
+  "leads": [
+    {
+      "lead_email": "sergio.vidal@analisis-atlas.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-28T12:45:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-29T11:45:00+01:00",
+      "response_target_at": "2026-10-28T16:45:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-29T10:04:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "alba.martin@analisis-prisma.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-28T16:02:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-29T15:02:00+01:00",
+      "response_target_at": "2026-10-29T11:02:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-29T09:05:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "leonor.pereira@painel-farol.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-06T12:32:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-09T11:32:00+01:00",
+      "response_target_at": "2026-11-06T16:32:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": null,
+      "sla_outcome": "pending",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "antoine.leroy@marches-horizon.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-06T11:13:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-09T10:13:00+01:00",
+      "response_target_at": "2026-11-06T15:13:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": null,
+      "sla_outcome": "pending",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "catarina.santos@campo-lusa.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-06T16:49:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-09T15:49:00+01:00",
+      "response_target_at": "2026-11-09T15:49:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": null,
+      "sla_outcome": "pending",
+      "response_target_outcome": "pending"
+    },
+    {
+      "lead_email": "alba.sanchez@consultora-sol.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-06T15:55:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-09T14:55:00+01:00",
+      "response_target_at": "2026-11-09T10:55:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": null,
+      "sla_outcome": "pending",
+      "response_target_outcome": "pending"
+    },
+    {
+      "lead_email": "mario.vidal@campo-sol.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-23T16:25:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-26T15:25:00+01:00",
+      "response_target_at": "2026-10-26T11:25:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-26T11:00:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "beatriz.martins@tendencias-bussola.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-25T15:33:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-26T17:00:00+01:00",
+      "response_target_at": "2026-10-26T10:00:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-27T09:01:00+01:00",
+      "sla_outcome": "breached",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "laura.torres@tendencias-prisma.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-06T12:56:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-09T11:56:00+01:00",
+      "response_target_at": "2026-11-06T16:56:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-06T16:43:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "sergio.iglesias@campo-delta.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-22T12:08:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-23T11:08:00+02:00",
+      "response_target_at": "2026-10-22T16:08:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-22T14:06:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "andre.costa@opiniao-tejo.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-13T09:59:00+02:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-13T17:59:00+02:00",
+      "response_target_at": "2026-10-13T17:59:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-13T15:39:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "lea.roux@analyse-sommet.example",
+      "country_code": "FR",
+      "owner": "FR-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-23T10:14:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-26T09:14:00+01:00",
+      "response_target_at": "2026-10-23T14:14:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": null,
+      "sla_outcome": "breached",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "ines.ribeiro@painel-prisma.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-01T14:10:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-02T17:00:00+01:00",
+      "response_target_at": "2026-11-02T13:00:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-02T11:18:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "louis.dubois@conseil-boussole.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-16T09:49:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-16T17:49:00+02:00",
+      "response_target_at": "2026-10-16T13:49:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-16T12:04:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "catarina.costa@analise-tejo.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-30T10:17:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-11-02T09:17:00+01:00",
+      "response_target_at": "2026-10-30T11:17:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-30T17:54:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "pedro.sousa@estudos-bussola.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-29T09:32:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-29T17:32:00+01:00",
+      "response_target_at": "2026-10-29T17:32:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-29T11:35:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "carmen.delgado@panel-norte.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-03T09:26:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-11-03T17:26:00+01:00",
+      "response_target_at": "2026-11-03T10:26:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T09:33:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "laura.sanchez@consultora-delta.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-28T14:35:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-29T13:35:00+01:00",
+      "response_target_at": "2026-10-28T15:35:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-28T15:07:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "carmen.sanchez@correo-personal.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-02T21:42:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-03T17:00:00+01:00",
+      "response_target_at": "2026-11-03T13:00:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T09:10:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "rocio.navarro@panel-iberica.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-20T13:24:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-21T12:24:00+02:00",
+      "response_target_at": "2026-10-20T17:24:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-20T14:27:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "julie.laurent@sondages-prisme.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-02T12:12:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-03T11:12:00+01:00",
+      "response_target_at": "2026-11-03T11:12:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T09:25:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "emma.bernard@terrain-azur.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-02T16:15:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-03T15:15:00+01:00",
+      "response_target_at": "2026-11-03T11:15:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T09:44:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "javier.moreno@consultora-prisma.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-22T13:57:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-23T12:57:00+02:00",
+      "response_target_at": "2026-10-22T17:57:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-22T16:39:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "lea.girard@courriel-perso.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-23T17:34:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-26T16:34:00+01:00",
+      "response_target_at": "2026-10-26T12:34:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-26T16:33:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "nuno.ribeiro@opiniao-vertice.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-04T15:36:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-05T14:36:00+01:00",
+      "response_target_at": "2026-11-05T14:36:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-04T16:01:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "paula.ortega@opinion-prisma.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-26T15:01:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-27T14:01:00+01:00",
+      "response_target_at": "2026-10-27T09:40:00+01:00",
+      "target_changes": [
+        {
+          "at": "2026-10-26T17:40:00+01:00",
+          "from": "2026-10-27T14:01:00+01:00",
+          "to": "2026-10-27T09:40:00+01:00",
+          "new_priority": "P1"
+        }
+      ],
+      "first_qualifying_followup_at": "2026-10-27T12:41:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "joao.ribeiro@tendencias-vertice.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-19T15:41:00+02:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-20T14:41:00+02:00",
+      "response_target_at": "2026-10-20T14:41:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-20T12:51:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "maxime.simon@tendances-prisme.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-04T09:33:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-04T17:33:00+01:00",
+      "response_target_at": "2026-11-04T17:33:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-04T17:15:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "julie.michel@etudes-phare.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-30T19:29:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-02T17:00:00+01:00",
+      "response_target_at": "2026-11-02T13:00:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-02T09:09:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "nicolas.girard@tendances-atlas.example",
+      "country_code": "FR",
+      "owner": "FR-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-27T12:02:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-28T11:02:00+01:00",
+      "response_target_at": "2026-10-27T16:02:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-27T15:28:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "duarte.silva@painel-horizonte.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-22T08:17:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-22T17:00:00+02:00",
+      "response_target_at": "2026-10-22T13:00:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-22T11:52:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "ines.ortega@panel-vertice.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-14T14:11:00+02:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-15T13:11:00+02:00",
+      "response_target_at": "2026-10-15T13:11:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-15T09:04:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "camille.roux@analyse-azur.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-04T11:54:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-05T10:54:00+01:00",
+      "response_target_at": "2026-11-05T10:54:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-05T10:19:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "clara.bernard@etudes-nord.example",
+      "country_code": "FR",
+      "owner": "FR-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-29T14:40:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-30T13:40:00+01:00",
+      "response_target_at": "2026-10-29T15:40:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-30T12:33:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "clara.dubois@terrain-prisme.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-03T11:19:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-11-04T10:19:00+01:00",
+      "response_target_at": "2026-11-03T12:19:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T17:58:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "elena.vidal@tendencias-vertice-2.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-04T09:50:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-04T17:50:00+01:00",
+      "response_target_at": "2026-11-04T13:50:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-04T14:54:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "julien.lefevre@etudes-delta.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-05T16:10:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-11-06T15:10:00+01:00",
+      "response_target_at": "2026-11-05T17:10:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-05T16:46:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "chloe.leroy@panel-prisme.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-14T18:35:00+02:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-15T17:00:00+02:00",
+      "response_target_at": "2026-10-15T10:00:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-15T09:56:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "andre.sousa@consultores-lusa.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-15T16:19:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-16T15:19:00+02:00",
+      "response_target_at": "2026-10-16T11:19:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-19T13:17:00+02:00",
+      "sla_outcome": "breached",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "hugo.bernard@sondages-boussole.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-22T14:01:00+02:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-23T13:01:00+02:00",
+      "response_target_at": "2026-10-23T13:01:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-23T10:15:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "andre.lopes@painel-delta.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-04T14:29:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-05T13:29:00+01:00",
+      "response_target_at": "2026-11-05T13:29:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-05T12:16:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "mario.garcia@panel-delta.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-05T16:11:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-06T15:11:00+01:00",
+      "response_target_at": "2026-11-06T15:11:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-06T12:15:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "matilde.lopes@painel-atlantico.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-30T14:59:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-02T13:59:00+01:00",
+      "response_target_at": "2026-11-02T13:59:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-02T11:41:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "ivan.navarro@tendencias-brujula.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-19T20:43:00+02:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-20T17:00:00+02:00",
+      "response_target_at": "2026-10-20T17:00:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-20T14:54:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "andre.ferreira@correio-pessoal.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-30T12:45:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-02T11:45:00+01:00",
+      "response_target_at": "2026-10-30T16:45:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-30T17:59:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "raul.navarro@analisis-iberica.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-19T10:32:00+02:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-20T09:32:00+02:00",
+      "response_target_at": "2026-10-19T11:32:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-19T14:04:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "leonor.sousa@analise-norte.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-22T16:00:00+02:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-23T15:00:00+02:00",
+      "response_target_at": "2026-10-22T17:00:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-23T10:16:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "julie.fournier@opinion-phare.example",
+      "country_code": "FR",
+      "owner": "FR-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-19T11:55:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-20T10:55:00+02:00",
+      "response_target_at": "2026-10-19T15:55:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-19T17:37:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "andres.iglesias@datos-sol.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-30T16:26:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-02T15:26:00+01:00",
+      "response_target_at": "2026-11-02T11:26:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-02T12:20:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "ines.sousa@analise-atlantico.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-02T08:58:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-02T17:00:00+01:00",
+      "response_target_at": "2026-11-02T17:00:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T11:04:00+01:00",
+      "sla_outcome": "breached",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "catarina.martins@opiniao-lusa.example",
+      "country_code": "PT",
+      "owner": "PT-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-15T15:06:00+02:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-10-16T14:06:00+02:00",
+      "response_target_at": "2026-10-15T16:06:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-15T15:45:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "sergio.martin@sondeos-iberica.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-27T14:43:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-28T13:43:00+01:00",
+      "response_target_at": "2026-10-28T13:43:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-27T15:21:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "theo.martin@marches-seine.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-03T19:55:00+01:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-11-04T17:00:00+01:00",
+      "response_target_at": "2026-11-04T17:00:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-04T14:57:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "chloe.martin@panel-azur.example",
+      "country_code": "FR",
+      "owner": "FR-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-28T10:35:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-29T09:35:00+01:00",
+      "response_target_at": "2026-10-28T14:35:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-28T11:42:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "marta.ruiz@tendencias-delta.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-11-03T09:35:00+01:00",
+      "initial_priority": "P1",
+      "final_priority": "P1",
+      "sla_deadline": "2026-11-03T17:35:00+01:00",
+      "response_target_at": "2026-11-03T10:35:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T09:55:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "nuno.costa@campo-horizonte.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-23T14:19:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-26T13:19:00+01:00",
+      "response_target_at": "2026-10-26T09:19:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-23T15:21:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "elena.martin@mercados-vertice.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-03T15:02:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-04T14:02:00+01:00",
+      "response_target_at": "2026-11-04T10:02:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T16:01:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "hugo.garcia@mercados-brujula.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-21T14:53:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-22T13:53:00+02:00",
+      "response_target_at": "2026-10-22T09:53:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-21T15:51:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "joao.santos@estudos-tejo.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-03T17:07:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-04T16:07:00+01:00",
+      "response_target_at": "2026-11-04T12:07:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T17:59:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "marta.torres@analisis-brujula.example",
+      "country_code": "ES",
+      "owner": "ES-01",
+      "status": "assigned",
+      "assigned_at": "2026-10-15T14:17:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-16T13:17:00+02:00",
+      "response_target_at": "2026-10-16T09:17:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": null,
+      "sla_outcome": "breached",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "andre.martins@sondagens-tejo.example",
+      "country_code": "PT",
+      "owner": "PT-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-15T10:18:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-16T09:18:00+02:00",
+      "response_target_at": "2026-10-15T14:18:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-15T10:54:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "carmen.martin@campo-prisma.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-11-02T17:03:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-11-03T16:03:00+01:00",
+      "response_target_at": "2026-11-03T12:03:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-11-03T09:27:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "paula.castillo@datos-iberica.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-15T12:48:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-16T11:48:00+02:00",
+      "response_target_at": "2026-10-15T16:48:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-15T14:11:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "hugo.moreau@conseil-sommet.example",
+      "country_code": "FR",
+      "owner": "FR-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-15T15:49:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-16T14:49:00+02:00",
+      "response_target_at": "2026-10-16T10:49:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-16T12:36:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "paula.vidal@tendencias-norte.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-22T15:28:00+02:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-23T14:28:00+02:00",
+      "response_target_at": "2026-10-23T10:28:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-22T16:59:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    },
+    {
+      "lead_email": "maxime.moreau@sondages-nord.example",
+      "country_code": null,
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "julie.roux@terrain-atlas.example",
+      "country_code": null,
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "chloe.girard@donnees-delta.example",
+      "country_code": null,
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "sergio.romero@mercados-iberica.example",
+      "country_code": null,
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "nicolas.simon@marches-boussole.example",
+      "country_code": null,
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "jonas.weber@markt-nord.example",
+      "country_code": "DE",
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "sara.rossi@sondaggi-faro.example",
+      "country_code": "IT",
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "oliver.smith@field-harbour.example",
+      "country_code": "GB",
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "leonor.lopes@sondagens-farol.example",
+      "country_code": "PT",
+      "owner": null,
+      "status": "waiting_in_review"
+    },
+    {
+      "lead_email": "andres.torres@consultora-delta.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-29T10:03:00+01:00",
+      "initial_priority": "P2",
+      "final_priority": "P2",
+      "sla_deadline": "2026-10-30T09:03:00+01:00",
+      "response_target_at": "2026-10-29T14:03:00+01:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-29T15:41:00+01:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "missed"
+    },
+    {
+      "lead_email": "andres.navarro@analisis-iberica.example",
+      "country_code": "ES",
+      "owner": "ES-02",
+      "status": "assigned",
+      "assigned_at": "2026-10-19T13:11:00+02:00",
+      "initial_priority": "P3",
+      "final_priority": "P3",
+      "sla_deadline": "2026-10-20T12:11:00+02:00",
+      "response_target_at": "2026-10-20T12:11:00+02:00",
+      "target_changes": [],
+      "first_qualifying_followup_at": "2026-10-20T09:33:00+02:00",
+      "sla_outcome": "met",
+      "response_target_outcome": "met"
+    }
+  ]
+}

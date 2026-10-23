@@ -1,0 +1,5141 @@
+{
+  "metadata": {
+    "description": "Synthetic inbound enquiry events for MoP Cloud (LF-005). All data is fictional.",
+    "rule_version": "LF-RULES-v1.0",
+    "seed": 20261023,
+    "generated_by": "tools/generate_synthetic_leads.py",
+    "timezone": "Europe/Madrid",
+    "period": {
+      "start": "2026-10-12",
+      "end": "2026-11-06"
+    },
+    "processing": "Events are processed in seq order, each at its received_at time.",
+    "sla_cutoff": "2026-11-06T18:00:00+01:00",
+    "representatives": {
+      "ES": [
+        "ES-01",
+        "ES-02"
+      ],
+      "PT": [
+        "PT-01",
+        "PT-02"
+      ],
+      "FR": [
+        "FR-01",
+        "FR-02"
+      ]
+    },
+    "initial_rotation": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "unavailability": [
+      {
+        "rep": "PT-01",
+        "from": "2026-10-21T00:00:00+02:00",
+        "until": "2026-10-22T00:00:00+02:00",
+        "reason": "Portugal team offsite"
+      },
+      {
+        "rep": "PT-02",
+        "from": "2026-10-21T00:00:00+02:00",
+        "until": "2026-10-22T00:00:00+02:00",
+        "reason": "Portugal team offsite"
+      },
+      {
+        "rep": "ES-01",
+        "from": "2026-10-28T00:00:00+01:00",
+        "until": "2026-10-29T00:00:00+01:00",
+        "reason": "Day off"
+      },
+      {
+        "rep": "FR-02",
+        "from": "2026-11-02T00:00:00+01:00",
+        "until": null,
+        "reason": "Left the team"
+      }
+    ],
+    "supplier_redirect_rules": {
+      "ES": {
+        "supplier_code": "SUP-ES-01",
+        "supplier_name": "Synthetic Panel Partner ES",
+        "destination_url": "https://panel-partner-es.example/join"
+      },
+      "FR": {
+        "supplier_code": "SUP-FR-01",
+        "supplier_name": "Synthetic Panel Partner FR",
+        "destination_url": "https://panel-partner-fr.example/rejoindre"
+      }
+    }
+  },
+  "events": [
+    {
+      "seq": 1,
+      "received_at": "2026-10-12T14:12:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L001",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-12T14:11:00+02:00",
+        "email": "chloe.girard@donnees-delta.example",
+        "first_name": "Chloé",
+        "last_name": "Girard",
+        "business_country": "  ",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Données Delta",
+          "company_domain": "donnees-delta.example",
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0167",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-20T11:10:00+02:00"
+          },
+          {
+            "id": "ENG-0165",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-26T13:29:00+02:00"
+          },
+          {
+            "id": "ENG-0170",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-09-29T13:15:00+02:00"
+          },
+          {
+            "id": "ENG-0169",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-03T11:21:00+02:00"
+          },
+          {
+            "id": "ENG-0168",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-03T12:38:00+02:00"
+          },
+          {
+            "id": "ENG-0166",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-03T14:29:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 2,
+      "received_at": "2026-10-13T09:59:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L002",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-13T09:58:00+02:00",
+        "email": "andre.costa@opiniao-tejo.example",
+        "first_name": "André",
+        "last_name": "Costa",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Opinião Tejo",
+          "company_domain": "opiniao-tejo.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0019",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-08-31T19:46:00+02:00"
+          },
+          {
+            "id": "ENG-0018",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-26T18:11:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3002"
+      }
+    },
+    {
+      "seq": 3,
+      "received_at": "2026-10-13T15:23:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L003",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-13T15:20:00+02:00",
+        "email": "nicolas.simon@marches-boussole.example",
+        "first_name": "Nicolas",
+        "last_name": "Simon",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Marchés Boussole",
+          "company_domain": "marches-boussole.example",
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "1-10",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0176",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-19T11:04:00+02:00"
+          },
+          {
+            "id": "ENG-0176",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-19T11:04:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_business_country": "Spain"
+      }
+    },
+    {
+      "seq": 4,
+      "received_at": "2026-10-14T14:11:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L004",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-14T14:09:00+02:00",
+        "email": "ines.ortega@panel-vertice.example",
+        "first_name": "Inés",
+        "last_name": "Ortega",
+        "business_country": "ES",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Panel Vértice",
+          "company_domain": "panel-vertice.example",
+          "industry_code": "other",
+          "employee_band_declared": "1-10",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0076",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-26T18:23:00+02:00"
+          },
+          {
+            "id": "ENG-0077",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-10T21:31:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 5,
+      "received_at": "2026-10-14T18:35:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L005",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-14T18:34:00+02:00",
+        "email": "  chloe.leroy@panel-prisme.example ",
+        "first_name": "Chloé",
+        "last_name": "Leroy",
+        "business_country": "France",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Panel Prisme",
+          "company_domain": "panel-prisme.example",
+          "industry_code": "ux_research_agency",
+          "employee_band_declared": "50-249",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0102",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-06T18:22:00+02:00"
+          },
+          {
+            "id": "ENG-0100",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-26T21:27:00+02:00"
+          },
+          {
+            "id": "ENG-0099",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-01T12:58:00+02:00"
+          },
+          {
+            "id": "ENG-0101",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-04T08:45:00+02:00"
+          },
+          {
+            "id": "ENG-0098",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-09T11:20:00+02:00"
+          },
+          {
+            "id": "ENG-0097",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T08:28:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 6,
+      "received_at": "2026-10-15T10:18:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L006",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-15T10:15:00+02:00",
+        "email": "andre.martins@sondagens-tejo.example",
+        "first_name": "André",
+        "last_name": "Martins",
+        "business_country": "PT",
+        "relationship_type": "both",
+        "company": {
+          "company_name": "Sondagens Tejo",
+          "company_domain": "sondagens-tejo.example",
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "1-10",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0152",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-06T17:47:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "enquiry_text": "We want your fieldwork platform and could also supply our own panel."
+      }
+    },
+    {
+      "seq": 7,
+      "received_at": "2026-10-15T11:02:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L007",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-15T10:59:00+02:00",
+        "email": "antoine.martin@courriel-perso.example",
+        "first_name": "Antoine",
+        "last_name": "Martin",
+        "business_country": "France",
+        "relationship_type": "unknown",
+        "company": null,
+        "engagement_events": [],
+        "engagement_coverage": "complete",
+        "enquiry_type": "paid_survey_participant",
+        "enquiry_text": "Comment participer à des sondages rémunérés ?"
+      }
+    },
+    {
+      "seq": 8,
+      "received_at": "2026-10-15T12:48:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L008",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-15T12:46:00+02:00",
+        "email": "  paula.castillo@datos-iberica.example ",
+        "first_name": "Paula",
+        "last_name": "Castillo",
+        "business_country": "España",
+        "relationship_type": "unknown",
+        "company": {
+          "company_name": "Datos Ibérica",
+          "company_domain": "datos-iberica.example",
+          "industry_code": "travel_hospitality",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0156",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-08T16:47:00+02:00"
+          },
+          {
+            "id": "ENG-0154",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T08:49:00+02:00"
+          },
+          {
+            "id": "ENG-0155",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T22:43:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 9,
+      "received_at": "2026-10-15T14:17:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L009",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-15T14:15:00+02:00",
+        "email": "marta.torres@analisis-brujula.example",
+        "first_name": "Marta",
+        "last_name": "Torres",
+        "business_country": "Spain",
+        "relationship_type": "both",
+        "company": {
+          "company_name": "Análisis Brújula",
+          "company_domain": "analisis-brujula.example",
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "250-999",
+          "research_use_case": "panel_management",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0150",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-10T08:19:00+02:00"
+          },
+          {
+            "id": "ENG-0151",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-10T22:10:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3018",
+        "enquiry_text": "We want your fieldwork platform and could also supply our own panel."
+      }
+    },
+    {
+      "seq": 10,
+      "received_at": "2026-10-15T15:06:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L010",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-15T15:03:00+02:00",
+        "email": "catarina.martins@opiniao-lusa.example",
+        "first_name": "Catarina",
+        "last_name": "Martins",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Opinião Lusa",
+          "company_domain": "opiniao-lusa.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0136",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-22T10:44:00+02:00"
+          },
+          {
+            "id": "ENG-0133",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-23T19:37:00+02:00"
+          },
+          {
+            "id": "ENG-0135",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-06T21:13:00+02:00"
+          },
+          {
+            "id": "ENG-0134",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-09T10:22:00+02:00"
+          },
+          {
+            "id": "ENG-0131",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-10T21:19:00+02:00"
+          },
+          {
+            "id": "ENG-0132",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-12T08:24:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 11,
+      "received_at": "2026-10-15T15:49:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L011",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-15T15:48:00+02:00",
+        "email": "  hugo.moreau@conseil-sommet.example ",
+        "first_name": "Hugo",
+        "last_name": "Moreau",
+        "business_country": "France",
+        "relationship_type": "unknown",
+        "company": {
+          "company_name": "Conseil Sommet",
+          "company_domain": "conseil-sommet.example",
+          "industry_code": "consumer_goods",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0159",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-12T09:49:00+02:00"
+          },
+          {
+            "id": "ENG-0157",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-01T08:35:00+02:00"
+          },
+          {
+            "id": "ENG-0158",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-01T22:31:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3019"
+      }
+    },
+    {
+      "seq": 12,
+      "received_at": "2026-10-15T16:19:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L012",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-15T16:16:00+02:00",
+        "email": "andre.sousa@consultores-lusa.example",
+        "first_name": "André",
+        "last_name": "Sousa",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Consultores Lusa",
+          "company_domain": "consultores-lusa.example",
+          "industry_code": "financial_services",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0103",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-25T15:06:00+02:00"
+          }
+        ],
+        "engagement_coverage": "partial"
+      }
+    },
+    {
+      "seq": 13,
+      "received_at": "2026-10-16T09:49:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L013",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-16T09:46:00+02:00",
+        "email": "louis.dubois@conseil-boussole.example",
+        "first_name": "Louis",
+        "last_name": "Dubois",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Conseil Boussole",
+          "company_domain": "conseil-boussole.example",
+          "industry_code": "panel_sample_provider",
+          "employee_band_declared": "unknown",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0026",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-25T09:38:00+02:00"
+          },
+          {
+            "id": "ENG-0027",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-01T15:14:00+02:00"
+          },
+          {
+            "id": "ENG-0028",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T12:11:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 14,
+      "received_at": "2026-10-16T16:12:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": null,
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-16T16:09:00+02:00",
+        "email": "laura.ruiz@estudios-sol.example",
+        "first_name": "Laura",
+        "last_name": "Ruiz",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Estudios Sol",
+          "company_domain": "estudios-sol.example",
+          "industry_code": "advertising_media_pr_agency",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0196",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-24T11:28:00+02:00"
+          }
+        ],
+        "engagement_coverage": "partial"
+      }
+    },
+    {
+      "seq": 15,
+      "received_at": "2026-10-16T16:39:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L014",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-16T16:38:00+02:00",
+        "email": "Sara.Rossi@Sondaggi-faro.example",
+        "first_name": "Sara",
+        "last_name": "Rossi",
+        "business_country": "Italia",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Sondaggi Faro",
+          "company_domain": "sondaggi-faro.example",
+          "industry_code": "other",
+          "employee_band_declared": "250-999",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0184",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-02T13:17:00+02:00"
+          }
+        ],
+        "engagement_coverage": "partial",
+        "crm_contact_id": "CRM-C-3020"
+      }
+    },
+    {
+      "seq": 16,
+      "received_at": "2026-10-19T10:32:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L015",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-19T10:30:00+02:00",
+        "email": "raul.navarro@analisis-iberica.example",
+        "first_name": "Raúl",
+        "last_name": "Navarro",
+        "business_country": "ES",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análisis Ibérica",
+          "company_domain": "analisis-iberica.example",
+          "industry_code": "other",
+          "employee_band_declared": "50-249",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0116",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-16T11:30:00+02:00"
+          },
+          {
+            "id": "ENG-0115",
+            "type": "quote_requested",
+            "occurred_at": "2026-10-19T01:17:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 17,
+      "received_at": "2026-10-19T11:55:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L016",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-19T11:52:00+02:00",
+        "email": "Julie.Fournier@Opinion-phare.example",
+        "first_name": "Julie",
+        "last_name": "Fournier",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Opinion Phare",
+          "company_domain": "opinion-phare.example",
+          "industry_code": "technology_telecoms",
+          "employee_band_declared": "1-10",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0122",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-24T14:36:00+02:00"
+          },
+          {
+            "id": "ENG-0119",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-30T12:18:00+02:00"
+          },
+          {
+            "id": "ENG-0120",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-02T16:03:00+02:00"
+          },
+          {
+            "id": "ENG-0121",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-14T18:51:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3014"
+      }
+    },
+    {
+      "seq": 18,
+      "received_at": "2026-10-19T12:50:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L017",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-19T12:49:00+02:00",
+        "email": "sergio.romero@mercados-iberica.example",
+        "first_name": "Sergio",
+        "last_name": "Romero",
+        "business_country": "es",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Mercados Ibérica",
+          "company_domain": "mercados-iberica.example",
+          "industry_code": "public_academic_nonprofit",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0175",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-16T14:21:00+02:00"
+          },
+          {
+            "id": "ENG-0173",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-25T11:07:00+02:00"
+          },
+          {
+            "id": "ENG-0171",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-08T16:11:00+02:00"
+          },
+          {
+            "id": "ENG-0174",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-14T17:30:00+02:00"
+          },
+          {
+            "id": "ENG-0172",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-16T18:22:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_business_country": "Portugal"
+      }
+    },
+    {
+      "seq": 19,
+      "received_at": "2026-10-19T13:11:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L018",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-19T13:09:00+02:00",
+        "email": "andres.navarro@analisis-iberica.example",
+        "first_name": "Andrés",
+        "last_name": "Navarro",
+        "business_country": "ES",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análisis Ibérica",
+          "company_domain": "analisis-iberica.example",
+          "industry_code": "other",
+          "employee_band_declared": "50-249",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0209",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-16T08:43:00+02:00"
+          },
+          {
+            "id": "ENG-0210",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-16T22:59:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 20,
+      "received_at": "2026-10-19T15:41:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L019",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-19T15:39:00+02:00",
+        "email": "joao.ribeiro@tendencias-vertice.example",
+        "first_name": "João",
+        "last_name": "Ribeiro",
+        "business_country": "Portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendências Vértice",
+          "company_domain": "tendencias-vertice.example",
+          "industry_code": "other",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0063",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-02T20:40:00+02:00"
+          },
+          {
+            "id": "ENG-0065",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-05T10:31:00+02:00"
+          },
+          {
+            "id": "ENG-0062",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T08:26:00+02:00"
+          },
+          {
+            "id": "ENG-0064",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-16T17:19:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3007"
+      }
+    },
+    {
+      "seq": 21,
+      "received_at": "2026-10-19T20:43:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L020",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-19T20:40:00+02:00",
+        "email": "Ivan.Navarro@Tendencias-brujula.example",
+        "first_name": "Iván",
+        "last_name": "Navarro",
+        "business_country": "es",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendencias Brújula",
+          "company_domain": "tendencias-brujula.example",
+          "industry_code": "consumer_goods",
+          "employee_band_declared": "250-999",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0111",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-14T21:42:00+02:00"
+          },
+          {
+            "id": "ENG-0109",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-26T10:28:00+02:00"
+          },
+          {
+            "id": "ENG-0110",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-12T21:28:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 22,
+      "received_at": "2026-10-20T13:24:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L021",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-20T13:23:00+02:00",
+        "email": "rocio.navarro@panel-iberica.example",
+        "first_name": "Rocío",
+        "last_name": "Navarro",
+        "business_country": " Spain ",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Panel Ibérica",
+          "company_domain": "panel-iberica.example",
+          "industry_code": "media_entertainment_gaming",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0046",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-09T11:46:00+02:00"
+          },
+          {
+            "id": "ENG-0045",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-29T10:49:00+02:00"
+          },
+          {
+            "id": "ENG-0043",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-09T18:14:00+02:00"
+          },
+          {
+            "id": "ENG-0044",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-12T11:55:00+02:00"
+          },
+          {
+            "id": "ENG-0044",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-12T11:55:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 23,
+      "received_at": "2026-10-21T12:02:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L022",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-21T11:59:00+02:00",
+        "email": "leonor.lopes@sondagens-farol.example",
+        "first_name": "Leonor",
+        "last_name": "Lopes",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Sondagens Farol",
+          "company_domain": "sondagens-farol.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0189",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-10T19:54:00+02:00"
+          },
+          {
+            "id": "ENG-0188",
+            "type": "demo_requested",
+            "occurred_at": "2026-10-21T07:53:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 24,
+      "received_at": "2026-10-21T14:53:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L023",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-21T14:50:00+02:00",
+        "email": "hugo.garcia@mercados-brujula.example",
+        "first_name": "Hugo",
+        "last_name": "García",
+        "business_country": "ES",
+        "relationship_type": "supplier",
+        "company": {
+          "company_name": "Mercados Brújula",
+          "company_domain": "mercados-brujula.example",
+          "industry_code": "panel_sample_provider",
+          "employee_band_declared": "50-249",
+          "research_use_case": "other",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0147",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-15T20:45:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "enquiry_text": "We run a respondent panel and would like to supply participants."
+      }
+    },
+    {
+      "seq": 25,
+      "received_at": "2026-10-22T08:17:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L024",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T08:16:00+02:00",
+        "email": "duarte.silva@painel-horizonte.example",
+        "first_name": "Duarte",
+        "last_name": "Silva",
+        "business_country": "Portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Painel Horizonte",
+          "company_domain": "painel-horizonte.example",
+          "industry_code": "ux_research_agency",
+          "employee_band_declared": "1-10",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0075",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-19T12:33:00+02:00"
+          },
+          {
+            "id": "ENG-0074",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-16T10:06:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 26,
+      "received_at": "2026-10-22T09:53:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L025",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T09:50:00+02:00",
+        "email": "  oliver.smith@field-harbour.example ",
+        "first_name": "Oliver",
+        "last_name": "Smith",
+        "business_country": "United Kingdom",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Field Harbour",
+          "company_domain": "field-harbour.example",
+          "industry_code": "automotive_mobility",
+          "employee_band_declared": "11-49",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0186",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-05T17:21:00+02:00"
+          },
+          {
+            "id": "ENG-0185",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-14T10:18:00+02:00"
+          },
+          {
+            "id": "ENG-0187",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-17T08:00:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 27,
+      "received_at": "2026-10-22T12:08:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L026",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T12:05:00+02:00",
+        "email": "sergio.iglesias@campo-delta.example",
+        "first_name": "Sergio",
+        "last_name": "Iglesias",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Campo Delta",
+          "company_domain": "campo-delta.example",
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0017",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-10T14:00:00+02:00"
+          },
+          {
+            "id": "ENG-0014",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-09T11:18:00+02:00"
+          },
+          {
+            "id": "ENG-0015",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-12T12:46:00+02:00"
+          },
+          {
+            "id": "ENG-0016",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-15T08:01:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 28,
+      "received_at": "2026-10-22T13:57:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L027",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T13:55:00+02:00",
+        "email": "javier.moreno@consultora-prisma.example",
+        "first_name": "Javier",
+        "last_name": "Moreno",
+        "business_country": "ES",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Consultora Prisma",
+          "company_domain": "consultora-prisma.example",
+          "industry_code": "research_technology",
+          "employee_band_declared": "1-10",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0054",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-20T10:53:00+02:00"
+          },
+          {
+            "id": "ENG-0052",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-08T19:45:00+02:00"
+          },
+          {
+            "id": "ENG-0053",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-09T10:31:00+02:00"
+          },
+          {
+            "id": "ENG-0050",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-12T08:52:00+02:00"
+          },
+          {
+            "id": "ENG-0051",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-15T13:26:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3006"
+      }
+    },
+    {
+      "seq": 29,
+      "received_at": "2026-10-22T14:01:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L028",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T14:00:00+02:00",
+        "email": "  hugo.bernard@sondages-boussole.example ",
+        "first_name": "Hugo",
+        "last_name": "Bernard",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Sondages Boussole",
+          "company_domain": "sondages-boussole.example",
+          "industry_code": "other",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0104",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-09T13:38:00+02:00"
+          },
+          {
+            "id": "ENG-0104",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-09T13:38:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3011"
+      }
+    },
+    {
+      "seq": 30,
+      "received_at": "2026-10-22T15:28:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L029",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T15:25:00+02:00",
+        "email": "Paula.Vidal@Tendencias-norte.example",
+        "first_name": "Paula",
+        "last_name": "Vidal",
+        "business_country": " Spain ",
+        "relationship_type": "unknown",
+        "company": {
+          "company_name": "Tendencias Norte",
+          "company_domain": "tendencias-norte.example",
+          "industry_code": "other",
+          "employee_band_declared": "250-999",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0162",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-28T11:44:00+02:00"
+          },
+          {
+            "id": "ENG-0160",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-13T09:00:00+02:00"
+          },
+          {
+            "id": "ENG-0161",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-18T11:16:00+02:00"
+          },
+          {
+            "id": "ENG-0163",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-20T20:08:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 31,
+      "received_at": "2026-10-22T15:45:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L030",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-10-22T15:43:00+02:00",
+        "email": "javier.moreno@consultora-prisma.example",
+        "first_name": "Javier",
+        "last_name": "Moreno",
+        "business_country": "ES",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Consultora Prisma",
+          "company_domain": "consultora-prisma.example",
+          "industry_code": "research_technology",
+          "employee_band_declared": "1-10",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0204",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-22T14:02:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3006"
+      }
+    },
+    {
+      "seq": 32,
+      "received_at": "2026-10-22T16:00:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L031",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T15:59:00+02:00",
+        "email": "leonor.sousa@analise-norte.example",
+        "first_name": "Leonor",
+        "last_name": "Sousa",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análise Norte",
+          "company_domain": "analise-norte.example",
+          "industry_code": "advertising_media_pr_agency",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0118",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-09-08T11:39:00+02:00"
+          },
+          {
+            "id": "ENG-0117",
+            "type": "quote_requested",
+            "occurred_at": "2026-10-22T09:18:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 33,
+      "received_at": "2026-10-22T17:35:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": null,
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-22T17:32:00+02:00",
+        "email": "louis.michel@analyse-delta.example",
+        "first_name": "Louis",
+        "last_name": "Michel",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Analyse Delta",
+          "company_domain": "analyse-delta.example",
+          "industry_code": "other",
+          "employee_band_declared": "unknown",
+          "research_use_case": "panel_management",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0195",
+            "type": "sales_contact_requested",
+            "occurred_at": "2026-10-22T09:11:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 34,
+      "received_at": "2026-10-23T10:14:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L032",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-23T10:11:00+02:00",
+        "email": "lea.roux@analyse-sommet.example",
+        "first_name": "Léa",
+        "last_name": "Roux",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Analyse Sommet",
+          "company_domain": "analyse-sommet.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "unknown",
+          "research_use_case": "both",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0022",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-07T19:03:00+02:00"
+          },
+          {
+            "id": "ENG-0020",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-15T11:07:00+02:00"
+          },
+          {
+            "id": "ENG-0021",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-19T19:30:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 35,
+      "received_at": "2026-10-23T14:19:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L033",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-23T14:16:00+02:00",
+        "email": "nuno.costa@campo-horizonte.example",
+        "first_name": "Nuno",
+        "last_name": "Costa",
+        "business_country": "Portugal",
+        "relationship_type": "supplier",
+        "company": {
+          "company_name": "Campo Horizonte",
+          "company_domain": "campo-horizonte.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "50-249",
+          "research_use_case": "other",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0144",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-10T17:06:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "enquiry_text": "We run a respondent panel and would like to supply participants."
+      }
+    },
+    {
+      "seq": 36,
+      "received_at": "2026-10-23T14:21:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L034",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-23T14:19:00+02:00",
+        "email": "ivan.molina@",
+        "first_name": "Iván",
+        "last_name": "Molina",
+        "business_country": "Spain",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Panel Sol",
+          "company_domain": "panel-sol.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "11-49",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0191",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-19T11:50:00+02:00"
+          },
+          {
+            "id": "ENG-0191",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-19T11:50:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 37,
+      "received_at": "2026-10-23T16:25:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L035",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-23T16:24:00+02:00",
+        "email": "mario.vidal@campo-sol.example",
+        "first_name": "Mario",
+        "last_name": "Vidal",
+        "business_country": "Spain",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Campo Sol",
+          "company_domain": "campo-sol.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "250-999",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0012",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-14T12:50:00+02:00"
+          },
+          {
+            "id": "ENG-0011",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-03T21:37:00+02:00"
+          },
+          {
+            "id": "ENG-0010",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-14T09:17:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 38,
+      "received_at": "2026-10-23T17:34:00+02:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L036",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-23T17:33:00+02:00",
+        "email": "lea.girard@courriel-perso.example",
+        "first_name": "Léa",
+        "last_name": "Girard",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Opinion Sommet",
+          "company_domain": null,
+          "industry_code": "ux_research_agency",
+          "employee_band_declared": "50-249",
+          "research_use_case": "unknown",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0057",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-16T14:08:00+02:00"
+          },
+          {
+            "id": "ENG-0055",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-18T08:32:00+02:00"
+          },
+          {
+            "id": "ENG-0056",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-18T22:02:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 39,
+      "received_at": "2026-10-25T15:33:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L037",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-25T15:31:00+01:00",
+        "email": "beatriz.martins@tendencias-bussola.example",
+        "first_name": "Beatriz",
+        "last_name": "Martins",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendências Bússola",
+          "company_domain": "tendencias-bussola.example",
+          "industry_code": "polling",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "both",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0013",
+            "type": "sales_contact_requested",
+            "occurred_at": "2026-10-25T07:09:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 40,
+      "received_at": "2026-10-25T16:41:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L037",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-25T15:31:00+01:00",
+        "email": "beatriz.martins@tendencias-bussola.example",
+        "first_name": "Beatriz",
+        "last_name": "Martins",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendências Bússola",
+          "company_domain": "tendencias-bussola.example",
+          "industry_code": "polling",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "both",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0013",
+            "type": "sales_contact_requested",
+            "occurred_at": "2026-10-25T07:09:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 41,
+      "received_at": "2026-10-26T11:06:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L038",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-26T11:03:00+01:00",
+        "email": "julie.roux@terrain-atlas.example",
+        "first_name": "Julie",
+        "last_name": "Roux",
+        "business_country": "",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Terrain Atlas",
+          "company_domain": "terrain-atlas.example",
+          "industry_code": "research_technology",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [],
+        "engagement_coverage": "failed"
+      }
+    },
+    {
+      "seq": 42,
+      "received_at": "2026-10-26T14:20:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L039",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-10-26T14:18:00+01:00",
+        "email": "duarte.silva@painel-horizonte.example",
+        "first_name": "Duarte",
+        "last_name": "Silva",
+        "business_country": "Portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Painel Horizonte",
+          "company_domain": "painel-horizonte.example",
+          "industry_code": "ux_research_agency",
+          "employee_band_declared": "1-10",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0200",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-26T12:50:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 43,
+      "received_at": "2026-10-26T15:01:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L040",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-26T14:58:00+01:00",
+        "email": "Paula.Ortega@Opinion-prisma.example",
+        "first_name": "Paula",
+        "last_name": "Ortega",
+        "business_country": "ES",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Opinión Prisma",
+          "company_domain": "opinion-prisma.example",
+          "industry_code": "other",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0060",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-25T08:35:00+01:00"
+          },
+          {
+            "id": "ENG-0061",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-25T22:54:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 44,
+      "received_at": "2026-10-26T17:40:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L041",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-10-26T17:38:00+01:00",
+        "email": "  paula.ortega@opinion-prisma.example ",
+        "first_name": "Paula",
+        "last_name": "Ortega",
+        "business_country": "ES",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Opinión Prisma",
+          "company_domain": "opinion-prisma.example",
+          "industry_code": "other",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0201",
+            "type": "demo_requested",
+            "occurred_at": "2026-10-26T16:47:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 45,
+      "received_at": "2026-10-27T12:02:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L042",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-27T12:00:00+01:00",
+        "email": "nicolas.girard@tendances-atlas.example",
+        "first_name": "Nicolas",
+        "last_name": "Girard",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendances Atlas",
+          "company_domain": "tendances-atlas.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "1-10",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0072",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-02T13:37:00+02:00"
+          },
+          {
+            "id": "ENG-0073",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-14T11:03:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3009"
+      }
+    },
+    {
+      "seq": 46,
+      "received_at": "2026-10-27T14:43:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L043",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-27T14:40:00+01:00",
+        "email": "sergio.martin@sondeos-iberica.example",
+        "first_name": "Sergio",
+        "last_name": "Martín",
+        "business_country": " Spain ",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Sondeos Ibérica",
+          "company_domain": "sondeos-iberica.example",
+          "industry_code": "other",
+          "employee_band_declared": "50-249",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0137",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-17T08:42:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 47,
+      "received_at": "2026-10-28T10:35:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L044",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-28T10:33:00+01:00",
+        "email": "chloe.martin@panel-azur.example",
+        "first_name": "Chloé",
+        "last_name": "Martin",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Panel Azur",
+          "company_domain": "panel-azur.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "unknown",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0142",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-20T13:08:00+02:00"
+          },
+          {
+            "id": "ENG-0139",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-09T19:44:00+02:00"
+          },
+          {
+            "id": "ENG-0138",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T09:24:00+02:00"
+          },
+          {
+            "id": "ENG-0141",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-16T19:03:00+02:00"
+          },
+          {
+            "id": "ENG-0140",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-21T10:01:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3017"
+      }
+    },
+    {
+      "seq": 48,
+      "received_at": "2026-10-28T12:45:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L045",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-28T12:43:00+01:00",
+        "email": "Sergio.Vidal@Analisis-atlas.example",
+        "first_name": "Sergio",
+        "last_name": "Vidal",
+        "business_country": "es",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análisis Atlas",
+          "company_domain": "analisis-atlas.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "unknown",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [],
+        "engagement_coverage": "failed"
+      }
+    },
+    {
+      "seq": 49,
+      "received_at": "2026-10-28T14:35:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L046",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-28T14:33:00+01:00",
+        "email": "  laura.sanchez@consultora-delta.example ",
+        "first_name": "Laura",
+        "last_name": "Sánchez",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Consultora Delta",
+          "company_domain": "consultora-delta.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "250-999",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0040",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-08T15:50:00+02:00"
+          },
+          {
+            "id": "ENG-0038",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-13T17:07:00+02:00"
+          },
+          {
+            "id": "ENG-0037",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-25T20:07:00+01:00"
+          },
+          {
+            "id": "ENG-0039",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-27T13:32:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 50,
+      "received_at": "2026-10-28T15:46:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L047",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-28T15:44:00+01:00",
+        "email": "maxime.moreau@sondages-nord.example",
+        "first_name": "Maxime",
+        "last_name": "Moreau",
+        "business_country": null,
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Sondages Nord",
+          "company_domain": "sondages-nord.example",
+          "industry_code": "energy_utilities",
+          "employee_band_declared": "250-999",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0164",
+            "type": "demo_requested",
+            "occurred_at": "2026-10-28T06:32:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 51,
+      "received_at": "2026-10-28T16:02:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L048",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-28T16:00:00+01:00",
+        "email": "alba.martin@analisis-prisma.example",
+        "first_name": "Alba",
+        "last_name": "Martín",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análisis Prisma",
+          "company_domain": "analisis-prisma.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "11-49",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0001",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-24T09:56:00+02:00"
+          }
+        ],
+        "engagement_coverage": "partial"
+      }
+    },
+    {
+      "seq": 52,
+      "received_at": "2026-10-28T17:06:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L049",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-10-28T17:04:00+01:00",
+        "email": "Alba.Martin@Analisis-prisma.example",
+        "first_name": "Alba",
+        "last_name": "Martín",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análisis Prisma",
+          "company_domain": "analisis-prisma.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "11-49",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0202",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-28T16:16:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 53,
+      "received_at": "2026-10-28T17:10:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L050",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-28T17:08:00+01:00",
+        "email": "j.ribeiro@tendencias-vertice.example",
+        "first_name": "João",
+        "last_name": "Ribeiro",
+        "business_country": "Portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendências Vértice",
+          "company_domain": "tendencias-vertice.example",
+          "industry_code": "other",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0211",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-28T16:22:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3007"
+      }
+    },
+    {
+      "seq": 54,
+      "received_at": "2026-10-29T09:32:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L051",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-29T09:30:00+01:00",
+        "email": "Pedro.Sousa@Estudos-bussola.example",
+        "first_name": "Pedro",
+        "last_name": "Sousa",
+        "business_country": "Portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Estudos Bússola",
+          "company_domain": "estudos-bussola.example",
+          "industry_code": "other",
+          "employee_band_declared": "11-49",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0034",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-05T08:06:00+02:00"
+          },
+          {
+            "id": "ENG-0032",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-10T20:53:00+02:00"
+          },
+          {
+            "id": "ENG-0033",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-20T10:20:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 55,
+      "received_at": "2026-10-29T10:03:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L052",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-29T10:02:00+01:00",
+        "email": "andres.torres@consultora-delta.example",
+        "first_name": "Andrés",
+        "last_name": "Torres",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Consultora Delta",
+          "company_domain": "consultora-delta.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "250-999",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0208",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-09T11:50:00+02:00"
+          },
+          {
+            "id": "ENG-0206",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T09:50:00+02:00"
+          },
+          {
+            "id": "ENG-0207",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-22T09:56:00+02:00"
+          },
+          {
+            "id": "ENG-0207",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-22T09:56:00+02:00"
+          },
+          {
+            "id": "ENG-0205",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-23T08:21:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 56,
+      "received_at": "2026-10-29T12:05:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L053",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-29T12:03:00+01:00",
+        "email": "n.girard@tendances-atlas.example",
+        "first_name": "Nicolas",
+        "last_name": "Girard",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendances Atlas",
+          "company_domain": "tendances-atlas.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "1-10",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0212",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-29T11:44:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3009"
+      }
+    },
+    {
+      "seq": 57,
+      "received_at": "2026-10-29T12:07:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L054",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-29T12:05:00+01:00",
+        "email": "emma.fournier(at)sondages-azur.example",
+        "first_name": "Emma",
+        "last_name": "Fournier",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Sondages Azur",
+          "company_domain": "sondages-azur.example",
+          "industry_code": "management_consultancy",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0190",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-11T09:18:00+02:00"
+          }
+        ],
+        "engagement_coverage": "partial"
+      }
+    },
+    {
+      "seq": 58,
+      "received_at": "2026-10-29T12:28:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L055",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-29T12:26:00+01:00",
+        "email": "manon.girard@courriel-perso.example",
+        "first_name": "Manon",
+        "last_name": "Girard",
+        "business_country": "FR",
+        "relationship_type": "unknown",
+        "company": null,
+        "engagement_events": [],
+        "engagement_coverage": "complete",
+        "enquiry_type": "paid_survey_participant",
+        "enquiry_text": "Comment participer à des sondages rémunérés ?"
+      }
+    },
+    {
+      "seq": 59,
+      "received_at": "2026-10-29T13:12:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L056",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-10-29T13:10:00+01:00",
+        "email": "Leonor.Sousa@Analise-norte.example",
+        "first_name": "Leonor",
+        "last_name": "Sousa",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análise Norte",
+          "company_domain": "analise-norte.example",
+          "industry_code": "advertising_media_pr_agency",
+          "employee_band_declared": "1-10",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0199",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-29T11:52:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 60,
+      "received_at": "2026-10-29T14:40:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L057",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-29T14:39:00+01:00",
+        "email": "clara.bernard@etudes-nord.example",
+        "first_name": "Clara",
+        "last_name": "Bernard",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Études Nord",
+          "company_domain": "etudes-nord.example",
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "250-999",
+          "research_use_case": "both",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0088",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-22T16:32:00+02:00"
+          },
+          {
+            "id": "ENG-0086",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-12T19:40:00+02:00"
+          },
+          {
+            "id": "ENG-0085",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-16T15:53:00+02:00"
+          },
+          {
+            "id": "ENG-0084",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-23T13:01:00+02:00"
+          },
+          {
+            "id": "ENG-0082",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-25T16:32:00+01:00"
+          },
+          {
+            "id": "ENG-0087",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-26T13:33:00+01:00"
+          },
+          {
+            "id": "ENG-0083",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-27T15:46:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 61,
+      "received_at": "2026-10-29T15:54:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L058",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-29T15:53:00+01:00",
+        "email": "jonas.weber@markt-nord.example",
+        "first_name": "Jonas",
+        "last_name": "Weber",
+        "business_country": "Deutschland",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Markt Nord",
+          "company_domain": "markt-nord.example",
+          "industry_code": "management_consultancy",
+          "employee_band_declared": "11-49",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0183",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-21T18:59:00+02:00"
+          },
+          {
+            "id": "ENG-0178",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-09T09:30:00+02:00"
+          },
+          {
+            "id": "ENG-0177",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-17T10:21:00+02:00"
+          },
+          {
+            "id": "ENG-0180",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-17T10:26:00+02:00"
+          },
+          {
+            "id": "ENG-0179",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-21T19:52:00+02:00"
+          },
+          {
+            "id": "ENG-0181",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-25T13:38:00+01:00"
+          },
+          {
+            "id": "ENG-0182",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-26T17:39:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 62,
+      "received_at": "2026-10-30T10:17:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L059",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-30T10:16:00+01:00",
+        "email": "catarina.costa@analise-tejo.example",
+        "first_name": "Catarina",
+        "last_name": "Costa",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análise Tejo",
+          "company_domain": "analise-tejo.example",
+          "industry_code": "panel_sample_provider",
+          "employee_band_declared": "50-249",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0031",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-27T17:51:00+02:00"
+          },
+          {
+            "id": "ENG-0030",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-17T08:30:00+02:00"
+          },
+          {
+            "id": "ENG-0030",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-17T08:30:00+02:00"
+          },
+          {
+            "id": "ENG-0029",
+            "type": "sales_contact_requested",
+            "occurred_at": "2026-10-30T09:02:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3004"
+      }
+    },
+    {
+      "seq": 63,
+      "received_at": "2026-10-30T12:45:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L060",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-30T12:44:00+01:00",
+        "email": "  andre.ferreira@correio-pessoal.example ",
+        "first_name": "André",
+        "last_name": "Ferreira",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Mercados Delta",
+          "company_domain": null,
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "1-10",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0113",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-15T17:38:00+02:00"
+          },
+          {
+            "id": "ENG-0114",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-15T19:12:00+02:00"
+          },
+          {
+            "id": "ENG-0112",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-25T19:10:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 64,
+      "received_at": "2026-10-30T14:59:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L061",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-30T14:58:00+01:00",
+        "email": "matilde.lopes@painel-atlantico.example",
+        "first_name": "Matilde",
+        "last_name": "Lopes",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Painel Atlântico",
+          "company_domain": "painel-atlantico.example",
+          "industry_code": "technology_telecoms",
+          "employee_band_declared": "11-49",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0107",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-19T12:54:00+02:00"
+          },
+          {
+            "id": "ENG-0108",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-28T08:50:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3013"
+      }
+    },
+    {
+      "seq": 65,
+      "received_at": "2026-10-30T16:26:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L062",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-30T16:25:00+01:00",
+        "email": "andres.iglesias@datos-sol.example",
+        "first_name": "Andrés",
+        "last_name": "Iglesias",
+        "business_country": "Spain",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Datos Sol",
+          "company_domain": "datos-sol.example",
+          "industry_code": "other",
+          "employee_band_declared": "unknown",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0126",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-05T08:04:00+02:00"
+          },
+          {
+            "id": "ENG-0127",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-08T14:41:00+02:00"
+          },
+          {
+            "id": "ENG-0124",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-11T19:43:00+02:00"
+          },
+          {
+            "id": "ENG-0128",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-12T10:01:00+02:00"
+          },
+          {
+            "id": "ENG-0123",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-14T15:04:00+02:00"
+          },
+          {
+            "id": "ENG-0125",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-21T08:16:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3015"
+      }
+    },
+    {
+      "seq": 66,
+      "received_at": "2026-10-30T19:29:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L063",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-10-30T19:27:00+01:00",
+        "email": "julie.michel@etudes-phare.example",
+        "first_name": "Julie",
+        "last_name": "Michel",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Études Phare",
+          "company_domain": "etudes-phare.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "1-10",
+          "research_use_case": "both",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0068",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-16T16:46:00+02:00"
+          },
+          {
+            "id": "ENG-0068",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-16T16:46:00+02:00"
+          },
+          {
+            "id": "ENG-0070",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-19T20:39:00+02:00"
+          },
+          {
+            "id": "ENG-0069",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-22T13:16:00+02:00"
+          },
+          {
+            "id": "ENG-0071",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-22T18:34:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 67,
+      "received_at": "2026-11-01T14:10:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L064",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-01T14:09:00+01:00",
+        "email": "Ines.Ribeiro@Painel-prisma.example",
+        "first_name": "Inês",
+        "last_name": "Ribeiro",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Painel Prisma",
+          "company_domain": "painel-prisma.example",
+          "industry_code": "management_consultancy",
+          "employee_band_declared": "250-999",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0025",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-15T14:30:00+02:00"
+          },
+          {
+            "id": "ENG-0023",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-28T11:01:00+01:00"
+          },
+          {
+            "id": "ENG-0024",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-31T20:40:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3003"
+      }
+    },
+    {
+      "seq": 68,
+      "received_at": "2026-11-02T08:58:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L065",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-02T08:56:00+01:00",
+        "email": "Ines.Sousa@Analise-atlantico.example",
+        "first_name": "Inês",
+        "last_name": "Sousa",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Análise Atlântico",
+          "company_domain": "analise-atlantico.example",
+          "industry_code": "other",
+          "employee_band_declared": "50-249",
+          "research_use_case": "panel_management",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0129",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-16T08:49:00+02:00"
+          },
+          {
+            "id": "ENG-0130",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-27T20:50:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3016"
+      }
+    },
+    {
+      "seq": 69,
+      "received_at": "2026-11-02T12:12:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L066",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-02T12:11:00+01:00",
+        "email": "julie.laurent@sondages-prisme.example",
+        "first_name": "Julie",
+        "last_name": "Laurent",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Sondages Prisme",
+          "company_domain": "sondages-prisme.example",
+          "industry_code": "other",
+          "employee_band_declared": "250-999",
+          "research_use_case": "both",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0047",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-30T16:36:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3005"
+      }
+    },
+    {
+      "seq": 70,
+      "received_at": "2026-11-02T15:37:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L067",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-02T15:36:00+01:00",
+        "email": "alba.castillo@correo-personal.example",
+        "first_name": "Alba",
+        "last_name": "Castillo",
+        "business_country": "España",
+        "relationship_type": "unknown",
+        "company": null,
+        "engagement_events": [],
+        "engagement_coverage": "complete",
+        "enquiry_type": "paid_survey_participant",
+        "enquiry_text": "¿Cómo puedo participar en encuestas pagadas?"
+      }
+    },
+    {
+      "seq": 71,
+      "received_at": "2026-11-02T16:15:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L068",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-02T16:14:00+01:00",
+        "email": "emma.bernard@terrain-azur.example",
+        "first_name": "Emma",
+        "last_name": "Bernard",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Terrain Azur",
+          "company_domain": "terrain-azur.example",
+          "industry_code": "ux_research_agency",
+          "employee_band_declared": "50-249",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0049",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-19T08:40:00+02:00"
+          },
+          {
+            "id": "ENG-0049",
+            "type": "webinar_attended",
+            "occurred_at": "2026-09-19T08:40:00+02:00"
+          },
+          {
+            "id": "ENG-0048",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-28T16:56:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 72,
+      "received_at": "2026-11-02T16:46:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L069",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-11-02T16:44:00+01:00",
+        "email": "mario.vidal@campo-sol.example",
+        "first_name": "Mario",
+        "last_name": "Vidal",
+        "business_country": "Spain",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Campo Sol",
+          "company_domain": "campo-sol.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "250-999",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0197",
+            "type": "quote_requested",
+            "occurred_at": "2026-11-02T16:29:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 73,
+      "received_at": "2026-11-02T17:03:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L070",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-02T17:02:00+01:00",
+        "email": "carmen.martin@campo-prisma.example",
+        "first_name": "Carmen",
+        "last_name": "Martín",
+        "business_country": "ES",
+        "relationship_type": "both",
+        "company": {
+          "company_name": "Campo Prisma",
+          "company_domain": "campo-prisma.example",
+          "industry_code": "research_consultancy",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0153",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-24T14:38:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "enquiry_text": "We want your fieldwork platform and could also supply our own panel."
+      }
+    },
+    {
+      "seq": 74,
+      "received_at": "2026-11-02T21:42:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L071",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-02T21:41:00+01:00",
+        "email": "carmen.sanchez@correo-personal.example",
+        "first_name": "Carmen",
+        "last_name": "Sánchez",
+        "business_country": "Spain",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Campo Brújula",
+          "company_domain": null,
+          "industry_code": "market_research",
+          "employee_band_declared": "1-10",
+          "research_use_case": "unknown",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0041",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-11T11:17:00+02:00"
+          },
+          {
+            "id": "ENG-0042",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-11T18:42:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 75,
+      "received_at": "2026-11-02T22:17:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L071",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-02T21:41:00+01:00",
+        "email": "carmen.sanchez@correo-personal.example",
+        "first_name": "Carmen",
+        "last_name": "Sánchez",
+        "business_country": "Spain",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Campo Brújula",
+          "company_domain": null,
+          "industry_code": "market_research",
+          "employee_band_declared": "1-10",
+          "research_use_case": "unknown",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0041",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-11T11:17:00+02:00"
+          },
+          {
+            "id": "ENG-0042",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-11T18:42:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 76,
+      "received_at": "2026-11-03T09:26:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L072",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-03T09:24:00+01:00",
+        "email": "carmen.delgado@panel-norte.example",
+        "first_name": "Carmen",
+        "last_name": "Delgado",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Panel Norte",
+          "company_domain": "panel-norte.example",
+          "industry_code": "advertising_media_pr_agency",
+          "employee_band_declared": "unknown",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0036",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-27T19:31:00+01:00"
+          },
+          {
+            "id": "ENG-0035",
+            "type": "demo_requested",
+            "occurred_at": "2026-11-03T02:55:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 77,
+      "received_at": "2026-11-03T09:35:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L073",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-03T09:34:00+01:00",
+        "email": "  marta.ruiz@tendencias-delta.example ",
+        "first_name": "Marta",
+        "last_name": "Ruiz",
+        "business_country": "es",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendencias Delta",
+          "company_domain": "tendencias-delta.example",
+          "industry_code": "financial_services",
+          "employee_band_declared": "250-999",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0143",
+            "type": "quote_requested",
+            "occurred_at": "2026-11-03T00:39:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 78,
+      "received_at": "2026-11-03T11:19:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L074",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-03T11:17:00+01:00",
+        "email": "clara.dubois@terrain-prisme.example",
+        "first_name": "Clara",
+        "last_name": "Dubois",
+        "business_country": "France",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Terrain Prisme",
+          "company_domain": "terrain-prisme.example",
+          "industry_code": "other",
+          "employee_band_declared": "50-249",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0090",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-31T19:32:00+01:00"
+          },
+          {
+            "id": "ENG-0089",
+            "type": "demo_requested",
+            "occurred_at": "2026-11-03T01:36:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 79,
+      "received_at": "2026-11-03T15:02:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L075",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-03T15:01:00+01:00",
+        "email": "elena.martin@mercados-vertice.example",
+        "first_name": "Elena",
+        "last_name": "Martín",
+        "business_country": "ES",
+        "relationship_type": "supplier",
+        "company": {
+          "company_name": "Mercados Vértice",
+          "company_domain": "mercados-vertice.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0145",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-27T08:55:00+01:00"
+          },
+          {
+            "id": "ENG-0146",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-27T22:51:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "enquiry_text": "We run a respondent panel and would like to supply participants."
+      }
+    },
+    {
+      "seq": 80,
+      "received_at": "2026-11-03T17:07:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L076",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-03T17:05:00+01:00",
+        "email": "joao.santos@estudos-tejo.example",
+        "first_name": "João",
+        "last_name": "Santos",
+        "business_country": "Portugal",
+        "relationship_type": "supplier",
+        "company": {
+          "company_name": "Estudos Tejo",
+          "company_domain": "estudos-tejo.example",
+          "industry_code": "panel_sample_provider",
+          "employee_band_declared": "11-49",
+          "research_use_case": "other",
+          "research_frequency": "unknown",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0149",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-13T09:45:00+02:00"
+          },
+          {
+            "id": "ENG-0148",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-27T15:15:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "enquiry_text": "We run a respondent panel and would like to supply participants."
+      }
+    },
+    {
+      "seq": 81,
+      "received_at": "2026-11-03T17:39:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L077",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-03T17:37:00+01:00",
+        "email": "joao.martins@correio-pessoal.example",
+        "first_name": "João",
+        "last_name": "Martins",
+        "business_country": "portugal",
+        "relationship_type": "unknown",
+        "company": null,
+        "engagement_events": [],
+        "engagement_coverage": "complete",
+        "enquiry_type": "paid_survey_participant",
+        "enquiry_text": "Quero participar em inquéritos pagos."
+      }
+    },
+    {
+      "seq": 82,
+      "received_at": "2026-11-03T19:55:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L078",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-03T19:53:00+01:00",
+        "email": "theo.martin@marches-seine.example",
+        "first_name": "Théo",
+        "last_name": "Martin",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Marchés Seine",
+          "company_domain": "marches-seine.example",
+          "industry_code": "retail_ecommerce",
+          "employee_band_declared": "50-249",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 83,
+      "received_at": "2026-11-04T09:33:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L079",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-04T09:32:00+01:00",
+        "email": "Maxime.Simon@Tendances-prisme.example",
+        "first_name": "Maxime",
+        "last_name": "Simon",
+        "business_country": "France",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendances Prisme",
+          "company_domain": "tendances-prisme.example",
+          "industry_code": "media_entertainment_gaming",
+          "employee_band_declared": "50-249",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0067",
+            "type": "demo_requested",
+            "occurred_at": "2026-09-28T10:05:00+02:00"
+          },
+          {
+            "id": "ENG-0066",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-20T10:47:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3008"
+      }
+    },
+    {
+      "seq": 84,
+      "received_at": "2026-11-04T09:50:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L080",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-04T09:47:00+01:00",
+        "email": "elena.vidal@tendencias-vertice-2.example",
+        "first_name": "Elena",
+        "last_name": "Vidal",
+        "business_country": "es",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendencias Vértice",
+          "company_domain": "tendencias-vertice-2.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "11-49",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0095",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-11T13:11:00+02:00"
+          },
+          {
+            "id": "ENG-0092",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-15T19:24:00+02:00"
+          },
+          {
+            "id": "ENG-0093",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-20T12:17:00+02:00"
+          },
+          {
+            "id": "ENG-0091",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-28T09:48:00+01:00"
+          },
+          {
+            "id": "ENG-0094",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-31T18:58:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 85,
+      "received_at": "2026-11-04T11:54:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L081",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-04T11:53:00+01:00",
+        "email": "camille.roux@analyse-azur.example",
+        "first_name": "Camille",
+        "last_name": "Roux",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Analyse Azur",
+          "company_domain": "analyse-azur.example",
+          "industry_code": "other",
+          "employee_band_declared": "1-10",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0081",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-03T21:12:00+02:00"
+          },
+          {
+            "id": "ENG-0080",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-26T12:25:00+01:00"
+          },
+          {
+            "id": "ENG-0079",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-27T13:46:00+01:00"
+          },
+          {
+            "id": "ENG-0078",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-30T19:43:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3010"
+      }
+    },
+    {
+      "seq": 86,
+      "received_at": "2026-11-04T14:29:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L082",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-04T14:28:00+01:00",
+        "email": "andre.lopes@painel-delta.example",
+        "first_name": "André",
+        "last_name": "Lopes",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Painel Delta",
+          "company_domain": "painel-delta.example",
+          "industry_code": "retail_ecommerce",
+          "employee_band_declared": "1-10",
+          "research_use_case": "other",
+          "research_frequency": "none",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0105",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-18T17:53:00+02:00"
+          },
+          {
+            "id": "ENG-0105",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-18T17:53:00+02:00"
+          },
+          {
+            "id": "ENG-0106",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-31T20:27:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 87,
+      "received_at": "2026-11-04T15:36:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L083",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-04T15:35:00+01:00",
+        "email": "Nuno.Ribeiro@Opiniao-vertice.example",
+        "first_name": "Nuno",
+        "last_name": "Ribeiro",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Opinião Vértice",
+          "company_domain": "opiniao-vertice.example",
+          "industry_code": "technology_telecoms",
+          "employee_band_declared": "50-249",
+          "research_use_case": "both",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0059",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-27T20:54:00+01:00"
+          },
+          {
+            "id": "ENG-0058",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-29T18:38:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 88,
+      "received_at": "2026-11-05T09:46:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L084",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-11-05T09:44:00+01:00",
+        "email": "ines.sousa@analise-atlantico.example",
+        "first_name": "Inês",
+        "last_name": "Sousa",
+        "business_country": "PT",
+        "relationship_type": "buyer",
+        "company": null,
+        "engagement_events": [
+          {
+            "id": "ENG-0198",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-11-05T07:59:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3016"
+      }
+    },
+    {
+      "seq": 89,
+      "received_at": "2026-11-05T14:13:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L085",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-11-05T14:11:00+01:00",
+        "email": "lea.roux@analyse-sommet.example",
+        "first_name": "Léa",
+        "last_name": "Roux",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Analyse Sommet",
+          "company_domain": "analyse-sommet.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "unknown",
+          "research_use_case": "both",
+          "research_frequency": "recurring_less_than_monthly",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": true
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0213",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-11-05T14:03:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 90,
+      "received_at": "2026-11-05T14:19:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": null,
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-05T14:17:00+01:00",
+        "email": "sofia.rodrigues@tendencias-tejo.example",
+        "first_name": "Sofia",
+        "last_name": "Rodrigues",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendências Tejo",
+          "company_domain": "tendencias-tejo.example",
+          "industry_code": "other",
+          "employee_band_declared": "250-999",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0194",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-09-23T15:43:00+02:00"
+          },
+          {
+            "id": "ENG-0192",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-11T17:37:00+02:00"
+          },
+          {
+            "id": "ENG-0193",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-11-01T18:34:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 91,
+      "received_at": "2026-11-05T15:03:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L086",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-05T15:02:00+01:00",
+        "email": "diego.torres@correo-personal.example",
+        "first_name": "Diego",
+        "last_name": "Torres",
+        "business_country": "es",
+        "relationship_type": "unknown",
+        "company": null,
+        "engagement_events": [],
+        "engagement_coverage": "complete",
+        "enquiry_type": "paid_survey_participant",
+        "enquiry_text": "¿Cómo puedo participar en encuestas pagadas?"
+      }
+    },
+    {
+      "seq": 92,
+      "received_at": "2026-11-05T16:10:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L087",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-05T16:07:00+01:00",
+        "email": "julien.lefevre@etudes-delta.example",
+        "first_name": "Julien",
+        "last_name": "Lefèvre",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Études Delta",
+          "company_domain": "etudes-delta.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "1-10",
+          "research_use_case": "both",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0096",
+            "type": "quote_requested",
+            "occurred_at": "2026-11-05T12:30:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 93,
+      "received_at": "2026-11-05T16:11:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L088",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-05T16:08:00+01:00",
+        "email": "  mario.garcia@panel-delta.example ",
+        "first_name": "Mario",
+        "last_name": "García",
+        "business_country": " Spain ",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Panel Delta",
+          "company_domain": "panel-delta.example",
+          "industry_code": "technology_telecoms",
+          "employee_band_declared": "11-49",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3012"
+      }
+    },
+    {
+      "seq": 94,
+      "received_at": "2026-11-06T10:56:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L089",
+        "event_type": "lead_updated",
+        "source_occurred_at": "2026-11-06T10:54:00+01:00",
+        "email": "  julien.lefevre@etudes-delta.example ",
+        "first_name": "Julien",
+        "last_name": "Lefèvre",
+        "business_country": "FR",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Études Delta",
+          "company_domain": "etudes-delta.example",
+          "industry_code": "market_research",
+          "employee_band_declared": "1-10",
+          "research_use_case": "both",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": true,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0203",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-11-06T10:54:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 95,
+      "received_at": "2026-11-06T11:13:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L090",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-06T11:10:00+01:00",
+        "email": "  antoine.leroy@marches-horizon.example ",
+        "first_name": "Antoine",
+        "last_name": "Leroy",
+        "business_country": "france",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Marchés Horizon",
+          "company_domain": "marches-horizon.example",
+          "industry_code": "research_technology",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0003",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-19T21:39:00+02:00"
+          },
+          {
+            "id": "ENG-0002",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-20T21:45:00+02:00"
+          }
+        ],
+        "engagement_coverage": "complete",
+        "crm_contact_id": "CRM-C-3001"
+      }
+    },
+    {
+      "seq": 96,
+      "received_at": "2026-11-06T12:32:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L091",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-06T12:30:00+01:00",
+        "email": "Leonor.Pereira@Painel-farol.example",
+        "first_name": "Leonor",
+        "last_name": "Pereira",
+        "business_country": "Portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Painel Farol",
+          "company_domain": "painel-farol.example",
+          "industry_code": "advertising_media_pr_agency",
+          "employee_band_declared": "50-249",
+          "research_use_case": "both",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [],
+        "engagement_coverage": "failed"
+      }
+    },
+    {
+      "seq": 97,
+      "received_at": "2026-11-06T12:56:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L092",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-06T12:53:00+01:00",
+        "email": "Laura.Torres@Tendencias-prisma.example",
+        "first_name": "Laura",
+        "last_name": "Torres",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendencias Prisma",
+          "company_domain": "tendencias-prisma.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "50-249",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [],
+        "engagement_coverage": "failed"
+      }
+    },
+    {
+      "seq": 98,
+      "received_at": "2026-11-06T13:09:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L092",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-06T12:53:00+01:00",
+        "email": "Laura.Torres@Tendencias-prisma.example",
+        "first_name": "Laura",
+        "last_name": "Torres",
+        "business_country": "España",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Tendencias Prisma",
+          "company_domain": "tendencias-prisma.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "50-249",
+          "research_use_case": "respondents_fieldwork",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [],
+        "engagement_coverage": "failed"
+      }
+    },
+    {
+      "seq": 99,
+      "received_at": "2026-11-06T15:55:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L093",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-06T15:52:00+01:00",
+        "email": "alba.sanchez@consultora-sol.example",
+        "first_name": "Alba",
+        "last_name": "Sánchez",
+        "business_country": "es",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Consultora Sol",
+          "company_domain": "consultora-sol.example",
+          "industry_code": "unknown",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "panel_management",
+          "research_frequency": "monthly_or_more",
+          "uses_digital_research_tools": true,
+          "integration_required": true,
+          "technical_resource_available": true,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": null,
+          "adoption_interest_confirmed": null,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0009",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-12T14:59:00+02:00"
+          },
+          {
+            "id": "ENG-0008",
+            "type": "guide_downloaded",
+            "occurred_at": "2026-10-13T16:27:00+02:00"
+          },
+          {
+            "id": "ENG-0007",
+            "type": "webinar_attended",
+            "occurred_at": "2026-10-24T18:46:00+02:00"
+          },
+          {
+            "id": "ENG-0005",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-10-28T08:08:00+01:00"
+          },
+          {
+            "id": "ENG-0006",
+            "type": "pricing_page_visited",
+            "occurred_at": "2026-11-04T15:34:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    },
+    {
+      "seq": 100,
+      "received_at": "2026-11-06T16:49:00+01:00",
+      "input": {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-L094",
+        "event_type": "lead_created",
+        "source_occurred_at": "2026-11-06T16:47:00+01:00",
+        "email": "catarina.santos@campo-lusa.example",
+        "first_name": "Catarina",
+        "last_name": "Santos",
+        "business_country": "portugal",
+        "relationship_type": "buyer",
+        "company": {
+          "company_name": "Campo Lusa",
+          "company_domain": "campo-lusa.example",
+          "industry_code": "other",
+          "employee_band_declared": "1000_plus",
+          "research_use_case": "panel_management",
+          "research_frequency": "one_off",
+          "uses_digital_research_tools": null,
+          "integration_required": null,
+          "technical_resource_available": null,
+          "adoption_owner_confirmed": null,
+          "onboarding_support_needed": true,
+          "adoption_interest_confirmed": true,
+          "adoption_unwilling_or_unable": null
+        },
+        "engagement_events": [
+          {
+            "id": "ENG-0004",
+            "type": "case_study_downloaded",
+            "occurred_at": "2026-10-30T12:31:00+01:00"
+          }
+        ],
+        "engagement_coverage": "complete"
+      }
+    }
+  ],
+  "followup_activities": [
+    {
+      "activity_id": "ACT-0001",
+      "source_system": "synthetic_crm",
+      "lead_email": "andre.costa@opiniao-tejo.example",
+      "owner": "PT-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-13T15:39:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0002",
+      "source_system": "synthetic_crm",
+      "lead_email": "ines.ortega@panel-vertice.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-10-14T14:12:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0003",
+      "source_system": "synthetic_crm",
+      "lead_email": "ines.ortega@panel-vertice.example",
+      "owner": "ES-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-15T09:04:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0004",
+      "source_system": "synthetic_crm",
+      "lead_email": "chloe.leroy@panel-prisme.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-15T09:56:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0005",
+      "source_system": "synthetic_crm",
+      "lead_email": "andre.martins@sondagens-tejo.example",
+      "owner": "PT-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-15T10:54:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0006",
+      "source_system": "synthetic_crm",
+      "lead_email": "paula.castillo@datos-iberica.example",
+      "owner": "ES-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-15T14:11:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0007",
+      "source_system": "synthetic_crm",
+      "lead_email": "catarina.martins@opiniao-lusa.example",
+      "owner": "PT-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-15T15:45:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0008",
+      "source_system": "synthetic_crm",
+      "lead_email": "louis.dubois@conseil-boussole.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-16T12:04:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0009",
+      "source_system": "synthetic_crm",
+      "lead_email": "hugo.moreau@conseil-sommet.example",
+      "owner": "FR-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-16T12:36:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0010",
+      "source_system": "synthetic_crm",
+      "lead_email": "andre.sousa@consultores-lusa.example",
+      "owner": "PT-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-19T13:17:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0011",
+      "source_system": "synthetic_crm",
+      "lead_email": "raul.navarro@analisis-iberica.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-19T14:04:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0012",
+      "source_system": "synthetic_crm",
+      "lead_email": "julie.fournier@opinion-phare.example",
+      "owner": "FR-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-19T17:37:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0013",
+      "source_system": "synthetic_crm",
+      "lead_email": "andres.navarro@analisis-iberica.example",
+      "owner": "ES-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-20T09:33:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0014",
+      "source_system": "synthetic_crm",
+      "lead_email": "joao.ribeiro@tendencias-vertice.example",
+      "owner": "PT-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-20T12:51:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0015",
+      "source_system": "synthetic_crm",
+      "lead_email": "rocio.navarro@panel-iberica.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-20T14:27:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0016",
+      "source_system": "synthetic_crm",
+      "lead_email": "ivan.navarro@tendencias-brujula.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-20T14:54:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0017",
+      "source_system": "synthetic_crm",
+      "lead_email": "hugo.garcia@mercados-brujula.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-21T15:51:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0018",
+      "source_system": "synthetic_crm",
+      "lead_email": "duarte.silva@painel-horizonte.example",
+      "owner": "PT-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-22T11:52:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0019",
+      "source_system": "synthetic_crm",
+      "lead_email": "sergio.iglesias@campo-delta.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-22T14:06:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0020",
+      "source_system": "synthetic_crm",
+      "lead_email": "javier.moreno@consultora-prisma.example",
+      "owner": "ES-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-22T16:39:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0021",
+      "source_system": "synthetic_crm",
+      "lead_email": "paula.vidal@tendencias-norte.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-22T16:59:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0022",
+      "source_system": "synthetic_crm",
+      "lead_email": "hugo.bernard@sondages-boussole.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-23T10:15:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0023",
+      "source_system": "synthetic_crm",
+      "lead_email": "lea.roux@analyse-sommet.example",
+      "owner": "FR-02",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-10-23T10:15:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0024",
+      "source_system": "synthetic_crm",
+      "lead_email": "leonor.sousa@analise-norte.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-23T10:16:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0025",
+      "source_system": "synthetic_crm",
+      "lead_email": "nuno.costa@campo-horizonte.example",
+      "owner": "PT-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-23T15:21:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0026",
+      "source_system": "synthetic_crm",
+      "lead_email": "lea.girard@courriel-perso.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-10-23T17:35:00+02:00"
+    },
+    {
+      "activity_id": "ACT-0027",
+      "source_system": "synthetic_crm",
+      "lead_email": "beatriz.martins@tendencias-bussola.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-10-25T15:34:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0028",
+      "source_system": "synthetic_crm",
+      "lead_email": "mario.vidal@campo-sol.example",
+      "owner": "ES-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-26T11:00:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0029",
+      "source_system": "synthetic_crm",
+      "lead_email": "lea.girard@courriel-perso.example",
+      "owner": "FR-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-26T16:33:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0030",
+      "source_system": "synthetic_crm",
+      "lead_email": "beatriz.martins@tendencias-bussola.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-27T09:01:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0031",
+      "source_system": "synthetic_crm",
+      "lead_email": "paula.ortega@opinion-prisma.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-27T12:41:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0032",
+      "source_system": "synthetic_crm",
+      "lead_email": "sergio.martin@sondeos-iberica.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-10-27T14:44:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0033",
+      "source_system": "synthetic_crm",
+      "lead_email": "sergio.martin@sondeos-iberica.example",
+      "owner": "ES-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-27T15:21:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0034",
+      "source_system": "synthetic_crm",
+      "lead_email": "nicolas.girard@tendances-atlas.example",
+      "owner": "FR-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-27T15:28:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0035",
+      "source_system": "synthetic_crm",
+      "lead_email": "chloe.martin@panel-azur.example",
+      "owner": "FR-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-28T11:42:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0036",
+      "source_system": "synthetic_crm",
+      "lead_email": "laura.sanchez@consultora-delta.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-28T15:07:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0037",
+      "source_system": "synthetic_crm",
+      "lead_email": "alba.martin@analisis-prisma.example",
+      "owner": "ES-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-29T09:05:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0038",
+      "source_system": "synthetic_crm",
+      "lead_email": "sergio.vidal@analisis-atlas.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-29T10:04:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0039",
+      "source_system": "synthetic_crm",
+      "lead_email": "pedro.sousa@estudos-bussola.example",
+      "owner": "PT-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-29T11:35:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0040",
+      "source_system": "synthetic_crm",
+      "lead_email": "andres.torres@consultora-delta.example",
+      "owner": "ES-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-29T15:41:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0041",
+      "source_system": "synthetic_crm",
+      "lead_email": "clara.bernard@etudes-nord.example",
+      "owner": "FR-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-30T12:33:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0042",
+      "source_system": "synthetic_crm",
+      "lead_email": "matilde.lopes@painel-atlantico.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-10-30T15:00:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0043",
+      "source_system": "synthetic_crm",
+      "lead_email": "catarina.costa@analise-tejo.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-10-30T17:54:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0044",
+      "source_system": "synthetic_crm",
+      "lead_email": "andre.ferreira@correio-pessoal.example",
+      "owner": "PT-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-10-30T17:59:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0045",
+      "source_system": "synthetic_crm",
+      "lead_email": "ines.ribeiro@painel-prisma.example",
+      "owner": "PT-02",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-01T14:11:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0046",
+      "source_system": "synthetic_crm",
+      "lead_email": "ines.sousa@analise-atlantico.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-02T08:59:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0047",
+      "source_system": "synthetic_crm",
+      "lead_email": "julie.michel@etudes-phare.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-02T09:09:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0048",
+      "source_system": "synthetic_crm",
+      "lead_email": "ines.ribeiro@painel-prisma.example",
+      "owner": "PT-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-02T11:18:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0049",
+      "source_system": "synthetic_crm",
+      "lead_email": "matilde.lopes@painel-atlantico.example",
+      "owner": "PT-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-02T11:41:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0050",
+      "source_system": "synthetic_crm",
+      "lead_email": "andres.iglesias@datos-sol.example",
+      "owner": "ES-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-02T12:20:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0051",
+      "source_system": "synthetic_crm",
+      "lead_email": "carmen.sanchez@correo-personal.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-03T09:10:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0052",
+      "source_system": "synthetic_crm",
+      "lead_email": "julie.laurent@sondages-prisme.example",
+      "owner": "FR-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-03T09:25:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0053",
+      "source_system": "synthetic_crm",
+      "lead_email": "carmen.martin@campo-prisma.example",
+      "owner": "ES-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-03T09:27:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0054",
+      "source_system": "synthetic_crm",
+      "lead_email": "carmen.delgado@panel-norte.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-03T09:33:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0055",
+      "source_system": "synthetic_crm",
+      "lead_email": "emma.bernard@terrain-azur.example",
+      "owner": "FR-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-03T09:44:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0056",
+      "source_system": "synthetic_crm",
+      "lead_email": "marta.ruiz@tendencias-delta.example",
+      "owner": "ES-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-03T09:55:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0057",
+      "source_system": "synthetic_crm",
+      "lead_email": "ines.sousa@analise-atlantico.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-03T11:04:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0058",
+      "source_system": "synthetic_crm",
+      "lead_email": "clara.dubois@terrain-prisme.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-03T11:20:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0059",
+      "source_system": "synthetic_crm",
+      "lead_email": "elena.martin@mercados-vertice.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-03T15:03:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0060",
+      "source_system": "synthetic_crm",
+      "lead_email": "elena.martin@mercados-vertice.example",
+      "owner": "ES-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-03T16:01:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0061",
+      "source_system": "synthetic_crm",
+      "lead_email": "clara.dubois@terrain-prisme.example",
+      "owner": "FR-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-03T17:58:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0062",
+      "source_system": "synthetic_crm",
+      "lead_email": "joao.santos@estudos-tejo.example",
+      "owner": "PT-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-03T17:59:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0063",
+      "source_system": "synthetic_crm",
+      "lead_email": "theo.martin@marches-seine.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-03T19:56:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0064",
+      "source_system": "synthetic_crm",
+      "lead_email": "maxime.simon@tendances-prisme.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-04T09:34:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0065",
+      "source_system": "synthetic_crm",
+      "lead_email": "elena.vidal@tendencias-vertice-2.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-04T09:51:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0066",
+      "source_system": "synthetic_crm",
+      "lead_email": "elena.vidal@tendencias-vertice-2.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-04T14:54:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0067",
+      "source_system": "synthetic_crm",
+      "lead_email": "theo.martin@marches-seine.example",
+      "owner": "FR-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-04T14:57:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0068",
+      "source_system": "synthetic_crm",
+      "lead_email": "nuno.ribeiro@opiniao-vertice.example",
+      "owner": "PT-02",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-04T16:01:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0069",
+      "source_system": "synthetic_crm",
+      "lead_email": "maxime.simon@tendances-prisme.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-04T17:15:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0070",
+      "source_system": "synthetic_crm",
+      "lead_email": "camille.roux@analyse-azur.example",
+      "owner": "FR-01",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-05T10:19:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0071",
+      "source_system": "synthetic_crm",
+      "lead_email": "andre.lopes@painel-delta.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-05T12:16:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0072",
+      "source_system": "synthetic_crm",
+      "lead_email": "julien.lefevre@etudes-delta.example",
+      "owner": "FR-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-05T16:46:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0073",
+      "source_system": "synthetic_crm",
+      "lead_email": "mario.garcia@panel-delta.example",
+      "owner": "ES-02",
+      "type": "call",
+      "automated": false,
+      "occurred_at": "2026-11-06T12:15:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0074",
+      "source_system": "synthetic_crm",
+      "lead_email": "leonor.pereira@painel-farol.example",
+      "owner": "PT-01",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-06T12:33:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0075",
+      "source_system": "synthetic_crm",
+      "lead_email": "alba.sanchez@consultora-sol.example",
+      "owner": "ES-02",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-06T15:56:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0076",
+      "source_system": "synthetic_crm",
+      "lead_email": "laura.torres@tendencias-prisma.example",
+      "owner": "ES-01",
+      "type": "email",
+      "automated": false,
+      "occurred_at": "2026-11-06T16:43:00+01:00"
+    },
+    {
+      "activity_id": "ACT-0077",
+      "source_system": "synthetic_crm",
+      "lead_email": "catarina.santos@campo-lusa.example",
+      "owner": "PT-02",
+      "type": "email",
+      "automated": true,
+      "occurred_at": "2026-11-06T16:50:00+01:00"
+    }
+  ]
+}
