@@ -108,7 +108,8 @@
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "First contact a week earlier (well over 8 business hours), so EXISTING_CONTACT, not a recontact."
   }
 }

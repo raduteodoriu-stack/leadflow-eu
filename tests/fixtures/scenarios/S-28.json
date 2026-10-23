@@ -98,7 +98,8 @@
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "Without the unknown relationship this would be P3 (rule 7). Rule 6 lifts it to P2 so the rep qualifies the purpose."
   }
 }

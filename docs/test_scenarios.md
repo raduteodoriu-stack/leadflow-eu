@@ -37,11 +37,11 @@ SLA: one deadline of 8 business hours for every assigned lead (breach if missed)
 | S-25 | Portuguese lead when no Portuguese rep is active | Tue 03 Nov 10:00 | review | unassigned_review | P2 (rule 5) | — | — | NO_ELIGIBLE_OWNER, PRIORITY_STANDARD_FIT | yes |
 | S-26 | Existing lead whose owner has become inactive | Tue 03 Nov 10:00 | review | FR-02 | P2 (rule 5) | — | no new SLA | EXISTING_CONTACT, OWNER_REVIEW, PRIORITY_STANDARD_FIT | yes |
 | S-27 | Valid lead with no company domain | Tue 03 Nov 10:00 | assigned | ES-01 | P2 (rule 5) | Tue 03 Nov 14:00 | Tue 03 Nov 18:00 | DOMAIN_MISSING, PRIORITY_STANDARD_FIT | yes |
-| S-28 | Relationship unknown, low fit and low engagement | Tue 03 Nov 10:00 | assigned | FR-01 | P2 (rule 6) | Tue 03 Nov 14:00 | Tue 03 Nov 18:00 | RELATIONSHIP_UNKNOWN, PRIORITY_MISSING_INFO | no |
-| S-29 | Paid-survey participant from a country with no redirect rule | Tue 03 Nov 10:00 | review | participant_redirect_review | — | — | — | NO_REDIRECT_RULE | no |
-| S-30 | Enquiry with both buying and supply needs | Tue 03 Nov 10:00 | assigned | ES-02 + SUPPLIER_REVIEW | P2 (rule 5) | Tue 03 Nov 14:00 | Tue 03 Nov 18:00 | SUPPLIER_REVIEW, PRIORITY_STANDARD_FIT | no |
-| S-31 | Next Spanish rep in rotation is inactive | Tue 03 Nov 10:00 | assigned | ES-02 | P3 (rule 7) | Tue 03 Nov 18:00 | Tue 03 Nov 18:00 | PRIORITY_DEFAULT | no |
-| S-32 | Already followed-up contact sends a new demo request | Tue 03 Nov 10:00 | existing_owner_kept | PT-01 | P1 (rule 2) | — | no new SLA | EXISTING_CONTACT, PRIORITY_EXPLICIT_REQUEST | no |
+| S-28 | Relationship unknown, low fit and low engagement | Tue 03 Nov 10:00 | assigned | FR-01 | P2 (rule 6) | Tue 03 Nov 14:00 | Tue 03 Nov 18:00 | RELATIONSHIP_UNKNOWN, PRIORITY_MISSING_INFO | yes |
+| S-29 | Paid-survey participant from a country with no redirect rule | Tue 03 Nov 10:00 | review | participant_redirect_review | — | — | — | NO_REDIRECT_RULE | yes |
+| S-30 | Enquiry with both buying and supply needs | Tue 03 Nov 10:00 | assigned | ES-02 + SUPPLIER_REVIEW | P2 (rule 5) | Tue 03 Nov 14:00 | Tue 03 Nov 18:00 | SUPPLIER_REVIEW, PRIORITY_STANDARD_FIT | yes |
+| S-31 | Next Spanish rep in rotation is inactive | Tue 03 Nov 10:00 | assigned | ES-02 | P3 (rule 7) | Tue 03 Nov 18:00 | Tue 03 Nov 18:00 | PRIORITY_DEFAULT | yes |
+| S-32 | Already followed-up contact sends a new demo request | Tue 03 Nov 10:00 | existing_owner_kept | PT-01 | P1 (rule 2) | — | no new SLA | EXISTING_CONTACT, PRIORITY_EXPLICIT_REQUEST | yes |
 
 ## Boundary tests (17)
 
@@ -65,4 +65,4 @@ SLA: one deadline of 8 business hours for every assigned lead (breach if missed)
 | B-16 | No follow-up within 8 business hours; late call cannot erase the breach | Tue 03 Nov 17:31 | SLA breached, target missed | follow-up Tue 03 Nov 17:30 | — | Tue 03 Nov 10:00 | — | — | yes |
 | B-17 | Call exactly at the SLA deadline meets the SLA | Tue 03 Nov 17:01 | SLA met, target missed | follow-up Tue 03 Nov 17:00 | — | Tue 03 Nov 10:00 | — | — | yes |
 
-**Review status:** 44 of 49 labels independently reviewed.
+**Review status:** 49 of 49 labels independently reviewed.

@@ -107,7 +107,8 @@
     ],
     "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 decisions)",
     "labelled_on": "2026-10-23",
-    "reviewed_by": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
     "notes": "Normal assignment and SLA, plus a parallel partnership review for the supply side."
   }
 }
