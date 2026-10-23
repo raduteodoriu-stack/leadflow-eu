@@ -1,0 +1,107 @@
+{
+  "id": "S-11",
+  "title": "New email but CRM contact ID belongs to an existing, followed-up contact",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "p.dubois@labo-synthetique.example",
+        "crm_contact_id": "CRM-C-2001",
+        "owner": "FR-01",
+        "assigned_at": "2026-10-20T10:00:00+02:00",
+        "priority": "P2",
+        "sla_deadline": "2026-10-20T14:00:00+02:00",
+        "first_qualifying_followup": {
+          "type": "email",
+          "at": "2026-10-20T11:30:00+02:00"
+        },
+        "sla_outcome": "met"
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-02"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0011",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:00:00+01:00",
+    "email": "pierre.dubois@labo-synthetique.example",
+    "business_country": "France",
+    "relationship_type": "buyer",
+    "company": null,
+    "engagement_events": [
+      {
+        "type": "pricing_page_visited",
+        "occurred_at": "2026-11-02T10:00:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete",
+    "crm_contact_id": "CRM-C-2001"
+  },
+  "expected": {
+    "normalised_email": "pierre.dubois@labo-synthetique.example",
+    "stored_email_kept": "p.dubois@labo-synthetique.example",
+    "country_code": "FR",
+    "lead_created": false,
+    "outcome": "attached_to_existing_contact",
+    "owner": "FR-01",
+    "review_queue": null,
+    "parallel_review": {
+      "reason_code": "IDENTITY_REVIEW",
+      "action_owner": "revops"
+    },
+    "round_robin_advanced": false,
+    "round_robin_next_after": "FR-02",
+    "fit": {
+      "components": {
+        "industry": null,
+        "size": null,
+        "need": null,
+        "readiness": null
+      },
+      "total": 0,
+      "status": "incomplete",
+      "band": null
+    },
+    "engagement": {
+      "total": 10,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P2",
+    "priority_rule": 6,
+    "reason_codes": [
+      "IDENTITY_REVIEW",
+      "PRIORITY_MISSING_INFO",
+      "FIT_INCOMPLETE"
+    ],
+    "sla": {
+      "new_sla_created": false,
+      "existing_outcome": "met"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "Decision 2026-10-23: ambiguous identity with a matching CRM contact ID goes to that contact's owner",
+      "LF-002 No automatic merge",
+      "LF-002 SLA: no reset"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": "Event attached to CRM-C-2001 (owner FR-01); stored email not overwritten; RevOps confirms identity in parallel. Contact already followed up, so no new SLA."
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "id": "S-19",
+  "title": "Standard lead arrives on Saturday",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-07T11:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0019",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-07T10:55:00+01:00",
+    "email": "antoine.leroy@panel-synthetique.example",
+    "business_country": "FR",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "panel-synthetique.example",
+      "industry_code": "panel_sample_provider",
+      "employee_band_declared": "50-249",
+      "research_use_case": "panel_management",
+      "research_frequency": "monthly_or_more",
+      "uses_digital_research_tools": true,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "guide_downloaded",
+        "occurred_at": "2026-11-07T10:50:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "antoine.leroy@panel-synthetique.example",
+    "country_code": "FR",
+    "lead_created": true,
+    "outcome": "assigned",
+    "owner": "FR-01",
+    "review_queue": null,
+    "round_robin_advanced": true,
+    "round_robin_next_after": "FR-02",
+    "fit": {
+      "components": {
+        "industry": 40,
+        "size": 10,
+        "need": 25,
+        "readiness": 10
+      },
+      "total": 85,
+      "status": "complete",
+      "band": "high"
+    },
+    "engagement": {
+      "total": 5,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P2",
+    "priority_rule": 5,
+    "reason_codes": [
+      "PRIORITY_STANDARD_FIT"
+    ],
+    "sla": {
+      "starts": "2026-11-07T11:00:00+01:00",
+      "allowance_business_minutes": 240,
+      "deadline": "2026-11-09T13:00:00+01:00",
+      "business_clock_starts": "2026-11-09T09:00:00+01:00"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Working calendar (weekends do not count)",
+      "LF-002 Priority rule 5"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": "Assigned on Saturday, but the business clock starts Monday 09:00; 4 business hours -> 13:00. Panel provider buying software is a buyer."
+  }
+}

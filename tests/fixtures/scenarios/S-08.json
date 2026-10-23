@@ -1,0 +1,100 @@
+{
+  "id": "S-08",
+  "title": "Supplier-only enquiry from Spain, handled like a buyer",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0008",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:05:00+01:00",
+    "email": "carlos.ruiz@audiencia-sintetica.example",
+    "business_country": "ES",
+    "relationship_type": "supplier",
+    "company": {
+      "company_domain": "audiencia-sintetica.example",
+      "industry_code": "panel_sample_provider",
+      "employee_band_declared": "50-249",
+      "research_use_case": "other",
+      "research_frequency": "unknown",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [],
+    "engagement_coverage": "complete",
+    "enquiry_text": "We run a consumer panel and want to supply respondents."
+  },
+  "expected": {
+    "normalised_email": "carlos.ruiz@audiencia-sintetica.example",
+    "country_code": "ES",
+    "lead_created": true,
+    "outcome": "assigned",
+    "owner": "ES-01",
+    "review_queue": null,
+    "parallel_review": {
+      "reason_code": "SUPPLIER_REVIEW",
+      "action_owner": "sales_manager"
+    },
+    "round_robin_advanced": true,
+    "round_robin_next_after": "ES-02",
+    "fit": {
+      "components": {
+        "industry": 40,
+        "size": 10,
+        "need": null,
+        "readiness": null
+      },
+      "total": 50,
+      "status": "incomplete",
+      "band": null
+    },
+    "engagement": {
+      "total": 0,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P2",
+    "priority_rule": 6,
+    "reason_codes": [
+      "SUPPLIER_REVIEW",
+      "PRIORITY_MISSING_INFO",
+      "FIT_INCOMPLETE"
+    ],
+    "sla": {
+      "starts": "2026-11-03T10:00:00+01:00",
+      "allowance_business_minutes": 240,
+      "deadline": "2026-11-03T14:00:00+01:00"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "Decision 2026-10-23: supplier-only enquiries follow the buyer rules; SUPPLIER_REVIEW is a parallel Sales Manager case",
+      "LF-002 Priority rule 6"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": "Panel provider wanting to supply respondents. Assigned by round-robin and scored like a buyer; need and readiness unknown, so fit is incomplete -> P2 rule 6."
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "id": "S-13",
+  "title": "Buyer from Germany (outside ES, PT, FR)",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0013",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:00:00+01:00",
+    "email": "jonas.weber@marktforschung-synth.example",
+    "business_country": "Deutschland",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "marktforschung-synth.example",
+      "industry_code": "management_consultancy",
+      "employee_band_declared": "50-249",
+      "research_use_case": "both",
+      "research_frequency": "recurring_less_than_monthly",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": true,
+      "adoption_interest_confirmed": true,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "pricing_page_visited",
+        "occurred_at": "2026-10-30T14:00:00+01:00"
+      },
+      {
+        "type": "webinar_attended",
+        "occurred_at": "2026-10-28T12:00:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "jonas.weber@marktforschung-synth.example",
+    "country_code": "DE",
+    "lead_created": true,
+    "outcome": "review",
+    "owner": null,
+    "review_queue": "unassigned_review",
+    "round_robin_advanced": false,
+    "round_robin_next_after": null,
+    "fit": {
+      "components": {
+        "industry": 30,
+        "size": 10,
+        "need": 15,
+        "readiness": 5
+      },
+      "total": 60,
+      "status": "complete",
+      "band": "medium"
+    },
+    "engagement": {
+      "total": 25,
+      "status": "complete",
+      "band": "medium"
+    },
+    "priority": "P2",
+    "priority_rule": 5,
+    "reason_codes": [
+      "UNSUPPORTED_TERRITORY",
+      "PRIORITY_STANDARD_FIT"
+    ],
+    "sla": null,
+    "waiting_since": "2026-11-03T10:00:00+01:00",
+    "action_owner": "sales_manager"
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Exceptions: UNSUPPORTED_TERRITORY",
+      "LF-002 Priority rule 5 (complete medium fit + medium engagement)",
+      "Clarification Q2",
+      "Decision 2026-10-23: single catch-all queue unassigned_review; reason code decides who acts"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": null
+  }
+}

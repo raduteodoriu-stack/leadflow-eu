@@ -1,0 +1,80 @@
+{
+  "id": "S-09",
+  "title": "Paid-survey participant enquiry from Spain",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ],
+    "supplier_redirect_rules": {
+      "ES": {
+        "supplier_code": "SUP-ES-01",
+        "supplier_name": "Synthetic Panel Partner ES",
+        "destination_url": "https://panel-partner-es.example/join"
+      }
+    }
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0009",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:00:00+01:00",
+    "email": "maria.respondent@mail-sintetico.example",
+    "business_country": "ES",
+    "relationship_type": "unknown",
+    "company": null,
+    "engagement_events": [],
+    "engagement_coverage": "complete",
+    "enquiry_type": "paid_survey_participant",
+    "enquiry_text": "How can I get paid to take surveys?"
+  },
+  "expected": {
+    "normalised_email": null,
+    "country_code": "ES",
+    "lead_created": false,
+    "outcome": "redirected",
+    "processing_status": "redirected",
+    "owner": null,
+    "review_queue": null,
+    "round_robin_advanced": false,
+    "round_robin_next_after": "ES-01",
+    "fit": null,
+    "engagement": null,
+    "priority": null,
+    "priority_rule": null,
+    "reason_codes": [
+      "PARTICIPANT_REDIRECT"
+    ],
+    "sla": null,
+    "referral": {
+      "referral_method": "automated_reply_panelists",
+      "attempt_status": "simulated",
+      "supplier_code": "SUP-ES-01",
+      "destination_url": "https://panel-partner-es.example/join",
+      "personal_data_transferred": false
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Exceptions: PARTICIPANT_REDIRECT",
+      "LF-001 Out of scope: automated outreach",
+      "DR-007"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": "No sales lead, score or SLA. Referral is simulated only."
+  }
+}

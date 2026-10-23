@@ -1,0 +1,98 @@
+{
+  "id": "S-17",
+  "title": "Same source event delivered again 30 minutes later",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:30:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "ana.garcia@synthetic-research.example",
+        "owner": "ES-01",
+        "assigned_at": "2026-11-03T10:00:00+01:00",
+        "priority": "P1",
+        "sla_deadline": "2026-11-03T11:00:00+01:00",
+        "first_qualifying_followup": null
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-02",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ],
+    "processed_events": [
+      {
+        "source_system": "synthetic_fixture",
+        "source_event_id": "SYN-0001"
+      }
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0001",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:58:00+01:00",
+    "email": "Ana.Garcia@Synthetic-Research.example ",
+    "business_country": "España",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "synthetic-research.example",
+      "industry_code": "market_research",
+      "employee_band_declared": "50-249",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "monthly_or_more",
+      "uses_digital_research_tools": true,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "demo_requested",
+        "occurred_at": "2026-11-03T09:58:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "outcome": "duplicate_event_ignored",
+    "event_stored_again": false,
+    "new_decision": false,
+    "lead_created": false,
+    "owner": "ES-01",
+    "review_queue": null,
+    "round_robin_advanced": false,
+    "round_robin_next_after": "ES-02",
+    "priority": "P1",
+    "reason_codes": [
+      "DUPLICATE_EVENT_RECONTACT"
+    ],
+    "sla": {
+      "deadline": "2026-11-03T11:00:00+01:00",
+      "deadline_changed": false
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Routing step 1: detect previously processed events",
+      "LF-002 Duplicate processing must not advance rotation",
+      "LF-002 SLA: duplicates do not reset",
+      "LF-001 Reprocessing creates no duplicates",
+      "Decision 2026-10-23: one code DUPLICATE_EVENT_RECONTACT for replays and recontacts within 8 business hours"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": "Identical to S-01's event (same source_event_id). Technical replay: nothing changes; tagged DUPLICATE_EVENT_RECONTACT."
+  }
+}

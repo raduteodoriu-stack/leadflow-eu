@@ -1,0 +1,102 @@
+{
+  "id": "S-01",
+  "title": "Spanish buyer requests a demo; complete high fit",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0001",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:58:00+01:00",
+    "email": "Ana.Garcia@Synthetic-Research.example ",
+    "business_country": "España",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "synthetic-research.example",
+      "industry_code": "market_research",
+      "employee_band_declared": "50-249",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "monthly_or_more",
+      "uses_digital_research_tools": true,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "demo_requested",
+        "occurred_at": "2026-11-03T09:58:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "ana.garcia@synthetic-research.example",
+    "country_code": "ES",
+    "lead_created": true,
+    "outcome": "assigned",
+    "owner": "ES-01",
+    "review_queue": null,
+    "round_robin_advanced": true,
+    "round_robin_next_after": "ES-02",
+    "fit": {
+      "components": {
+        "industry": 40,
+        "size": 10,
+        "need": 25,
+        "readiness": 10
+      },
+      "total": 85,
+      "status": "complete",
+      "band": "high"
+    },
+    "engagement": {
+      "total": 60,
+      "status": "complete",
+      "band": "high"
+    },
+    "priority": "P1",
+    "priority_rule": 2,
+    "reason_codes": [
+      "PRIORITY_EXPLICIT_REQUEST"
+    ],
+    "sla": {
+      "starts": "2026-11-03T10:00:00+01:00",
+      "allowance_business_minutes": 60,
+      "deadline": "2026-11-03T11:00:00+01:00"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Territory and ownership",
+      "LF-002 Company-fit scoring",
+      "LF-002 Engagement scoring",
+      "LF-002 Priority rule 2",
+      "LF-002 SLA: starting the clock",
+      "Clarifications Q1, Q3"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": null,
+    "notes": "Alias 'España' -> ES; email trimmed and lower-cased. Readiness 10 = existing digital research workflow."
+  }
+}
