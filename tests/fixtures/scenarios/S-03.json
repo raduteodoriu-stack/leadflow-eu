@@ -1,0 +1,122 @@
+{
+  "id": "S-03",
+  "title": "French buyer with high engagement but complete low fit",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0003",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:40:00+01:00",
+    "email": "claire.martin@petite-boutique.example",
+    "business_country": "France",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "petite-boutique.example",
+      "industry_code": "other",
+      "employee_band_declared": "1-10",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "one_off",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": true,
+      "adoption_interest_confirmed": true,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "webinar_attended",
+        "occurred_at": "2026-10-20T12:00:00+02:00"
+      },
+      {
+        "type": "pricing_page_visited",
+        "occurred_at": "2026-10-28T10:00:00+01:00"
+      },
+      {
+        "type": "pricing_page_visited",
+        "occurred_at": "2026-11-02T15:00:00+01:00"
+      },
+      {
+        "type": "guide_downloaded",
+        "occurred_at": "2026-11-02T15:10:00+01:00"
+      },
+      {
+        "type": "case_study_downloaded",
+        "occurred_at": "2026-11-03T09:30:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "claire.martin@petite-boutique.example",
+    "country_code": "FR",
+    "lead_created": true,
+    "outcome": "assigned",
+    "owner": "FR-01",
+    "review_queue": null,
+    "round_robin_advanced": true,
+    "round_robin_next_after": "FR-02",
+    "fit": {
+      "components": {
+        "industry": 0,
+        "size": 0,
+        "need": 5,
+        "readiness": 5
+      },
+      "total": 10,
+      "status": "complete",
+      "band": "low"
+    },
+    "engagement": {
+      "total": 45,
+      "status": "complete",
+      "band": "high"
+    },
+    "priority": "P2",
+    "priority_rule": 4,
+    "reason_codes": [
+      "PRIORITY_HIGH_ENGAGEMENT"
+    ],
+    "sla": {
+      "starts": "2026-11-03T10:00:00+01:00",
+      "allowance_business_minutes": 480,
+      "deadline": "2026-11-03T18:00:00+01:00"
+    },
+    "response_target": {
+      "priority": "P2",
+      "allowance_business_minutes": 240,
+      "target_at": "2026-11-03T14:00:00+01:00"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Company-fit scoring (1-10 employees = 0, not rejected)",
+      "LF-002 Engagement scoring",
+      "LF-002 Priority rule 4",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "Engagement: webinar 15 + 2 pricing days 20 + guide/case study 10 (cap) = 45. Webinar on 20 Oct is inside the 30-day window."
+  }
+}

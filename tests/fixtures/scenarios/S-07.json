@@ -1,0 +1,100 @@
+{
+  "id": "S-07",
+  "title": "Portuguese buyer with complete low fit and no engagement",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0007",
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:10:00+01:00",
+    "email": "sofia.reis@loja-sintetica.example",
+    "business_country": "PT",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "loja-sintetica.example",
+      "industry_code": "other",
+      "employee_band_declared": "11-49",
+      "research_use_case": "other",
+      "research_frequency": "none",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": null,
+      "adoption_interest_confirmed": null,
+      "adoption_unwilling_or_unable": true
+    },
+    "engagement_events": [],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "sofia.reis@loja-sintetica.example",
+    "country_code": "PT",
+    "lead_created": true,
+    "outcome": "assigned",
+    "owner": "PT-01",
+    "review_queue": null,
+    "round_robin_advanced": true,
+    "round_robin_next_after": "PT-02",
+    "fit": {
+      "components": {
+        "industry": 0,
+        "size": 5,
+        "need": 0,
+        "readiness": 0
+      },
+      "total": 5,
+      "status": "complete",
+      "band": "low"
+    },
+    "engagement": {
+      "total": 0,
+      "status": "complete",
+      "band": "low"
+    },
+    "priority": "P3",
+    "priority_rule": 7,
+    "reason_codes": [
+      "PRIORITY_DEFAULT"
+    ],
+    "sla": {
+      "starts": "2026-11-03T10:00:00+01:00",
+      "allowance_business_minutes": 480,
+      "deadline": "2026-11-03T18:00:00+01:00"
+    },
+    "response_target": {
+      "priority": "P3",
+      "allowance_business_minutes": 480,
+      "target_at": "2026-11-03T18:00:00+01:00"
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Priority rule 7",
+      "LF-002 Engagement scoring (0 is valid only with complete data)",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "Engagement 0 is a known zero because coverage is complete. 8 business hours from 10:00 ends at 18:00."
+  }
+}

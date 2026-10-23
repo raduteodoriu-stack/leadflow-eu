@@ -1,0 +1,122 @@
+{
+  "id": "S-15",
+  "title": "Existing P3 lead requests a demo before first follow-up",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T11:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "rui.costa@estudos-sinteticos.example",
+        "owner": "PT-02",
+        "first_contact_at": "2026-11-03T09:00:00+01:00",
+        "assigned_at": "2026-11-03T09:00:00+01:00",
+        "priority": "P3",
+        "sla_deadline": "2026-11-03T17:00:00+01:00",
+        "first_qualifying_followup": null,
+        "response_target_at": "2026-11-03T17:00:00+01:00"
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": "SYN-0015",
+    "event_type": "lead_updated",
+    "source_occurred_at": "2026-11-03T10:58:00+01:00",
+    "email": "rui.costa@estudos-sinteticos.example",
+    "business_country": "PT",
+    "relationship_type": "buyer",
+    "company": {
+      "company_domain": "estudos-sinteticos.example",
+      "industry_code": "other",
+      "employee_band_declared": "11-49",
+      "research_use_case": "respondents_fieldwork",
+      "research_frequency": "one_off",
+      "uses_digital_research_tools": null,
+      "integration_required": null,
+      "technical_resource_available": null,
+      "adoption_owner_confirmed": null,
+      "onboarding_support_needed": true,
+      "adoption_interest_confirmed": true,
+      "adoption_unwilling_or_unable": null
+    },
+    "engagement_events": [
+      {
+        "type": "demo_requested",
+        "occurred_at": "2026-11-03T10:58:00+01:00"
+      }
+    ],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "normalised_email": "rui.costa@estudos-sinteticos.example",
+    "country_code": "PT",
+    "lead_created": false,
+    "outcome": "existing_owner_kept",
+    "owner": "PT-02",
+    "review_queue": null,
+    "round_robin_advanced": false,
+    "round_robin_next_after": "PT-01",
+    "fit": {
+      "components": {
+        "industry": 0,
+        "size": 5,
+        "need": 5,
+        "readiness": 5
+      },
+      "total": 15,
+      "status": "complete",
+      "band": "low"
+    },
+    "engagement": {
+      "total": 60,
+      "status": "complete",
+      "band": "high"
+    },
+    "priority": "P1",
+    "priority_rule": 2,
+    "reason_codes": [
+      "DUPLICATE_EVENT_RECONTACT",
+      "PRIORITY_EXPLICIT_REQUEST"
+    ],
+    "sla": {
+      "starts": "2026-11-03T09:00:00+01:00",
+      "allowance_business_minutes": 480,
+      "deadline": "2026-11-03T17:00:00+01:00",
+      "deadline_changed": false
+    },
+    "response_target": {
+      "previous_priority": "P3",
+      "previous_target_at": "2026-11-03T17:00:00+01:00",
+      "priority": "P1",
+      "allowance_business_minutes": 60,
+      "target_at": "2026-11-03T12:00:00+01:00",
+      "target_changed": true
+    }
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 priority-change rule, now applied to the response target",
+      "LF-002 Territory: preserve existing assignment",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches",
+      "Decision 2026-10-23: same person within 8 business hours = DUPLICATE_EVENT_RECONTACT (corrected during review)"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "P3 assigned 09:00: SLA due 17:00 (unchanged). Becomes P1 at 11:00: response target moves from 17:00 to the earlier of 17:00 and 11:00 + 1 h = 12:00. Review 2026-10-23: code corrected from EXISTING_CONTACT to DUPLICATE_EVENT_RECONTACT (2 business hours after first contact)."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "B-12",
+  "title": "Automated email does not count; call at 10:30 misses the P1 target but meets the SLA",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:31:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "b12@b-medium.example",
+        "owner": "ES-01",
+        "assigned_at": "2026-11-03T09:00:00+01:00",
+        "priority": "P1",
+        "sla_deadline": "2026-11-03T17:00:00+01:00",
+        "first_qualifying_followup": null,
+        "response_target_at": "2026-11-03T10:00:00+01:00"
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_crm",
+    "source_event_id": "SYN-B012",
+    "event_type": "activities",
+    "activities": [
+      {
+        "type": "email",
+        "automated": true,
+        "owner": "ES-01",
+        "occurred_at": "2026-11-03T09:30:00+01:00"
+      },
+      {
+        "type": "call",
+        "automated": false,
+        "owner": "ES-01",
+        "occurred_at": "2026-11-03T10:30:00+01:00"
+      }
+    ]
+  },
+  "expected": {
+    "sla_outcome": "met",
+    "qualifying_followup_at": "2026-11-03T10:30:00+01:00",
+    "late_followup": false,
+    "response_target_outcome": "missed",
+    "response_target_at": "2026-11-03T10:00:00+01:00"
+  },
+  "label": {
+    "rule_refs": [
+      "LF-001 Qualifying follow-up: human call attempt or individual sales email",
+      "Decision 2026-10-23 (option C): one SLA of 8 business hours; priority sets a response target (P1 1 h, P2 4 h, P3 8 h) that is measured but never breaches"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "Your example: a P1 contacted at minute 90 (63 would behave the same). The 09:30 automated email does not qualify. SLA due 17:00 is met; the 10:00 P1 target is missed."
+  }
+}

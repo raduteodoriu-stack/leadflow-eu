@@ -1,0 +1,67 @@
+{
+  "id": "S-14",
+  "title": "Event with no source event ID",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-03T10:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [],
+    "round_robin_next": {
+      "ES": "ES-01",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ]
+  },
+  "input": {
+    "source_system": "synthetic_fixture",
+    "source_event_id": null,
+    "event_type": "lead_created",
+    "source_occurred_at": "2026-11-03T09:00:00+01:00",
+    "email": "ines.moreno@sintetica-research.example",
+    "business_country": "ES",
+    "relationship_type": "buyer",
+    "company": null,
+    "engagement_events": [],
+    "engagement_coverage": "complete"
+  },
+  "expected": {
+    "event_stored": true,
+    "processing_status": "rejected",
+    "error_code": "SOURCE_EVENT_INVALID",
+    "lead_created": false,
+    "outcome": "rejected",
+    "owner": null,
+    "review_queue": "unassigned_review",
+    "round_robin_advanced": false,
+    "round_robin_next_after": "ES-01",
+    "fit": null,
+    "engagement": null,
+    "priority": null,
+    "priority_rule": null,
+    "reason_codes": [
+      "SOURCE_EVENT_INVALID"
+    ],
+    "sla": null,
+    "action_owner": "revops"
+  },
+  "label": {
+    "rule_refs": [
+      "LF-001 Every received event has a traceable status",
+      "Clarification Q6",
+      "LF-003 schema: rejected requires error_code",
+      "Decision 2026-10-23: single catch-all queue unassigned_review; reason code decides who acts"
+    ],
+    "labelled_by": "Claude (draft from LF-001, LF-002 and 2026-10-23 clarifications)",
+    "labelled_on": "2026-10-23",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-23",
+    "notes": "The raw payload is kept. Without an ID the event cannot be deduplicated, so it is not processed further."
+  }
+}
