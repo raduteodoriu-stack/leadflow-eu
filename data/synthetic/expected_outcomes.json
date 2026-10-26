@@ -195,7 +195,7 @@
         "review_queue": "unassigned_review",
         "action_owner": "revops",
         "round_robin_advanced": false,
-        "round_robin_next_after": "FR-01",
+        "round_robin_next_after": null,
         "sla": null,
         "response_target": null,
         "waiting_since": "2026-10-13T15:23:00+02:00"
@@ -947,7 +947,7 @@
         "review_queue": "unassigned_review",
         "action_owner": "revops",
         "round_robin_advanced": false,
-        "round_robin_next_after": "ES-01",
+        "round_robin_next_after": null,
         "sla": null,
         "response_target": null,
         "waiting_since": "2026-10-19T12:50:00+02:00"
@@ -2150,13 +2150,9 @@
           "deadline": "2026-10-22T17:00:00+02:00",
           "followed_up_before_event": true
         },
-        "response_target": {
-          "priority": "P2",
-          "target_at": "2026-10-22T13:00:00+02:00",
-          "target_changed": false
-        }
+        "response_target": null
       },
-      "explanation": "returning contact; fit medium (40), engagement medium (20) -> P2 (rule 5); owner PT-02; no new SLA, target Thu 22 Oct 13:00."
+      "explanation": "returning contact; fit medium (40), engagement medium (20) -> P2 (rule 5); owner PT-02; already followed up, so no new SLA or target."
     },
     {
       "seq": 43,
@@ -2733,18 +2729,14 @@
           "deadline": "2026-10-20T14:41:00+02:00",
           "followed_up_before_event": true
         },
-        "response_target": {
-          "priority": "P3",
-          "target_at": "2026-10-20T14:41:00+02:00",
-          "target_changed": false
-        },
+        "response_target": null,
         "stored_email_kept": "joao.ribeiro@tendencias-vertice.example",
         "parallel_review": {
           "reason_code": "IDENTITY_REVIEW",
           "action_owner": "revops"
         }
       },
-      "explanation": "matched by CRM contact ID; fit low (5), engagement medium (30) -> P3 (rule 7); owner PT-01; no new SLA, target Tue 20 Oct 14:41."
+      "explanation": "matched by CRM contact ID; fit low (5), engagement medium (30) -> P3 (rule 7); owner PT-01; already followed up, so no new SLA or target."
     },
     {
       "seq": 54,
@@ -2896,18 +2888,14 @@
           "deadline": "2026-10-28T11:02:00+01:00",
           "followed_up_before_event": true
         },
-        "response_target": {
-          "priority": "P2",
-          "target_at": "2026-10-27T16:02:00+01:00",
-          "target_changed": false
-        },
+        "response_target": null,
         "stored_email_kept": "nicolas.girard@tendances-atlas.example",
         "parallel_review": {
           "reason_code": "IDENTITY_REVIEW",
           "action_owner": "revops"
         }
       },
-      "explanation": "matched by CRM contact ID; fit high (80), engagement medium (35) -> P2 (rule 5); owner FR-02; no new SLA, target Tue 27 Oct 16:02."
+      "explanation": "matched by CRM contact ID; fit high (80), engagement medium (35) -> P2 (rule 5); owner FR-02; already followed up, so no new SLA or target."
     },
     {
       "seq": 57,
@@ -3040,13 +3028,9 @@
           "deadline": "2026-10-23T15:00:00+02:00",
           "followed_up_before_event": true
         },
-        "response_target": {
-          "priority": "P1",
-          "target_at": "2026-10-22T17:00:00+02:00",
-          "target_changed": false
-        }
+        "response_target": null
       },
-      "explanation": "returning contact; fit low (35), engagement high (70) -> P1 (rule 2); owner PT-01; no new SLA, target Thu 22 Oct 17:00."
+      "explanation": "returning contact; fit low (35), engagement high (70) -> P1 (rule 2); owner PT-01; already followed up, so no new SLA or target."
     },
     {
       "seq": 60,
@@ -3712,13 +3696,9 @@
           "deadline": "2026-10-26T15:25:00+01:00",
           "followed_up_before_event": true
         },
-        "response_target": {
-          "priority": "P1",
-          "target_at": "2026-10-26T11:25:00+01:00",
-          "target_changed": false
-        }
+        "response_target": null
       },
-      "explanation": "returning contact; fit incomplete (provisional 25), engagement high (70) -> P1 (rule 2); owner ES-01; no new SLA, target Mon 26 Oct 11:25."
+      "explanation": "returning contact; fit incomplete (provisional 25), engagement high (70) -> P1 (rule 2); owner ES-01; already followed up, so no new SLA or target."
     },
     {
       "seq": 73,
@@ -4542,13 +4522,9 @@
           "deadline": "2026-11-02T17:00:00+01:00",
           "followed_up_before_event": true
         },
-        "response_target": {
-          "priority": "P3",
-          "target_at": "2026-11-02T17:00:00+01:00",
-          "target_changed": false
-        }
+        "response_target": null
       },
-      "explanation": "returning contact; fit low (25), engagement medium (30) -> P3 (rule 7); owner PT-01; no new SLA, target Mon 02 Nov 17:00."
+      "explanation": "returning contact; fit low (25), engagement medium (30) -> P3 (rule 7); owner PT-01; already followed up, so no new SLA or target."
     },
     {
       "seq": 89,
@@ -4826,13 +4802,9 @@
           "deadline": "2026-11-06T15:10:00+01:00",
           "followed_up_before_event": true
         },
-        "response_target": {
-          "priority": "P1",
-          "target_at": "2026-11-05T17:10:00+01:00",
-          "target_changed": false
-        }
+        "response_target": null
       },
-      "explanation": "returning contact; fit medium (55), engagement high (70) -> P1 (rule 2); owner FR-01; no new SLA, target Thu 05 Nov 17:10."
+      "explanation": "returning contact; fit medium (55), engagement high (70) -> P1 (rule 2); owner FR-01; already followed up, so no new SLA or target."
     },
     {
       "seq": 95,

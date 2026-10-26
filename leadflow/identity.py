@@ -20,6 +20,7 @@ class ContactStore:
         self.contacts = {}           # normalised email -> contact record
         self.crm_index = {}          # CRM contact ID -> normalised email
         self.company_first = {}      # company domain -> {"lead_key", "at"}
+        self.rotation = {}           # country -> next representative to try (LF-007)
 
     # events
     def was_processed(self, system, event_id):
@@ -50,7 +51,10 @@ class ContactStore:
                     relationship=None, owner=None):
         record = {"lead_key": email, "first_contact_at": _at(first_contact_at), "country_code": country_code,
                   "company": company, "crm_contact_id": crm_contact_id, "relationship": relationship,
-                  "owner": owner, "engagement_events": []}
+                  "owner": owner, "engagement_events": [],
+                  # set by LF-007 when a decision is made
+                  "assigned_at": None, "initial_priority": None, "priority": None, "priority_rule": None,
+                  "sla_deadline": None, "target_at": None, "target_changes": [], "first_followup_at": None}
         self.contacts[email] = record
         if crm_contact_id:
             self.crm_index.setdefault(crm_contact_id, email)

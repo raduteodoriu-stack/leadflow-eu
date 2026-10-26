@@ -699,7 +699,8 @@ def returning(state, plan, lead, event_email, how):
               "priority": prio, "priority_rule": rule, "reason_codes": codes,
               "sla": {"new_sla_created": False, "deadline": iso(lead["sla_deadline"]),
                       "followed_up_before_event": followed},
-              "response_target": {"priority": prio, "target_at": iso(lead["target_at"]), "target_changed": changed}}
+              "response_target": None if followed else
+              {"priority": prio, "target_at": iso(lead["target_at"]), "target_changed": changed}}
     if how == "crm":
         result["stored_email_kept"] = lead["email"]
         result["parallel_review"] = {"reason_code": "IDENTITY_REVIEW", "action_owner": "revops"}
@@ -761,7 +762,7 @@ def new_lead(state, plan, email, country):
     if exception:
         result.update({"outcome": "review", "owner": None, "review_queue": "unassigned_review",
                        "action_owner": action_owner, "round_robin_advanced": False,
-                       "round_robin_next_after": state["rotation"].get(country) if country in REPS else None,
+                       "round_robin_next_after": state["rotation"].get(lead["country"]) if lead["country"] in REPS else None,
                        "sla": None, "response_target": None, "waiting_since": iso(t)})
         return result
     lead.update({"owner": owner, "assigned_at": t, "sla_deadline": add_business_minutes(t, SLA_MINUTES),
@@ -1119,6 +1120,8 @@ def explain(plan, exp):
     kind = {"existing_owner_kept": "returning contact", "attached_to_existing_contact": "matched by CRM contact ID",
             "review": "owner inactive -> Sales Manager review"}[o]
     tgt = exp["response_target"]
+    if tgt is None:
+        return f"{kind}; {head}; owner {exp['owner']}; already followed up, so no new SLA or target."
     change = " (target shortened)" if tgt["target_changed"] else ""
     return f"{kind}; {head}; owner {exp['owner']}; no new SLA, target {fmt(tgt['target_at'])}{change}."
 
@@ -1199,7 +1202,7 @@ def build():
             assert exp["response_target"]["target_changed"] and exp["priority"] == "P1"
         if plan["subtype"] == "existing_after_followup_request":
             assert exp["sla"]["followed_up_before_event"] and exp["priority"] == "P1"
-            assert not exp["response_target"]["target_changed"]
+            assert exp["response_target"] is None
         events.append({"seq": seq, "received_at": iso(plan["received_at"]), "input": plan["input"]})
         expected.append({"seq": seq, "source_event_id": plan["input"]["source_event_id"],
                          "received_at": iso(plan["received_at"]), "group": plan["group"],
@@ -1267,6 +1270,7 @@ def render_doc(summary, expected, leads):
         ("Two pricing visits on the same Madrid day", seqs(lambda e: "S-20" in e["patterns"])),
         ("Missing company domain", seqs(lambda e: "DOMAIN_MISSING" in e["expected"].get("reason_codes", []))),
         ("Response target shortened by a priority increase", seqs(lambda e: (e["expected"].get("response_target") or {}).get("target_changed"))),
+        ("Returning contact already followed up (no new SLA or target)", seqs(lambda e: (e["expected"].get("sla") or {}).get("followed_up_before_event"))),
         ("Existing contact without company data (stored data used)", seqs(lambda e: e["subtype"] == "existing_stored_company")),
     ]
     assigned = [l for l in leads if l["owner"]]
