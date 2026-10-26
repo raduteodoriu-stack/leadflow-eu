@@ -18,8 +18,9 @@ Design rules
   database and reconciling counts is LF-008.)
 - Simulated time: every timestamp is set from the event's received time, never from
   the database clock, so results are reproducible.
-- Out of scope here: follow-up activities and SLA met/breached (LF-009), CRM writes
-  (LF-010), review actions (people do those).
+- Follow-up calls and emails are saved too (LF-008), with whether they count as a
+  qualifying first follow-up. Judging SLA met/breached from them is LF-009.
+- Out of scope here: CRM writes (LF-010), review actions (people do those).
 
 Requires psycopg 3 (`pip install -r requirements.txt`).
 """
@@ -31,7 +32,7 @@ from datetime import datetime
 
 from psycopg.types.json import Jsonb
 
-from leadflow.decide import process_event
+from leadflow.decide import process_event, record_activity
 
 NAMESPACE = uuid.UUID("6f1c6f43-2b38-4f7e-9a4e-1f0c4c7d2a10")  # fixed: same input -> same IDs
 ENGINE = "leadflow-engine"
@@ -238,24 +239,30 @@ def _write_lead(conn, raw, lead, lead_id, t):
             [company_id, company.get("company_name"), domain] + values + [t, t])
     conn.execute(
         """INSERT INTO leads (lead_id, company_id, crm_contact_id, normalised_email, first_name, last_name,
-               business_country_code, relationship_type, created_at, updated_at)
-           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (lead_id) DO NOTHING""",
+               business_country_code, relationship_type, first_contact_at, created_at, updated_at)
+           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (lead_id) DO NOTHING""",
         (lead_id, company_id, lead.get("crm_contact_id"), lead["lead_key"], raw.get("first_name"),
-         raw.get("last_name"), lead.get("country_code"), lead.get("relationship") or "unknown", t, t))
+         raw.get("last_name"), lead.get("country_code"), lead.get("relationship") or "unknown",
+         lead["first_contact_at"], t, t))
 
 
 def _write_engagement(conn, prepared, lead_id, t):
     system = prepared["event"]["source_system"]
-    for item in (prepared.get("engagement") or {}).get("events", []):
-        if not item.get("id") or not item.get("occurred_at"):
-            continue  # nothing to key it on; it still counts in the score via the raw payload
+    for index, item in enumerate((prepared.get("engagement") or {}).get("events", [])):
+        if not item.get("occurred_at"):
+            continue  # cannot be placed in time, so it can never count in a score
+        source_id = item.get("id")
+        details = {"received_with_event": prepared["event"]["source_event_id"]}
+        if not source_id:  # keep it, under a stand-in ID, so a reload still sees it (LF-008)
+            source_id = f"{prepared['event']['source_event_id']}#{index}"
+            details["source_id_missing"] = True
         conn.execute(
             """INSERT INTO engagement_events (engagement_event_id, source_system, source_event_id, lead_id,
                    event_type, occurred_at, recorded_at, event_details)
                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                ON CONFLICT (source_system, source_event_id) DO NOTHING""",
-            (key_uuid("engagement", system, item["id"]), system, item["id"], lead_id, item["type"],
-             _at(item["occurred_at"]), t, Jsonb({"received_with_event": prepared["event"]["source_event_id"]})))
+            (key_uuid("engagement", system, source_id), system, source_id, lead_id, item["type"],
+             _at(item["occurred_at"]), t, Jsonb(details)))
 
 
 def _write_decision(conn, prepared, decision, event_id, lead_id, rules, t):
@@ -304,11 +311,12 @@ def _write_assignment(conn, decision, lead, lead_id, decision_id, event_id, rule
         (sla_id, lead_id, assignment_id, rules.version, decision["priority"], t, deadline, deadline, t, t, t,
          target["priority"], target_at, target_at))
     conn.execute(
-        """INSERT INTO sla_history (history_key, sla_id, decision_id, event_type, previous_status, new_status,
-               previous_deadline_at, new_deadline_at, change_reason, changed_by, change_details, recorded_at)
-           VALUES (%s, %s, %s, 'sla_created', NULL, 'pending', NULL, %s, %s, %s, %s, %s)
+        """INSERT INTO sla_history (sla_history_id, history_key, sla_id, decision_id, event_type, previous_status,
+               new_status, previous_deadline_at, new_deadline_at, change_reason, changed_by, change_details,
+               recorded_at)
+           VALUES (%s, %s, %s, %s, 'sla_created', NULL, 'pending', NULL, %s, %s, %s, %s, %s)
            ON CONFLICT (history_key) DO NOTHING""",
-        (f"sla_created:{sla_id}", sla_id, decision_id, deadline, "Lead assigned: 8-business-hour SLA started",
+        (key_uuid("sla_history", f"sla_created:{sla_id}"), f"sla_created:{sla_id}", sla_id, decision_id, deadline, "Lead assigned: 8-business-hour SLA started",
          ENGINE, Jsonb({"owner": decision["owner"], "priority": decision["priority"],
                         "business_clock_starts": sla.get("business_clock_starts"),
                         "response_target": target}), t))
@@ -327,11 +335,12 @@ def _write_target_shortened(conn, decision, lead, lead_id, decision_id, t):
            WHERE sla_id = %s AND current_response_target_at > %s""",
         (target["priority"], _at(target["target_at"]), t, sla_id, _at(target["target_at"])))
     conn.execute(
-        """INSERT INTO sla_history (history_key, sla_id, decision_id, event_type, previous_status, new_status,
-               previous_deadline_at, new_deadline_at, change_reason, changed_by, change_details, recorded_at)
-           VALUES (%s, %s, %s, 'response_target_shortened', %s, %s, %s, %s, %s, %s, %s, %s)
+        """INSERT INTO sla_history (sla_history_id, history_key, sla_id, decision_id, event_type, previous_status,
+               new_status, previous_deadline_at, new_deadline_at, change_reason, changed_by, change_details,
+               recorded_at)
+           VALUES (%s, %s, %s, %s, 'response_target_shortened', %s, %s, %s, %s, %s, %s, %s, %s)
            ON CONFLICT (history_key) DO NOTHING""",
-        (f"target:{decision_id}", sla_id, decision_id, status, status, deadline, deadline,
+        (key_uuid("sla_history", f"target:{decision_id}"), f"target:{decision_id}", sla_id, decision_id, status, status, deadline, deadline,
          "Priority increased before first follow-up: response target shortened (SLA deadline unchanged)",
          ENGINE, Jsonb({"previous_priority": target["previous_priority"], "new_priority": target["priority"],
                         "previous_target_at": target["previous_target_at"], "new_target_at": target["target_at"]}),
@@ -383,3 +392,44 @@ def _write_participant_redirect(conn, prepared, decision, event_id, t):
          rule["destination_url"] if simulated else None, referral["referral_method"], referral["attempt_status"],
          t, referral.get("error_code"),
          Jsonb({"personal_data_transferred": False, "note": "MVP simulation: no reply sent (DR-007)"})))
+
+
+# ---------------------------------------------------------------------------
+# Follow-up activities (LF-008)
+# ---------------------------------------------------------------------------
+
+ACTIVITY_TYPES = ("call", "email", "administrative", "other")
+
+
+def record_and_save_activity(conn, activity, store, rules):
+    """Register a follow-up in memory and save it, all or nothing. Returns True if it qualifies.
+
+    Every activity is stored, qualifying or not, so the record is complete; `qualifying`
+    in activity_details says whether it counts as the lead's first follow-up (a human
+    call or individual email by the lead's owner, after assignment).
+    """
+    email = (activity.get("lead_email") or "").strip().lower()
+    lead = store.contact(email)
+    before = lead["first_followup_at"] if lead else None
+    qualifying = record_activity(store, rules, activity)
+    try:
+        with conn.transaction():
+            kind = activity.get("type") if activity.get("type") in ACTIVITY_TYPES else "other"
+            at = _at(activity["occurred_at"])
+            conn.execute(
+                """INSERT INTO followup_activities (activity_id, source_system, source_activity_id, lead_id,
+                       performed_by_owner_id, source_contact_id, source_owner_id, activity_type, activity_outcome,
+                       is_automated, occurred_at, recorded_at, activity_details)
+                   VALUES (%s, %s, %s, %s, (SELECT owner_id FROM owners WHERE staff_code = %s), %s, %s, %s,
+                           'unknown', %s, %s, %s, %s)
+                   ON CONFLICT (source_system, source_activity_id) DO NOTHING""",
+                (key_uuid("activity", activity["source_system"], activity["activity_id"]),
+                 activity["source_system"], activity["activity_id"], key_uuid("lead", email) if lead else None,
+                 activity.get("owner"), None if lead else (email or None), activity.get("owner"), kind,
+                 activity.get("automated"), at, at,
+                 Jsonb({"qualifying": qualifying, "lead_email": email or None})))
+    except Exception:
+        if lead:
+            lead["first_followup_at"] = before
+        raise
+    return qualifying

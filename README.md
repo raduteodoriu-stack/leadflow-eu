@@ -7,43 +7,55 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 
 > All company and contact data is synthetic. No real customer information is used.
 
-## Status (2026-10-22)
+## Status (2026-10-26)
 
 | Area | Status |
 |---|---|
 | LF-001 scope, LF-002 business rules | Documented (GitHub issues #1, #3) |
-| LF-003 PostgreSQL data foundation | **Built and tested**: 20 tables, 15 constraint test files, 174 checks passing on a clean rebuild ([evidence](docs/evidence/)) |
-| Python ingestion and routing engine | Planned |
-| HubSpot test-account integration | Planned |
-| Power BI reporting | Planned |
+| LF-003 PostgreSQL data foundation | **Built and tested**: 20 tables, constraint tests on a clean rebuild ([evidence](docs/evidence/)) |
+| LF-004 test scenarios, LF-005 synthetic dataset | 49 reviewed scenarios; 100 events with expected outcomes ([summary](docs/synthetic_dataset.md)) |
+| LF-006 / LF-007 Python engine | **Built and tested**: validation, identity, scoring, priority, routing, SLA; every decision saved to PostgreSQL ([LF-006](docs/engine_lf006.md), [LF-007](docs/engine_lf007.md)) |
+| LF-008 restart and reconciliation | **Built and tested**: memory rebuilt from the database; source-vs-database reconciliation report ([LF-008](docs/engine_lf008.md)) |
+| SLA tracking, HubSpot integration, Power BI reporting | Planned (LF-009 to LF-013) |
 
 ## Repository layout
 
 ```
-SQL/001_create_schema.sql   Full schema (20 tables) + post-install table check
-SQL/tests/NNN_test_*.sql    Constraint tests; each runs in a transaction and rolls back
-SQL/tests/run_all_tests.sh  Test runner; writes a log to docs/evidence/
-docs/data_dictionary.md     Source data contract, allowed values, change log
-docs/database_design.md     Relational model and integrity rules
-docs/evidence/              Dated test-run logs (git commit, server version, results)
+leadflow/                   Python engine (standard library) + PostgreSQL recording (psycopg)
+leadflow/rules/             Versioned business rules (LF-RULES-v1.0.json)
+SQL/NNN_*.sql               Schema (001) and migrations (002, 003), applied in number order
+SQL/tests/                  Constraint tests (each rolls back) and run_all_tests.sh
+SQL/reconciliation/         Database consistency checks (LF-008)
+tests/                      pytest: unit, answer-key and PostgreSQL integration tests
+tools/                      Synthetic data generator, reconciliation report
+data/synthetic/             LF-005 dataset and expected outcomes
+docs/                       Data dictionary, database design, engine notes, evidence
 ```
 
 ## Build and test locally
 
-Requires PostgreSQL (tested on 18.1) and bash. The database must be named `leadflow_eu`; the scripts refuse to run anywhere else.
+Requires PostgreSQL (tested on 18.1), bash and Python 3.9+.
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 export PGUSER=postgres
-# Drops and recreates leadflow_eu, installs the schema, runs all tests
 SQL/tests/run_all_tests.sh --rebuild
+createdb leadflow_eu_test
+export LEADFLOW_TEST_DSN="dbname=leadflow_eu_test user=postgres"
+python -m pytest
+python tools/reconcile.py --dsn "$LEADFLOW_TEST_DSN" --run
 ```
 
-Expected result: `Summary: 15 passed, 0 failed`. Without `--rebuild`, tests run against the existing database.
+`run_all_tests.sh --rebuild` drops and recreates `leadflow_eu` and applies every migration. The PostgreSQL
+tests and `reconcile.py --run` wipe `leadflow_eu_test` and refuse any other database; without
+`LEADFLOW_TEST_DSN` they are skipped.
 
 ## Key design rules
 
 - Territories ES, PT, FR; country round-robin across active eligible reps.
-- First follow-up SLA in business minutes (Mon–Fri 09:00–18:00 Europe/Madrid): P1 60, P2 240, P3 480.
+- One first follow-up SLA of 8 business hours (Mon–Fri 09:00–18:00 Europe/Madrid) for every assigned lead; priority sets a response target (P1 60, P2 240, P3 480 business minutes) that is measured but never a breach.
 - One lead per normalised email; ambiguous duplicates go to review, never auto-merged.
 - Idempotent ingestion on `(source_system, source_event_id)`.
 - Supplier-only and participant enquiries are kept out of buyer scoring and SLAs; participant referrals are simulated only.
@@ -51,4 +63,4 @@ Expected result: `Summary: 15 passed, 0 failed`. Without `--rebuild`, tests run 
 
 ## Tools
 
-PostgreSQL, SQL, bash; planned: Python, pytest, HubSpot test account, Power BI.
+PostgreSQL, SQL, bash, Python, pytest, psycopg; planned: HubSpot test account, Power BI.
