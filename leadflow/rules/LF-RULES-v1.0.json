@@ -1,0 +1,57 @@
+{
+  "rule_version": "LF-RULES-v1.0",
+  "description": "LeadFlow EU business rules (LF-001, LF-002 and the 2026-10-23 decisions) as configuration. LF-006 uses the sections below; LF-007 adds scoring, priority and SLA sections under the same version.",
+  "timezone": "Europe/Madrid",
+  "working_hours": {
+    "weekdays": [0, 1, 2, 3, 4],
+    "weekday_note": "0 = Monday ... 4 = Friday. Public holidays are not modelled in the MVP.",
+    "start": "09:00",
+    "end": "18:00",
+    "end_note": "Working time runs from start up to but not including end (decision Q5)."
+  },
+  "recontact_window_business_minutes": 480,
+  "same_company_window_business_minutes": 480,
+  "window_note": "Measured from the first contact's occurrence time to the new event's occurrence time (decision 2026-10-23).",
+  "supported_countries": ["ES", "PT", "FR"],
+  "country_aliases": {
+    "ES": ["es", "esp", "spain", "españa", "espana", "espagne", "spanien"],
+    "PT": ["pt", "prt", "portugal"],
+    "FR": ["fr", "fra", "france", "francia", "frança", "franca", "frankreich"],
+    "DE": ["de", "deu", "germany", "deutschland", "alemania", "allemagne"],
+    "IT": ["it", "ita", "italy", "italia", "italie"],
+    "GB": ["gb", "gbr", "uk", "united kingdom", "great britain", "reino unido", "royaume-uni"]
+  },
+  "email_pattern": "^[a-z0-9._%+'-]+@[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$",
+  "unknown_value": "unknown",
+  "allowed_values": {
+    "industry_code": ["market_research", "polling", "research_consultancy", "panel_sample_provider",
+                      "research_technology", "advertising_media_pr_agency", "ux_research_agency",
+                      "management_consultancy", "consumer_goods", "retail_ecommerce", "technology_telecoms",
+                      "financial_services", "automotive_mobility", "healthcare_pharma", "travel_hospitality",
+                      "media_entertainment_gaming", "energy_utilities", "public_academic_nonprofit",
+                      "other", "unknown"],
+    "employee_band_declared": ["1-10", "11-49", "50-249", "250-999", "1000_plus", "unknown"],
+    "research_use_case": ["respondents_fieldwork", "panel_management", "both", "other", "unknown"],
+    "research_frequency": ["monthly_or_more", "recurring_less_than_monthly", "one_off", "none", "unknown"],
+    "relationship_type": ["buyer", "supplier", "both", "unknown"],
+    "event_type": ["lead_created", "lead_updated"],
+    "enquiry_type": ["sales", "paid_survey_participant"],
+    "engagement_coverage": ["complete", "partial", "failed"],
+    "engagement_event_type": ["demo_requested", "sales_contact_requested", "quote_requested",
+                              "pricing_page_visited", "webinar_attended", "guide_downloaded",
+                              "case_study_downloaded"]
+  },
+  "readiness_fields": ["uses_digital_research_tools", "integration_required", "technical_resource_available",
+                       "adoption_owner_confirmed", "onboarding_support_needed", "adoption_interest_confirmed",
+                       "adoption_unwilling_or_unable"],
+  "engagement_event_name_map": {
+    "demo_request": "demo_requested",
+    "sales_contact_request": "sales_contact_requested",
+    "sample_quote_request": "quote_requested",
+    "pricing_page_visit": "pricing_page_visited",
+    "product_webinar_attended": "webinar_attended",
+    "product_guide_download": "guide_downloaded",
+    "case_study_download": "case_study_downloaded"
+  },
+  "engagement_event_name_map_note": "Earlier input names from the data dictionary mapped to stored names (DR-002)."
+}
