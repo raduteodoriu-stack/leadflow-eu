@@ -10,6 +10,7 @@
         "owner": "ES-01",
         "assigned_at": "2026-11-03T10:00:00+01:00",
         "priority": "P1",
+        "priority_rule": 2,
         "sla_deadline": "2026-11-03T18:00:00+01:00",
         "first_qualifying_followup": null,
         "response_target_at": "2026-11-03T11:00:00+01:00"
@@ -102,6 +103,6 @@
     "labelled_on": "2026-10-23",
     "reviewed_by": "Radu Teodoriu",
     "reviewed_on": "2026-10-23",
-    "notes": "Identical to S-01's event (same source_event_id). Technical replay: nothing changes; tagged DUPLICATE_EVENT_RECONTACT."
+    "notes": "Identical to S-01's event (same source_event_id). Technical replay: nothing changes; tagged DUPLICATE_EVENT_RECONTACT. 2026-10-26: prior state now records priority_rule 2 (S-01's decision) so a replay can repeat it; expected outcome unchanged."
   }
 }

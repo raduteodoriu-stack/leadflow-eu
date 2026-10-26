@@ -102,6 +102,7 @@ SLA met but response target missed: **14** leads. Follow-up activities: 77 (auto
 | Two pricing visits on the same Madrid day | 8, 9, 11, 19, 22, 29, 38, 43, 62, 66, 79, 86 |
 | Missing company domain | 38, 63, 74 |
 | Response target shortened by a priority increase | 44 |
+| Returning contact already followed up (no new SLA or target) | 42, 53, 56, 59, 72, 88, 94 |
 | Existing contact without company data (stored data used) | 88 |
 
 ## Limitations

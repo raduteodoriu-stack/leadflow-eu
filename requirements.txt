@@ -1,3 +1,5 @@
 # Python dependencies for LeadFlow EU (tests and tooling).
 # The generator and the engine use only the standard library (Python 3.9+).
+# psycopg is only needed to save decisions to PostgreSQL (leadflow/postgres.py).
 pytest==8.3.3
+psycopg[binary]==3.2.13

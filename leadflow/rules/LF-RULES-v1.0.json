@@ -1,9 +1,15 @@
 {
   "rule_version": "LF-RULES-v1.0",
-  "description": "LeadFlow EU business rules (LF-001, LF-002 and the 2026-10-23 decisions) as configuration. LF-006 uses the sections below; LF-007 adds scoring, priority and SLA sections under the same version.",
+  "description": "LeadFlow EU business rules (LF-001, LF-002 and the 2026-10-23 decisions) as configuration. Validation sections are used by LF-006; scoring, priority, routing and SLA sections by LF-007.",
   "timezone": "Europe/Madrid",
   "working_hours": {
-    "weekdays": [0, 1, 2, 3, 4],
+    "weekdays": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
     "weekday_note": "0 = Monday ... 4 = Friday. Public holidays are not modelled in the MVP.",
     "start": "09:00",
     "end": "18:00",
@@ -12,38 +18,145 @@
   "recontact_window_business_minutes": 480,
   "same_company_window_business_minutes": 480,
   "window_note": "Measured from the first contact's occurrence time to the new event's occurrence time (decision 2026-10-23).",
-  "supported_countries": ["ES", "PT", "FR"],
+  "supported_countries": [
+    "ES",
+    "PT",
+    "FR"
+  ],
   "country_aliases": {
-    "ES": ["es", "esp", "spain", "españa", "espana", "espagne", "spanien"],
-    "PT": ["pt", "prt", "portugal"],
-    "FR": ["fr", "fra", "france", "francia", "frança", "franca", "frankreich"],
-    "DE": ["de", "deu", "germany", "deutschland", "alemania", "allemagne"],
-    "IT": ["it", "ita", "italy", "italia", "italie"],
-    "GB": ["gb", "gbr", "uk", "united kingdom", "great britain", "reino unido", "royaume-uni"]
+    "ES": [
+      "es",
+      "esp",
+      "spain",
+      "españa",
+      "espana",
+      "espagne",
+      "spanien"
+    ],
+    "PT": [
+      "pt",
+      "prt",
+      "portugal"
+    ],
+    "FR": [
+      "fr",
+      "fra",
+      "france",
+      "francia",
+      "frança",
+      "franca",
+      "frankreich"
+    ],
+    "DE": [
+      "de",
+      "deu",
+      "germany",
+      "deutschland",
+      "alemania",
+      "allemagne"
+    ],
+    "IT": [
+      "it",
+      "ita",
+      "italy",
+      "italia",
+      "italie"
+    ],
+    "GB": [
+      "gb",
+      "gbr",
+      "uk",
+      "united kingdom",
+      "great britain",
+      "reino unido",
+      "royaume-uni"
+    ]
   },
   "email_pattern": "^[a-z0-9._%+'-]+@[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$",
   "unknown_value": "unknown",
   "allowed_values": {
-    "industry_code": ["market_research", "polling", "research_consultancy", "panel_sample_provider",
-                      "research_technology", "advertising_media_pr_agency", "ux_research_agency",
-                      "management_consultancy", "consumer_goods", "retail_ecommerce", "technology_telecoms",
-                      "financial_services", "automotive_mobility", "healthcare_pharma", "travel_hospitality",
-                      "media_entertainment_gaming", "energy_utilities", "public_academic_nonprofit",
-                      "other", "unknown"],
-    "employee_band_declared": ["1-10", "11-49", "50-249", "250-999", "1000_plus", "unknown"],
-    "research_use_case": ["respondents_fieldwork", "panel_management", "both", "other", "unknown"],
-    "research_frequency": ["monthly_or_more", "recurring_less_than_monthly", "one_off", "none", "unknown"],
-    "relationship_type": ["buyer", "supplier", "both", "unknown"],
-    "event_type": ["lead_created", "lead_updated"],
-    "enquiry_type": ["sales", "paid_survey_participant"],
-    "engagement_coverage": ["complete", "partial", "failed"],
-    "engagement_event_type": ["demo_requested", "sales_contact_requested", "quote_requested",
-                              "pricing_page_visited", "webinar_attended", "guide_downloaded",
-                              "case_study_downloaded"]
+    "industry_code": [
+      "market_research",
+      "polling",
+      "research_consultancy",
+      "panel_sample_provider",
+      "research_technology",
+      "advertising_media_pr_agency",
+      "ux_research_agency",
+      "management_consultancy",
+      "consumer_goods",
+      "retail_ecommerce",
+      "technology_telecoms",
+      "financial_services",
+      "automotive_mobility",
+      "healthcare_pharma",
+      "travel_hospitality",
+      "media_entertainment_gaming",
+      "energy_utilities",
+      "public_academic_nonprofit",
+      "other",
+      "unknown"
+    ],
+    "employee_band_declared": [
+      "1-10",
+      "11-49",
+      "50-249",
+      "250-999",
+      "1000_plus",
+      "unknown"
+    ],
+    "research_use_case": [
+      "respondents_fieldwork",
+      "panel_management",
+      "both",
+      "other",
+      "unknown"
+    ],
+    "research_frequency": [
+      "monthly_or_more",
+      "recurring_less_than_monthly",
+      "one_off",
+      "none",
+      "unknown"
+    ],
+    "relationship_type": [
+      "buyer",
+      "supplier",
+      "both",
+      "unknown"
+    ],
+    "event_type": [
+      "lead_created",
+      "lead_updated"
+    ],
+    "enquiry_type": [
+      "sales",
+      "paid_survey_participant"
+    ],
+    "engagement_coverage": [
+      "complete",
+      "partial",
+      "failed"
+    ],
+    "engagement_event_type": [
+      "demo_requested",
+      "sales_contact_requested",
+      "quote_requested",
+      "pricing_page_visited",
+      "webinar_attended",
+      "guide_downloaded",
+      "case_study_downloaded"
+    ]
   },
-  "readiness_fields": ["uses_digital_research_tools", "integration_required", "technical_resource_available",
-                       "adoption_owner_confirmed", "onboarding_support_needed", "adoption_interest_confirmed",
-                       "adoption_unwilling_or_unable"],
+  "readiness_fields": [
+    "uses_digital_research_tools",
+    "integration_required",
+    "technical_resource_available",
+    "adoption_owner_confirmed",
+    "onboarding_support_needed",
+    "adoption_interest_confirmed",
+    "adoption_unwilling_or_unable"
+  ],
   "engagement_event_name_map": {
     "demo_request": "demo_requested",
     "sales_contact_request": "sales_contact_requested",
@@ -53,5 +166,161 @@
     "product_guide_download": "guide_downloaded",
     "case_study_download": "case_study_downloaded"
   },
-  "engagement_event_name_map_note": "Earlier input names from the data dictionary mapped to stored names (DR-002)."
+  "engagement_event_name_map_note": "Earlier input names from the data dictionary mapped to stored names (DR-002).",
+  "fit_scoring": {
+    "industry_points": {
+      "market_research": 40,
+      "polling": 40,
+      "research_consultancy": 40,
+      "panel_sample_provider": 40,
+      "research_technology": 30,
+      "advertising_media_pr_agency": 30,
+      "ux_research_agency": 30,
+      "management_consultancy": 30,
+      "consumer_goods": 20,
+      "retail_ecommerce": 20,
+      "technology_telecoms": 20,
+      "financial_services": 20,
+      "automotive_mobility": 20,
+      "healthcare_pharma": 20,
+      "travel_hospitality": 20,
+      "media_entertainment_gaming": 20,
+      "energy_utilities": 20,
+      "public_academic_nonprofit": 20,
+      "other": 0,
+      "unknown": null
+    },
+    "size_points": {
+      "1-10": 0,
+      "11-49": 5,
+      "50-249": 10,
+      "250-999": 15,
+      "1000_plus": 20,
+      "unknown": null
+    },
+    "need_relevant_use_cases": [
+      "respondents_fieldwork",
+      "panel_management",
+      "both"
+    ],
+    "need_frequency_points": {
+      "monthly_or_more": 25,
+      "recurring_less_than_monthly": 15,
+      "one_off": 5
+    },
+    "need_absent_frequency": "none",
+    "need_note": "Points need a relevant use case; 'none' is a confirmed absence (0); anything else is unknown.",
+    "readiness_levels": [
+      {
+        "points": 15,
+        "all_of": [
+          "uses_digital_research_tools",
+          "integration_required",
+          "technical_resource_available"
+        ]
+      },
+      {
+        "points": 10,
+        "any_of": [
+          "uses_digital_research_tools",
+          "adoption_owner_confirmed"
+        ]
+      },
+      {
+        "points": 5,
+        "any_of": [
+          "adoption_interest_confirmed"
+        ]
+      },
+      {
+        "points": 0,
+        "any_of": [
+          "adoption_unwilling_or_unable"
+        ]
+      }
+    ],
+    "readiness_note": "Highest supported level wins; no evidence is unknown.",
+    "band_thresholds": {
+      "high": 70,
+      "medium": 40
+    },
+    "band_note": "Bands only for complete assessments; unknown components count as 0 in the provisional total."
+  },
+  "engagement_scoring": {
+    "window_hours": 720,
+    "explicit_request_types": [
+      "demo_requested",
+      "sales_contact_requested",
+      "quote_requested"
+    ],
+    "explicit_request": {
+      "points": 60,
+      "cap": 60
+    },
+    "pricing_page_visited": {
+      "points_per_distinct_day": 10,
+      "cap": 20
+    },
+    "webinar_attended": {
+      "points": 15,
+      "cap": 15
+    },
+    "downloads": {
+      "types": [
+        "guide_downloaded",
+        "case_study_downloaded"
+      ],
+      "points": 5,
+      "cap": 10
+    },
+    "total_cap": 100,
+    "band_thresholds": {
+      "high": 40,
+      "medium": 15
+    },
+    "note": "Window = exactly 30 x 24 h before the evaluation time (Q4). Distinct days use Europe/Madrid dates. Partial or failed coverage = unknown."
+  },
+  "priority_reason_codes": {
+    "2": "PRIORITY_EXPLICIT_REQUEST",
+    "3": "PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT",
+    "4": "PRIORITY_HIGH_ENGAGEMENT",
+    "5": "PRIORITY_STANDARD_FIT",
+    "6": "PRIORITY_MISSING_INFO",
+    "7": "PRIORITY_DEFAULT"
+  },
+  "sla": {
+    "deadline_business_minutes": 480,
+    "response_target_business_minutes": {
+      "P1": 60,
+      "P2": 240,
+      "P3": 480
+    },
+    "note": "One 8-business-hour SLA for every assigned lead; priority sets a response target that is measured but never a breach (decision 2026-10-23, option C)."
+  },
+  "review_routing": {
+    "blocked_queue": "unassigned_review",
+    "participant_queue": "participant_redirect_review",
+    "action_owner_by_code": {
+      "COUNTRY_INVALID": "revops",
+      "COUNTRY_CONFLICT": "revops",
+      "EMAIL_INVALID": "revops",
+      "SOURCE_EVENT_INVALID": "revops",
+      "UNSUPPORTED_TERRITORY": "sales_manager",
+      "NO_ELIGIBLE_OWNER": "sales_manager",
+      "OWNER_REVIEW": "sales_manager"
+    },
+    "parallel_cases": {
+      "SUPPLIER_REVIEW": "sales_manager",
+      "IDENTITY_REVIEW": "revops"
+    }
+  },
+  "qualifying_followup": {
+    "types": [
+      "call",
+      "email"
+    ],
+    "exclude_automated": true,
+    "by_owner_only": true
+  },
+  "participant_referral_method": "automated_reply_panelists"
 }

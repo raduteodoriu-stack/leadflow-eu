@@ -25,3 +25,14 @@ Reviewer: Radu Teodoriu. Prepared with Claude (working shown for each event).
   that the rep had already answered. Under LF-002 an explicit request keeps a lead at P1 for 30 days, so a
   handled contact can sit at the top of the P1 list for a month. Possible refinement: a request that has
   already received a qualifying follow-up no longer triggers priority rule 2. Not a labelling error.
+
+## Corrections after the review (2026-10-26, LF-007)
+
+Building the engine against both answer keys showed two generator outputs that disagreed with
+hand-reviewed LF-004 scenarios. The reviewed scenarios were followed:
+
+- Returning contacts already followed up get **no response target** (as in S-32 and as agreed for
+  event 59: "no new SLA, no new target"). Events 42, 53, 56, 59, 72, 88, 94; `response_target` only.
+- A **country conflict** reports no rotation pointer (as in S-23). Events 3 and 18;
+  `round_robin_next_after` only.
+

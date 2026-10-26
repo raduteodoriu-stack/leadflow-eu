@@ -12,7 +12,9 @@
 --
 -- Run this entire script against an EMPTY leadflow_eu database:
 --   psql -d leadflow_eu -v ON_ERROR_STOP=1 -f SQL/001_create_schema.sql
--- It refuses to run against any other database name. The final section
+-- It refuses to run against any database other than leadflow_eu or
+-- leadflow_eu_test (the throwaway database for Python integration tests).
+-- Later migrations (002, ...) are applied after this one, in number order. The final section
 -- checks that all 20 tables exist and fails if any is missing.
 
 BEGIN;
@@ -20,9 +22,9 @@ BEGIN;
 -- Stop if connected to the wrong database.
 DO $$
 BEGIN
-    IF current_database() <> 'leadflow_eu' THEN
+    IF current_database() NOT IN ('leadflow_eu', 'leadflow_eu_test') THEN
         RAISE EXCEPTION
-            'Wrong database: %. Connect to leadflow_eu.',
+            'Wrong database: %. Connect to leadflow_eu or leadflow_eu_test.',
             current_database();
     END IF;
 END
