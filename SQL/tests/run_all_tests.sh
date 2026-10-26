@@ -11,7 +11,8 @@
 # Usage (from the repo root):
 #   SQL/tests/run_all_tests.sh            # run tests against existing DB
 #   SQL/tests/run_all_tests.sh --rebuild  # DROP + recreate leadflow_eu,
-#                                         # run the schema, then the tests
+#                                         # apply every SQL/NNN_*.sql
+#                                         # migration in order, then test
 #
 # Connection settings come from the standard PostgreSQL environment
 # (PGUSER, PGHOST, PGPORT, ~/.pgpass). If no password source is set,
@@ -26,7 +27,6 @@ export PGUSER="${PGUSER:-postgres}"
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$REPO_ROOT" || exit 2
 
-SCHEMA_FILE="SQL/001_create_schema.sql"
 LOG_DIR="docs/evidence"
 STAMP="$(date +%Y-%m-%d_%H%M%S)"
 LOG_FILE="$LOG_DIR/test_run_${STAMP}.log"
@@ -68,11 +68,13 @@ if [ "$REBUILD" -eq 1 ]; then
     fi
     createdb --maintenance-db=postgres "$DB_NAME" >>"$LOG_FILE" 2>&1 \
         || { log "ERROR: createdb failed"; exit 2; }
-    if psql -X -v ON_ERROR_STOP=1 -f "$SCHEMA_FILE" >>"$LOG_FILE" 2>&1; then
-        log "Schema:   OK ($SCHEMA_FILE)"
-    else
-        log "Schema:   FAILED - see $LOG_FILE"; exit 1
-    fi
+    for migration in SQL/[0-9][0-9][0-9]_*.sql; do
+        if psql -X -v ON_ERROR_STOP=1 -f "$migration" >>"$LOG_FILE" 2>&1; then
+            log "Schema:   OK ($migration)"
+        else
+            log "Schema:   FAILED at $migration - see $LOG_FILE"; exit 1
+        fi
+    done
     log ""
 fi
 
