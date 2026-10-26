@@ -106,6 +106,6 @@ SLA met but response target missed: **14** leads. Follow-up activities: 77 (auto
 
 ## Limitations
 
-- Expected outcomes come from the generator's own reference calculation, checked against the recipes. They were spot-checked by hand (see LF-005) but not every event was individually reviewed.
+- Expected outcomes come from the generator's own reference calculation, checked against the recipes. A stratified random sample of 20 was checked by hand: 20 of 20 agreed (`docs/synthetic_dataset_review.md`).
 - Public holidays are not modelled (as in the MVP).
 - Data is synthetic. No real people, companies or personal data are used.
