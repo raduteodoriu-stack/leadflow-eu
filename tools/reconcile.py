@@ -1,4 +1,4 @@
-"""LF-008: reconcile a processed batch against the database and write a report.
+"""LF-008/LF-009: reconcile a processed batch against the database and write a report.
 
 Usage (from the repo root, .venv active):
 
@@ -49,7 +49,8 @@ def main():
     with psycopg.connect(args.dsn, autocommit=True) as conn:
         if args.run:
             rebuild(conn, rules, settings)
-            batch.run(conn, dataset, ContactStore(), rules, settings)
+            batch.run(conn, dataset, ContactStore(), rules, settings,
+                      until=dataset["metadata"].get("sla_cutoff"))  # SLA statuses as at the cut-off
         database = conn.execute("SELECT current_database()").fetchone()[0]
         checks = reconcile.reconcile(conn, dataset, rules)
     stamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")

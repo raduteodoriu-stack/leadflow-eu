@@ -13,6 +13,7 @@ zone (Europe/Madrid) so the engine sees them exactly as it wrote them.
 from __future__ import annotations
 
 from leadflow.identity import ContactStore
+from leadflow.sla import ALERT
 from leadflow.validate import payload_hash
 
 READINESS_COLUMNS = ("uses_digital_research_tools", "integration_required", "technical_resource_available",
@@ -55,13 +56,17 @@ def load_store(conn, rules, settings=None):
                                    crm_contact_id=crm_id, relationship=relationship)
         by_id[lead_id] = record
 
-    # 2. Ownership: the open assignment's owner; assigned_at = the first assignment.
-    for lead_id, owner, first_assigned in conn.execute(
-            """SELECT a.lead_id, o.staff_code,
-                      min(a.effective_from) OVER (PARTITION BY a.lead_id)
+    # 2. Ownership: every assignment in time order; the last one is the current owner,
+    #    the first one is when the lead was assigned (reassignment keeps the SLA, LF-009).
+    for lead_id, owner, starts in conn.execute(
+            """SELECT a.lead_id, o.staff_code, a.effective_from
                FROM assignments a JOIN owners o ON o.owner_id = a.owner_id
-               WHERE a.effective_to IS NULL""").fetchall():
-        by_id[lead_id].update(owner=owner, assigned_at=local(first_assigned))
+               ORDER BY a.lead_id, a.effective_from""").fetchall():
+        record = by_id[lead_id]
+        if not record["owner_history"]:
+            record["assigned_at"] = local(starts)
+        record["owner_history"].append({"owner": owner, "from": local(starts)})
+        record["owner"] = owner
 
     # 3. Priority: first decision = initial priority; latest decision = current priority and rule.
     for lead_id, first_priority, last_priority, last_rule in conn.execute(
@@ -73,9 +78,11 @@ def load_store(conn, rules, settings=None):
         by_id[lead_id].update(initial_priority=first_priority, priority=last_priority, priority_rule=last_rule)
 
     # 4. SLA deadline and response target, and every time the target was shortened.
-    for lead_id, deadline, target in conn.execute(
-            "SELECT lead_id, current_deadline_at, current_response_target_at FROM sla_tracking").fetchall():
-        by_id[lead_id].update(sla_deadline=local(deadline), target_at=local(target))
+    for lead_id, deadline, target, status, detected, target_status in conn.execute(
+            """SELECT lead_id, current_deadline_at, current_response_target_at, sla_status, breach_detected_at,
+                      response_target_status FROM sla_tracking""").fetchall():
+        by_id[lead_id].update(sla_deadline=local(deadline), target_at=local(target), sla_status=status,
+                              breach_detected_at=local(detected), response_target_status=target_status)
     for lead_id, recorded, details in conn.execute(
             """SELECT s.lead_id, h.recorded_at, h.change_details FROM sla_history h
                JOIN sla_tracking s ON s.sla_id = h.sla_id
@@ -110,7 +117,23 @@ def load_store(conn, rules, settings=None):
         else:
             store.mark_processed(system, event_id, email)
 
-    # 8. Round-robin: the database keeps the LAST rep assigned; the engine keeps the NEXT to try.
+    # 8. Owner-unavailable alerts already raised (so they are never raised twice), and how far
+    #    the SLA tracker had got: the latest moment anything was recorded.
+    for key, email, status in conn.execute(
+            """SELECT c.case_key, l.normalised_email, c.review_status FROM review_cases c
+               JOIN leads l ON l.lead_id = c.lead_id WHERE c.reason_code = %s""", (ALERT,)).fetchall():
+        store.alerts[key] = {"lead_key": email, "status": "resolved" if status == "resolved" else "open"}
+    store.clock = local(conn.execute(
+        """SELECT max(t) FROM (
+               SELECT max(received_at) AS t FROM ingestion_events
+               UNION ALL SELECT max(recorded_at) FROM followup_activities
+               UNION ALL SELECT max(recorded_at) FROM sla_history
+               UNION ALL SELECT max(last_evaluated_at) FROM sla_tracking
+               UNION ALL SELECT max(updated_at) FROM review_cases
+               UNION ALL SELECT max(recorded_at) FROM assignments
+               UNION ALL SELECT max(recorded_at) FROM owner_eligibility_history) x""").fetchone()[0])
+
+    # 9. Round-robin: the database keeps the LAST rep assigned; the engine keeps the NEXT to try.
     reps = settings.get("representatives") or {}
     for country, last in conn.execute(
             """SELECT r.country_code, o.staff_code FROM routing_state r
@@ -119,3 +142,25 @@ def load_store(conn, rules, settings=None):
         if last in ordered:
             store.rotation[country] = ordered[(ordered.index(last) + 1) % len(ordered)]
     return store
+
+
+
+def load_absences(conn, settings):
+    """Add to settings["unavailability"] every absence in the database it does not list yet.
+
+    Absences recorded at run time (LF-009) live only in the database. After a restart the
+    decision engine and the SLA tracker need them, so routing keeps skipping that
+    salesperson and alerts are not raised twice. Returns `settings`.
+    """
+    from datetime import datetime
+
+    listed = settings.setdefault("unavailability", [])
+    known = {(a["rep"], datetime.fromisoformat(str(a["from"]))) for a in listed}
+    for rep, starts, until, recorded, reason in conn.execute(
+            """SELECT o.staff_code, e.effective_from, e.effective_to, e.recorded_at, e.change_reason
+               FROM owner_eligibility_history e JOIN owners o ON o.owner_id = e.owner_id
+               WHERE NOT e.is_eligible ORDER BY e.effective_from, o.staff_code""").fetchall():
+        if (rep, starts) not in known:
+            listed.append({"rep": rep, "from": starts.isoformat(), "until": until.isoformat() if until else None,
+                           "recorded_at": recorded.isoformat(), "reason": reason})
+    return settings

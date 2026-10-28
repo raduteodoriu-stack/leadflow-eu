@@ -1,4 +1,4 @@
--- LeadFlow EU: LF-008 database consistency checks (reconciliation, part 1)
+-- LeadFlow EU: database consistency checks (reconciliation, part 1): LF-008, extended in LF-009
 --
 -- One row per check: how many records break it (0 = OK) and up to three examples.
 -- Read-only. Run on its own:
@@ -30,9 +30,11 @@ checks (check_id, description, problems, examples) AS (
     FROM decision_count
 
     UNION ALL
-    SELECT 'C02', 'Every decision belongs to a stored event',
+    SELECT 'C02', 'Every decision belongs to a stored event (or is a Sales Manager reassignment)',
            count(*), string_agg(evaluation_key, ', ')
-    FROM processing_decisions WHERE ingestion_event_id IS NULL
+    FROM processing_decisions
+    WHERE ingestion_event_id IS NULL
+      AND NOT ('MANUAL_REASSIGNMENT' = ANY (reason_codes) AND decision_outcome = 'assignment_required')
 
     UNION ALL
     SELECT 'C03', 'Stored event status matches its decision',
@@ -123,6 +125,38 @@ checks (check_id, description, problems, examples) AS (
     SELECT 'C15', 'Every engagement event is linked to a lead',
            count(*), string_agg(source_event_id, ', ')
     FROM engagement_events WHERE lead_id IS NULL
+
+    -- LF-009: SLA tracking
+    UNION ALL
+    SELECT 'C16', 'Every met or breached SLA has the history entry that set it',
+           count(*), string_agg(l.normalised_email, ', ')
+    FROM sla_tracking s JOIN leads l ON l.lead_id = s.lead_id
+    WHERE s.sla_status <> 'pending'
+      AND s.sla_status IS DISTINCT FROM (
+          SELECT h.new_status FROM sla_history h WHERE h.sla_id = s.sla_id
+          ORDER BY h.recorded_at DESC, h.history_key DESC LIMIT 1)
+
+    UNION ALL
+    SELECT 'C17', 'Every SLA follow-up is a qualifying one by the owner at the time',
+           count(*), string_agg(l.normalised_email, ', ')
+    FROM sla_tracking s
+    JOIN leads l ON l.lead_id = s.lead_id
+    JOIN followup_activities f ON f.activity_id = s.qualifying_activity_id
+    WHERE NOT coalesce((f.activity_details ->> 'qualifying')::boolean, FALSE)
+       OR f.lead_id IS DISTINCT FROM s.lead_id
+       OR NOT EXISTS (SELECT 1 FROM assignments a
+                      WHERE a.lead_id = s.lead_id AND a.owner_id = f.performed_by_owner_id
+                        AND a.effective_from <= f.occurred_at
+                        AND (a.effective_to IS NULL OR a.effective_to > f.occurred_at))
+
+    UNION ALL
+    SELECT 'C18', 'Every open owner-unavailable alert is about a lead still with that salesperson',
+           count(*), string_agg(c.case_key, ', ')
+    FROM review_cases c
+    JOIN assignments a ON a.lead_id = c.lead_id AND a.effective_to IS NULL
+    JOIN owners o ON o.owner_id = a.owner_id
+    WHERE c.reason_code = 'OWNER_UNAVAILABLE_PENDING' AND c.review_status <> 'resolved'
+      AND o.staff_code IS DISTINCT FROM c.case_details ->> 'absent_owner'
 )
 SELECT check_id, description, problems,
        -- first three examples only

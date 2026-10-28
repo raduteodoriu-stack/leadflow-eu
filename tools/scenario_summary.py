@@ -28,7 +28,12 @@ def row(s):
     if "sla_outcome" in e:
         result = f"SLA {e['sla_outcome']}" + (f", target {e['response_target_outcome']}" if e.get("response_target_outcome") else "")
         handled = e.get("qualifying_followup_at") and f"follow-up {when(e['qualifying_followup_at'])}"
-        deadline = "—"
+        if e.get("owner"):
+            handled = f"{e['owner']}" + (f", {handled}" if handled else "")
+        cases = e.get("review_cases") or []
+        if cases:
+            handled += f" + {len(cases)} {cases[0]['reason_code']}"
+        deadline = when(e.get("sla_deadline")) if e.get("sla_deadline") else "—"
     else:
         result = e.get("outcome", "—")
         handled = e.get("owner") or e.get("review_queue") or "—"
@@ -42,7 +47,7 @@ def row(s):
             deadline = "—"
     rt = e.get("response_target") or {}
     target = when(rt["target_at"]) if rt.get("target_at") else (when(e["response_target_at"]) if e.get("response_target_at") else "—")
-    prio = e.get("priority")
+    prio = e.get("priority") or (s["prior_state"].get("existing_leads") or [{}])[0].get("priority") if s["id"].startswith("T-") else e.get("priority")
     prio = f"{prio} (rule {e.get('priority_rule')})" if prio else "—"
     codes = ", ".join(e.get("reason_codes", [])) or "—"
     reviewed = "yes" if s["label"].get("reviewed_by") else "no"
@@ -55,7 +60,7 @@ def main():
     scenarios = [json.loads(f.read_text()) for f in files]
     head = ("| ID | Scenario | Evaluated | Outcome | Owner / queue | Priority | Response target | SLA deadline (8 h) | Reason codes | Reviewed |\n"
             "|---|---|---|---|---|---|---|---|---|---|")
-    groups = [("Scenarios", "S-"), ("Boundary tests", "B-")]
+    groups = [("Scenarios", "S-"), ("Boundary tests", "B-"), ("SLA tracking and alerts (LF-009)", "T-")]
     lines = [
         "# LF-004 Test scenarios",
         "",
@@ -67,6 +72,9 @@ def main():
         "",
         "SLA: one deadline of 8 business hours for every assigned lead (breach if missed). "
         "Response target: P1 1 h, P2 4 h, P3 8 h, measured for reporting but never a breach.",
+        "",
+        "T- scenarios (LF-009) replay a timeline of steps (follow-ups with the time they were logged, "
+        "checks, absences, reassignments) against one prior state; decisions of 2026-10-28.",
         "",
     ]
     for title, prefix in groups:

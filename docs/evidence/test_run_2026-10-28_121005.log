@@ -1,0 +1,524 @@
+LeadFlow EU - LF-003 test run
+Started:  2026-10-28 12:10:05 CET
+Git:      feat/lf-009-sla @ 1ee8aa4 (uncommitted changes present)
+Database: leadflow_eu as postgres
+Server:   PostgreSQL 18.1 on x86_64-apple-darwin23.6.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.6), 64-bit
+
+== Rebuild: dropping and recreating leadflow_eu ==
+BEGIN
+DO
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE EXTENSION
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+INSERT 0 3
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+COMMIT
+CREATE TABLE
+INSERT 0 20
+ database_name |        table_name         | status  
+---------------+---------------------------+---------
+ leadflow_eu   | assignments               | present
+ leadflow_eu   | companies                 | present
+ leadflow_eu   | crm_write_log             | present
+ leadflow_eu   | engagement_coverage       | present
+ leadflow_eu   | engagement_events         | present
+ leadflow_eu   | followup_activities       | present
+ leadflow_eu   | ingestion_events          | present
+ leadflow_eu   | leads                     | present
+ leadflow_eu   | owner_eligibility_history | present
+ leadflow_eu   | owners                    | present
+ leadflow_eu   | participant_redirects     | present
+ leadflow_eu   | processing_decisions      | present
+ leadflow_eu   | qualification_evidence    | present
+ leadflow_eu   | review_actions            | present
+ leadflow_eu   | review_cases              | present
+ leadflow_eu   | routing_state             | present
+ leadflow_eu   | rule_versions             | present
+ leadflow_eu   | sla_history               | present
+ leadflow_eu   | sla_tracking              | present
+ leadflow_eu   | supplier_redirect_rules   | present
+(20 rows)
+
+psql:SQL/001_create_schema.sql:2045: NOTICE:  Schema inventory OK: all 20 expected tables present in leadflow_eu.
+DO
+DROP TABLE
+Schema:   OK (SQL/001_create_schema.sql)
+BEGIN
+DO
+ALTER TABLE
+psql:SQL/002_response_targets.sql:44: NOTICE:  constraint "sla_response_target_priority_valid" of relation "sla_tracking" does not exist, skipping
+psql:SQL/002_response_targets.sql:44: NOTICE:  constraint "sla_response_target_all_or_none" of relation "sla_tracking" does not exist, skipping
+psql:SQL/002_response_targets.sql:44: NOTICE:  constraint "sla_response_target_times_valid" of relation "sla_tracking" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMIT
+psql:SQL/002_response_targets.sql:170: NOTICE:  Migration 002 OK in leadflow_eu.
+DO
+Schema:   OK (SQL/002_response_targets.sql)
+BEGIN
+DO
+ALTER TABLE
+COMMENT
+COMMIT
+psql:SQL/003_lead_first_contact.sql:47: NOTICE:  Migration 003 OK in leadflow_eu.
+DO
+Schema:   OK (SQL/003_lead_first_contact.sql)
+BEGIN
+DO
+ALTER TABLE
+psql:SQL/004_sla_tracking.sql:32: NOTICE:  constraint "sla_response_target_status_valid" of relation "sla_tracking" does not exist, skipping
+psql:SQL/004_sla_tracking.sql:32: NOTICE:  constraint "sla_response_target_status_evidence" of relation "sla_tracking" does not exist, skipping
+ALTER TABLE
+ALTER TABLE
+CREATE INDEX
+COMMIT
+psql:SQL/004_sla_tracking.sql:84: NOTICE:  Migration 004 OK in leadflow_eu.
+DO
+Schema:   OK (SQL/004_sla_tracking.sql)
+
+----------------------------------------------------------
+== 001_test_core_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                      test_description                      | result 
+-------------+------------------------------------------------------------+--------
+           1 | Valid company accepted                                     | PASS
+           2 | Company with no optional attributes accepted               | PASS
+           3 | Zero employee count rejected                               | PASS
+           4 | Invalid employee band rejected                             | PASS
+           5 | Invalid industry code rejected                             | PASS
+           6 | Invalid research use case rejected                         | PASS
+           7 | Invalid research frequency rejected                        | PASS
+           8 | Duplicate CRM company ID rejected                          | PASS
+           9 | Valid lead accepted; relationship defaults to unknown      | PASS
+          10 | Upper-case email rejected                                  | PASS
+          11 | Untrimmed email rejected                                   | PASS
+          12 | Empty email rejected                                       | PASS
+          13 | Lead without email rejected                                | PASS
+          14 | Duplicate normalised email rejected                        | PASS
+          15 | Duplicate CRM contact ID rejected                          | PASS
+          16 | Lower-case and three-letter country codes rejected         | PASS
+          17 | Invalid relationship type rejected                         | PASS
+          18 | Invalid preferred language rejected                        | PASS
+          19 | Invalid contact function rejected                          | PASS
+          20 | Lead with missing company rejected                         | PASS
+          21 | Deleting a company with leads rejected                     | PASS
+          22 | Complete event accepted (default received) and processed   | PASS
+          23 | Duplicate (source_system, source_event_id) rejected        | PASS
+          24 | Same event ID from another source system accepted          | PASS
+          25 | Blank source system and blank event ID rejected            | PASS
+          26 | Raw events without source event ID stored (no dedup)       | PASS
+          27 | Processed without event ID, occurred time or type rejected | PASS
+          28 | Invalid event type, channel and status rejected            | PASS
+          29 | Event without raw payload rejected                         | PASS
+          30 | Missing lead reference and referenced-lead delete rejected | PASS
+          31 | Mixed-case and untrimmed source system rejected            | PASS
+          32 | Rejected/failed need error code; coded rejection accepted  | PASS
+          33 | Unknown defaults applied; NULL rejected                    | PASS
+          34 | Email without @ or local part rejected                     | PASS
+(34 rows)
+
+ROLLBACK
+PASS  001_test_core_constraints.sql                           34 checks
+----------------------------------------------------------
+== 002_test_owner_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |             test_description              | result 
+-------------+-------------------------------------------+--------
+           1 | Valid owner and adjacent periods accepted | PASS
+           2 | Duplicate staff code rejected             | PASS
+           3 | Invalid owner role rejected               | PASS
+           4 | Self-management rejected                  | PASS
+           5 | Overlapping territory periods rejected    | PASS
+           6 | Zero-length eligibility period rejected   | PASS
+           7 | Unsupported routing country rejected      | PASS
+           8 | Nonexistent routing owner rejected        | PASS
+(8 rows)
+
+ROLLBACK
+PASS  002_test_owner_constraints.sql                          8 checks
+----------------------------------------------------------
+== 003_test_decision_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |               test_description                | result 
+-------------+-----------------------------------------------+--------
+           1 | Valid decision and boundary scores accepted   | PASS
+           2 | Duplicate evaluation key rejected             | PASS
+           3 | Fit score above 100 rejected                  | PASS
+           4 | Negative engagement score rejected            | PASS
+           5 | Assignment without owner rejected             | PASS
+           6 | Invalid priority rejected                     | PASS
+           7 | Empty reason list rejected                    | PASS
+           8 | Nonexistent rule version rejected             | PASS
+           9 | Complete fit without score rejected           | PASS
+          10 | Old assign outcome rejected                   | PASS
+          11 | Review decision with incomplete data accepted | PASS
+          12 | Decision without event or lead rejected       | PASS
+(12 rows)
+
+ROLLBACK
+PASS  003_test_decision_constraints.sql                       12 checks
+----------------------------------------------------------
+== 004_test_review_case_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |               test_description               | result 
+-------------+----------------------------------------------+--------
+           1 | Event-only review case accepted              | PASS
+           2 | Duplicate case key rejected                  | PASS
+           3 | Case without event or lead rejected          | PASS
+           4 | In-progress case without reviewer rejected   | PASS
+           5 | In-progress case with reviewer accepted      | PASS
+           6 | Resolution without timestamp rejected        | PASS
+           7 | Resolution before opening rejected           | PASS
+           8 | Resolution with valid timestamp accepted     | PASS
+           9 | Open case with resolution timestamp rejected | PASS
+          10 | Nonexistent event rejected                   | PASS
+(10 rows)
+
+ROLLBACK
+PASS  004_test_review_case_constraints.sql                    10 checks
+----------------------------------------------------------
+== 005_test_review_action_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |             test_description              | result 
+-------------+-------------------------------------------+--------
+           1 | Valid owner-selection action accepted     | PASS
+           2 | Duplicate action key rejected             | PASS
+           3 | Blank reviewer rejected                   | PASS
+           4 | Owner selection without owner rejected    | PASS
+           5 | Note with selected owner rejected         | PASS
+           6 | Nonexistent owner rejected                | PASS
+           7 | Nonexistent review case rejected          | PASS
+           8 | Blank action reason rejected              | PASS
+           9 | Additional note on the same case accepted | PASS
+(9 rows)
+
+ROLLBACK
+PASS  005_test_review_action_constraints.sql                  9 checks
+----------------------------------------------------------
+== 006_test_assignment_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                  test_description                  | result 
+-------------+----------------------------------------------------+--------
+           1 | Initial assignment accepted                        | PASS
+           2 | Overlapping ownership rejected                     | PASS
+           3 | Adjacent manual reassignment accepted              | PASS
+           4 | Duplicate assignment key rejected                  | PASS
+           5 | Manual assignment without review action rejected   | PASS
+           6 | Round-robin assignment with review action rejected | PASS
+           7 | Zero-length ownership period rejected              | PASS
+           8 | Nonexistent owner rejected                         | PASS
+           9 | Overlap introduced by an update rejected           | PASS
+(9 rows)
+
+ROLLBACK
+PASS  006_test_assignment_constraints.sql                     9 checks
+----------------------------------------------------------
+== 007_test_followup_activity_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                 test_description                 | result 
+-------------+--------------------------------------------------+--------
+           1 | Unresolved call evidence accepted                | PASS
+           2 | Duplicate source activity rejected               | PASS
+           3 | Same identifier from a different source accepted | PASS
+           4 | Call with email outcome rejected                 | PASS
+           5 | Email with call outcome rejected                 | PASS
+           6 | Blank source activity ID rejected                | PASS
+           7 | Nonexistent lead rejected                        | PASS
+           8 | Nonexistent owner rejected                       | PASS
+           9 | Missing occurrence time rejected                 | PASS
+          10 | Automated, draft and failed evidence retained    | PASS
+          11 | Mixed-case source system rejected                | PASS
+(11 rows)
+
+ROLLBACK
+PASS  007_test_followup_activity_constraints.sql              11 checks
+----------------------------------------------------------
+== 008_test_sla_tracking_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                    test_description                    | result 
+-------------+--------------------------------------------------------+--------
+           1 | Initial pending SLA accepted                           | PASS
+           2 | Duplicate lead SLA rejected                            | PASS
+           3 | Deadline beyond original rejected                      | PASS
+           4 | Pending at exact deadline accepted                     | PASS
+           5 | Pending after deadline rejected                        | PASS
+           6 | Met without activity rejected                          | PASS
+           7 | Activity exactly at deadline meets SLA                 | PASS
+           8 | Late activity marked met rejected                      | PASS
+           9 | Breach without follow-up accepted                      | PASS
+          10 | Late follow-up with breached status accepted           | PASS
+          11 | On-time evidence corrects verdict with breach retained | PASS
+(11 rows)
+
+ROLLBACK
+PASS  008_test_sla_tracking_constraints.sql                   11 checks
+----------------------------------------------------------
+== 009_test_sla_history_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                 test_description                  | result 
+-------------+---------------------------------------------------+--------
+           1 | SLA creation history accepted                     | PASS
+           2 | Duplicate SLA creation rejected                   | PASS
+           3 | Deadline shortening with decision accepted        | PASS
+           4 | Deadline extension rejected                       | PASS
+           5 | Shortening without decision rejected              | PASS
+           6 | Implicit breach correction rejected               | PASS
+           7 | Breach correction without activity rejected       | PASS
+           8 | Explicit breach correction with activity accepted | PASS
+           9 | Duplicate history key rejected                    | PASS
+(9 rows)
+
+ROLLBACK
+PASS  009_test_sla_history_constraints.sql                    9 checks
+----------------------------------------------------------
+== 010_test_qualification_evidence_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                 test_description                  | result 
+-------------+---------------------------------------------------+--------
+           1 | Numeric evidence accepted                         | PASS
+           2 | Duplicate evidence key rejected                   | PASS
+           3 | Nonexistent company rejected                      | PASS
+           4 | Unsupported qualification field rejected          | PASS
+           5 | Blank source reference rejected                   | PASS
+           6 | JSON object observation rejected                  | PASS
+           7 | JSON null rejected                                | PASS
+           8 | String, false and SQL NULL observations accepted  | PASS
+           9 | Additional observation of the same field accepted | PASS
+          10 | Mixed-case source system rejected                 | PASS
+(10 rows)
+
+ROLLBACK
+PASS  010_test_qualification_evidence_constraints.sql         10 checks
+----------------------------------------------------------
+== 011_test_engagement_event_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |               test_description                | result 
+-------------+-----------------------------------------------+--------
+           1 | Unresolved event with source contact accepted | PASS
+           2 | Duplicate source event rejected               | PASS
+           3 | Same identifier from another source accepted  | PASS
+           4 | Event without contact identity rejected       | PASS
+           5 | Unsupported event type rejected               | PASS
+           6 | Nonexistent lead rejected                     | PASS
+           7 | Existing lead successfully linked             | PASS
+           8 | Missing occurrence time rejected              | PASS
+           9 | Distinct same-day pricing visits retained     | PASS
+          10 | Mixed-case source system rejected             | PASS
+(10 rows)
+
+ROLLBACK
+PASS  011_test_engagement_event_constraints.sql               10 checks
+----------------------------------------------------------
+== 012_test_engagement_coverage_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                  test_description                   | result 
+-------------+-----------------------------------------------------+--------
+           1 | Complete coverage with zero events accepted         | PASS
+           2 | Duplicate coverage key rejected                     | PASS
+           3 | Complete coverage without count rejected            | PASS
+           4 | Negative event count rejected                       | PASS
+           5 | Zero-length coverage window rejected                | PASS
+           6 | Check before window end rejected                    | PASS
+           7 | Complete coverage with error rejected               | PASS
+           8 | Partial collection with retrieved events accepted   | PASS
+           9 | Failed coverage without error code rejected         | PASS
+          10 | Failed collection with unknown count accepted       | PASS
+          11 | Empty population definition rejected                | PASS
+          12 | New collection attempt for the same window accepted | PASS
+          13 | Mixed-case source system rejected                   | PASS
+(13 rows)
+
+ROLLBACK
+PASS  012_test_engagement_coverage_constraints.sql            13 checks
+----------------------------------------------------------
+== 013_test_supplier_redirect_rule_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |            test_description             | result 
+-------------+-----------------------------------------+--------
+           1 | Valid country rule accepted             | PASS
+           2 | Overlapping country rules rejected      | PASS
+           3 | Default and country rules coexist       | PASS
+           4 | Adjacent replacement rule accepted      | PASS
+           5 | Non-HTTPS destination rejected          | PASS
+           6 | Destination containing spaces rejected  | PASS
+           7 | Unsupported territory rejected          | PASS
+           8 | Approval after effective start rejected | PASS
+(8 rows)
+
+ROLLBACK
+PASS  013_test_supplier_redirect_rule_constraints.sql         8 checks
+----------------------------------------------------------
+== 014_test_participant_redirect_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                   test_description                   | result 
+-------------+------------------------------------------------------+--------
+           1 | Review without destination accepted                  | PASS
+           2 | Simulation without destination rejected              | PASS
+           3 | Simulated referral with destination accepted         | PASS
+           4 | Duplicate attempt number rejected                    | PASS
+           5 | Duplicate successful simulation rejected             | PASS
+           6 | Incomplete destination snapshot rejected             | PASS
+           7 | Failure without error code rejected                  | PASS
+           8 | Zero attempt number rejected                         | PASS
+           9 | Real-send status rejected                            | PASS
+          10 | Default referral method is automated_reply_panelists | PASS
+          11 | Retired referral method automated_reply rejected     | PASS
+(11 rows)
+
+ROLLBACK
+PASS  014_test_participant_redirect_constraints.sql           11 checks
+----------------------------------------------------------
+== 015_test_crm_write_log_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |               test_description               | result 
+-------------+----------------------------------------------+--------
+           1 | In-progress attempt accepted                 | PASS
+           2 | Duplicate attempt number rejected            | PASS
+           3 | Success without completion rejected          | PASS
+           4 | Failed attempt with scheduled retry accepted | PASS
+           5 | Retry before completion rejected             | PASS
+           6 | Scheduled retry for unknown outcome rejected | PASS
+           7 | Successful second attempt accepted           | PASS
+           8 | Duplicate recorded success rejected          | PASS
+           9 | Success with HTTP error rejected             | PASS
+          10 | Simulation without HTTP response accepted    | PASS
+          11 | Empty update payload rejected                | PASS
+(11 rows)
+
+ROLLBACK
+PASS  015_test_crm_write_log_constraints.sql                  11 checks
+----------------------------------------------------------
+== 016_test_response_target_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                  test_description                   | result 
+-------------+-----------------------------------------------------+--------
+           1 | Same-company assignment accepted                    | PASS
+           2 | Same-company assignment with review action rejected | PASS
+           3 | SLA with response target accepted                   | PASS
+           4 | Partial response target rejected                    | PASS
+           5 | Response target after SLA deadline rejected         | PASS
+           6 | Response target moved later rejected                | PASS
+           7 | Invalid response target priority rejected           | PASS
+           8 | Target shortened with history event accepted        | PASS
+           9 | Target event that moves the deadline rejected       | PASS
+          10 | Target event without decision rejected              | PASS
+          11 | Target event that changes SLA status rejected       | PASS
+(11 rows)
+
+ROLLBACK
+PASS  016_test_response_target_constraints.sql                11 checks
+----------------------------------------------------------
+== 017_test_response_target_status_constraints.sql
+BEGIN
+CREATE TABLE
+DO
+ test_number |                 test_description                 | result 
+-------------+--------------------------------------------------+--------
+           1 | New SLA starts with target pending               | PASS
+           2 | Pending target after it passed rejected          | PASS
+           3 | Missed target without follow-up accepted         | PASS
+           4 | Met target with a late follow-up rejected        | PASS
+           5 | Met target with an on-time follow-up accepted    | PASS
+           6 | Missed target with an on-time follow-up rejected | PASS
+           7 | Unknown target outcome rejected                  | PASS
+(7 rows)
+
+ROLLBACK
+PASS  017_test_response_target_status_constraints.sql         7 checks
+
+Summary:  17 passed, 0 failed
+Finished: 2026-10-28 12:10:07 CET
+Log:      docs/evidence/test_run_2026-10-28_121005.log

@@ -69,7 +69,7 @@ def _at(value):
 
 
 LEAD_SCENARIOS = [p for p in SCENARIOS
-                  if json.loads(p.read_text(encoding="utf-8"))["input"].get("event_type") != "activities"]
+                  if json.loads(p.read_text(encoding="utf-8"))["input"].get("event_type") not in ("activities", "sla_timeline")]
 
 
 @pytest.mark.parametrize("path", LEAD_SCENARIOS, ids=lambda p: p.stem)

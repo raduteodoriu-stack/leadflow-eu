@@ -10,6 +10,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from leadflow import postgres
+from leadflow.sla import SlaTracker
 
 
 def settings_from(dataset):
@@ -27,14 +28,22 @@ def timeline(dataset):
     return [(kind, item) for *_, kind, item in sorted(items, key=lambda x: x[:3])]
 
 
-def run(conn, dataset, store, rules, settings=None, start=0, stop=None):
-    """Process items [start:stop] of the timeline; return {seq: decision} for the events run."""
+def run(conn, dataset, store, rules, settings=None, start=0, stop=None, until=None):
+    """Process items [start:stop] of the timeline; return {seq: decision} for the events run.
+
+    Before each item the SLA tracker catches up to its time (breaches, missed targets,
+    owner-unavailable alerts). `until`: also catch up to that moment at the end (a cut-off).
+    """
     settings = settings or settings_from(dataset)
+    tracker = SlaTracker(store, rules, settings)
     decisions = {}
     for kind, item in timeline(dataset)[start:stop]:
         if kind == "activity":
-            postgres.record_and_save_activity(conn, item, store, rules)
+            postgres.track(conn, tracker, "activity", item)
         else:
+            postgres.track(conn, tracker, "advance", item["received_at"])
             decisions[item["seq"]] = postgres.process_and_record(
                 conn, item["input"], item["received_at"], store, rules, settings)[1]
+    if until is not None:
+        postgres.track(conn, tracker, "advance", until)
     return decisions

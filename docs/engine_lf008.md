@@ -16,11 +16,11 @@ recontact decisions.
 
 | Part | File | What it does |
 |---|---|---|
-| Follow-ups saved | `leadflow/postgres.py` (`record_and_save_activity`) | Every follow-up call or email is stored, with `qualifying` (counts as the lead's first follow-up: a human call or individual email by the owner, after assignment). All or nothing, like events. Judging SLA met/breached stays in LF-009 |
+| Follow-ups saved | `leadflow/postgres.py` (`track`; since LF-009 through the SLA tracker) | Every follow-up call or email is stored, with `qualifying` (counts as the lead's first follow-up: a human call or individual email by the owner, after assignment). All or nothing, like events. Judging SLA met/breached stays in LF-009 |
 | First contact time | `SQL/003_lead_first_contact.sql` | New column `leads.first_contact_at`: when the contact first got in touch. The recontact and same-company windows are measured from it |
 | Reload | `leadflow/reload.py` (`load_store`) | Rebuilds the whole working memory from PostgreSQL |
 | Batch runner | `leadflow/batch.py` | Runs events and follow-ups in time order, saving each; can stop part-way and continue |
-| Reconciliation | `leadflow/reconcile.py`, `SQL/reconciliation/lf008_consistency_checks.sql`, `tools/reconcile.py` | 22 checks comparing source and database, plus internal consistency; writes a dated report to `docs/evidence/` |
+| Reconciliation | `leadflow/reconcile.py`, `SQL/reconciliation/lf008_consistency_checks.sql`, `tools/reconcile.py` | 22 checks comparing source and database, plus internal consistency (25 since LF-009); writes a dated report to `docs/evidence/` |
 
 ### Where each part of the memory comes from
 
@@ -75,7 +75,7 @@ skipped without psycopg or `LEADFLOW_TEST_DSN`.
 | Answer key | Outcomes and owners still match LF-005 |
 | Repeats after restart | A repeated event is ignored and writes nothing; a repeated payload without an ID is flagged as a possible repeat |
 | Follow-ups | All 77 stored; the first qualifying follow-up per lead matches the answer key; automated emails never qualify |
-| Reconciliation balances | 22 checks, 0 differences |
+| Reconciliation balances | 22 checks (25 since LF-009), 0 differences |
 | Deliberate breaks (7) | Removing an SLA, closing an owner's assignment, moving the rotation, adding an orphan company, removing a review case, a follow-up or an engagement action is each reported by its check |
 
 Sensitivity: leaving any part out of the reload (rotation, follow-ups, payload
