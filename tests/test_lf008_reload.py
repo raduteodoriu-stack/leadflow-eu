@@ -120,7 +120,7 @@ def test_followups_saved_with_first_qualifying_time(uninterrupted):
 def test_reconciliation_balances(uninterrupted):
     conn, _, _, _ = uninterrupted
     checks = reconcile.reconcile(conn, DATASET, RULES)
-    assert len(checks) == 25
+    assert len(checks) == 28
     assert [c for c in checks if c["difference"]] == []
     totals = {c["id"]: c for c in checks}
     assert totals["S01"]["expected"] == 100

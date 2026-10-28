@@ -29,7 +29,7 @@ From LF-002, option C (2026-10-23) and the decisions of 2026-10-28:
 | Target outcome column | `SQL/004_sla_tracking.sql` | `sla_tracking.response_target_status`, with a check that the outcome matches the evidence |
 | Restart | `leadflow/reload.py` | Also restores SLA status, breach detection, target outcome, ownership history, raised alerts and how far the tracker had got; `load_absences` restores absences recorded at run time |
 | Batch | `leadflow/batch.py` | The tracker catches up before every event and follow-up; `until` catches up to a cut-off at the end |
-| Reconciliation | `SQL/reconciliation/lf008_consistency_checks.sql` | Three new checks: C16 every met or breached SLA has the history entry that set it; C17 every SLA follow-up qualifies and was made by the owner at the time; C18 every open alert concerns a lead still with that salesperson. 25 checks in total |
+| Reconciliation | `SQL/reconciliation/lf008_consistency_checks.sql` | Three new checks: C16 every met or breached SLA has the history entry that set it; C17 every SLA follow-up qualifies and was made by the owner at the time; C18 every open alert concerns a lead still with that salesperson. 25 checks in total (28 since LF-010) |
 
 ### Saved records
 
@@ -50,7 +50,7 @@ Review cases from LF-009 sit in the `sla_review` queue (`case_details.queue`) wi
 |---|---|
 | `tests/fixtures/scenarios/T-01` to `T-20` | 20 SLA timelines, all reviewed on 2026-10-28 (T-20 added while building, see below) |
 | `tests/test_lf009_sla.py` (27) | All 24 SLA scenarios (T-01 to T-20, B-12, B-13, B-16, B-17) in memory; every assigned LF-005 lead's SLA and target outcome at the cut-off (met 58, breached 5, pending 4; target met 44, missed 21, pending 2); no alerts or flags in LF-005 |
-| `tests/test_lf009_postgres.py` (28) | LF-005 outcomes saved at the cut-off and reconciliation balanced (25 checks); all 24 scenarios replayed through the database, with the saved statuses, history, alerts and owners matching the answers; the same scenarios with a full restart before every step leave identical rows; an alert raised before a restart is resolved after it; a failed save leaves nothing and memory unchanged |
+| `tests/test_lf009_postgres.py` (28) | LF-005 outcomes saved at the cut-off and reconciliation balanced (25 checks; 28 since LF-010); all 24 scenarios replayed through the database, with the saved statuses, history, alerts and owners matching the answers; the same scenarios with a full restart before every step leave identical rows; an alert raised before a restart is resolved after it; a failed save leaves nothing and memory unchanged |
 | `SQL/tests/017_test_response_target_status_constraints.sql` (7 checks) | The target outcome must match the evidence |
 
 Sensitivity (each change made on purpose, then undone): treating the deadline minute as

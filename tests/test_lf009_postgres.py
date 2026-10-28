@@ -4,7 +4,7 @@ Runs against leadflow_eu_test only (see tests/pg_support.py); skipped without ps
 LEADFLOW_TEST_DSN.
 
 - LF-005 with SLA tracking: every assigned lead's SLA and response-target outcome in the
-  database at the cut-off matches the answer key; reconciliation balances (25 checks).
+  database at the cut-off matches the answer key; reconciliation balances (28 checks since LF-010).
 - Every SLA scenario (T-01 to T-20, B-12, B-13, B-16, B-17) replayed through the database:
   the saved statuses, history, alerts, flags and owners match the reviewed answers, and
   the database refuses nothing.
@@ -53,7 +53,7 @@ def test_lf005_history_and_reconciliation(lf005):
                                WHERE event_type = 'status_changed' AND new_status = 'breached'""").fetchone()[0]
     assert breached == spotted == EXPECTED["summary"]["sla_outcomes_at_cutoff"]["breached"]
     checks = reconcile.reconcile(lf005, DATASET, RULES)
-    assert len(checks) == 25
+    assert len(checks) == 28
     assert [c for c in checks if c["difference"]] == []
 
 
