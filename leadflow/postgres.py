@@ -18,8 +18,8 @@ Design rules
   database and reconciling counts is LF-008.)
 - Simulated time: every timestamp is set from the event's received time, never from
   the database clock, so results are reproducible.
-- Follow-up calls and emails are saved too (LF-008), with whether they count as a
-  qualifying first follow-up. Judging SLA met/breached from them is LF-009.
+- Follow-up calls and emails, SLA statuses, alerts, absences and reassignments are saved
+  through `track` (LF-008, LF-009), from the changes the SLA tracker reports.
 - Out of scope here: CRM writes (LF-010), review actions (people do those).
 
 Requires psycopg 3 (`pip install -r requirements.txt`).
@@ -32,7 +32,7 @@ from datetime import datetime
 
 from psycopg.types.json import Jsonb
 
-from leadflow.decide import process_event, record_activity
+from leadflow.decide import process_event
 
 NAMESPACE = uuid.UUID("6f1c6f43-2b38-4f7e-9a4e-1f0c4c7d2a10")  # fixed: same input -> same IDs
 ENGINE = "leadflow-engine"
@@ -395,41 +395,211 @@ def _write_participant_redirect(conn, prepared, decision, event_id, t):
 
 
 # ---------------------------------------------------------------------------
-# Follow-up activities (LF-008)
+# SLA tracking: follow-ups, statuses, alerts, absences, reassignment (LF-008, LF-009)
 # ---------------------------------------------------------------------------
 
 ACTIVITY_TYPES = ("call", "email", "administrative", "other")
+SLA_QUEUE = "sla_review"
+REASSIGNMENT = "MANUAL_REASSIGNMENT"
+HISTORY_REASONS = {
+    ("status_changed", "met"): "First qualifying follow-up on or before the deadline",
+    ("status_changed", "breached"): "Deadline passed without a qualifying follow-up",
+    ("evidence_corrected", "met"): "Follow-up logged late but made before the deadline: verdict corrected",
+    ("followup_recorded", "breached"): "Follow-up made after the deadline: breach stands",
+    ("followup_recorded", "met"): "Earlier follow-up logged late: SLA still met",
+}
 
 
-def record_and_save_activity(conn, activity, store, rules):
-    """Register a follow-up in memory and save it, all or nothing. Returns True if it qualifies.
+def track(conn, tracker, action, *args):
+    """Run one SLA tracker action (advance, activity, absence, reassign) and save its changes.
 
-    Every activity is stored, qualifying or not, so the record is complete; `qualifying`
-    in activity_details says whether it counts as the lead's first follow-up (a human
-    call or individual email by the lead's owner, after assignment).
+    All or nothing: if saving fails, the store and the list of absences are put back.
+    Returns the changes.
     """
-    email = (activity.get("lead_email") or "").strip().lower()
-    lead = store.contact(email)
-    before = lead["first_followup_at"] if lead else None
-    qualifying = record_activity(store, rules, activity)
+    store = tracker.store
+    before = copy.deepcopy(store.__dict__)
+    absences = list(tracker.settings["unavailability"])
+    changes = getattr(tracker, action)(*args)
     try:
         with conn.transaction():
-            kind = activity.get("type") if activity.get("type") in ACTIVITY_TYPES else "other"
-            at = _at(activity["occurred_at"])
-            conn.execute(
-                """INSERT INTO followup_activities (activity_id, source_system, source_activity_id, lead_id,
-                       performed_by_owner_id, source_contact_id, source_owner_id, activity_type, activity_outcome,
-                       is_automated, occurred_at, recorded_at, activity_details)
-                   VALUES (%s, %s, %s, %s, (SELECT owner_id FROM owners WHERE staff_code = %s), %s, %s, %s,
-                           'unknown', %s, %s, %s, %s)
-                   ON CONFLICT (source_system, source_activity_id) DO NOTHING""",
-                (key_uuid("activity", activity["source_system"], activity["activity_id"]),
-                 activity["source_system"], activity["activity_id"], key_uuid("lead", email) if lead else None,
-                 activity.get("owner"), None if lead else (email or None), activity.get("owner"), kind,
-                 activity.get("automated"), at, at,
-                 Jsonb({"qualifying": qualifying, "lead_email": email or None})))
+            apply_sla_changes(conn, changes, store, tracker.rules)
     except Exception:
-        if lead:
-            lead["first_followup_at"] = before
+        store.__dict__.clear()
+        store.__dict__.update(before)
+        tracker.settings["unavailability"][:] = absences
         raise
-    return qualifying
+    return changes
+
+
+def apply_sla_changes(conn, changes, store, rules):
+    """Write the tracker's changes. Call inside a transaction."""
+    for change in changes:
+        kind = change["kind"]
+        if kind == "activity":
+            _save_activity(conn, change["activity"], change["lead_key"], change["qualifying"])
+        elif kind in ("status", "target"):
+            _save_sla_state(conn, change)
+        elif kind == "case_opened":
+            _save_sla_case(conn, change)
+        elif kind == "absence":
+            _save_absence(conn, change["absence"])
+        elif kind == "owner_changed":
+            _save_reassignment(conn, change, store, rules)
+
+
+def _save_activity(conn, activity, lead_key, qualifying):
+    """Every follow-up is stored, qualifying or not. recorded_at = when it was logged."""
+    email = (activity.get("lead_email") or "").strip().lower()
+    kind = activity.get("type") if activity.get("type") in ACTIVITY_TYPES else "other"
+    occurred = _at(activity["occurred_at"])
+    logged = _at(activity.get("logged_at")) or occurred
+    conn.execute(
+        """INSERT INTO followup_activities (activity_id, source_system, source_activity_id, lead_id,
+               performed_by_owner_id, source_contact_id, source_owner_id, activity_type, activity_outcome,
+               is_automated, occurred_at, recorded_at, activity_details)
+           VALUES (%s, %s, %s, %s, (SELECT owner_id FROM owners WHERE staff_code = %s), %s, %s, %s,
+                   'unknown', %s, %s, %s, %s)
+           ON CONFLICT (source_system, source_activity_id) DO NOTHING""",
+        (_activity_id(activity), activity["source_system"], activity["activity_id"],
+         key_uuid("lead", lead_key) if lead_key else None, activity.get("owner"),
+         None if lead_key else (email or None), activity.get("owner"), kind, activity.get("automated"),
+         occurred, logged, Jsonb({"qualifying": qualifying, "lead_email": email or None})))
+
+
+def _activity_id(activity):
+    return key_uuid("activity", activity["source_system"], activity["activity_id"])
+
+
+def _save_sla_state(conn, change):
+    """Bring the lead's SLA row to the state recorded in the change; add history for status changes."""
+    state, at, lead_id = change["state"], change["at"], key_uuid("lead", change["lead_key"])
+    activity = change.get("activity") if change["kind"] == "status" else None
+    conn.execute(
+        """UPDATE sla_tracking SET sla_status = %s, response_target_status = %s,
+               breach_detected_at = %s,
+               qualifying_activity_id = COALESCE(%s, qualifying_activity_id),
+               qualifying_activity_at = COALESCE(%s, qualifying_activity_at),
+               last_evaluated_at = %s, updated_at = %s
+           WHERE lead_id = %s""",
+        (state["sla_status"], state["response_target_status"], state["breach_detected_at"],
+         _activity_id(activity) if activity else None, state["first_followup_at"] if activity else None,
+         at, at, lead_id))
+    if change["kind"] != "status":
+        return
+    row = conn.execute("SELECT sla_id, current_deadline_at FROM sla_tracking WHERE lead_id = %s",
+                       (lead_id,)).fetchone()
+    sla_id, deadline = row
+    history_key = f"{change['event_type']}:{change['lead_key']}:{at.isoformat()}" + \
+        (f":{activity['activity_id']}" if activity else "")
+    conn.execute(
+        """INSERT INTO sla_history (sla_history_id, history_key, sla_id, activity_id, event_type, previous_status,
+               new_status, previous_deadline_at, new_deadline_at, change_reason, changed_by, change_details,
+               recorded_at)
+           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (history_key) DO NOTHING""",
+        (key_uuid("sla_history", history_key), history_key, sla_id, _activity_id(activity) if activity else None,
+         change["event_type"], change["previous_status"], change["new_status"], deadline, deadline,
+         HISTORY_REASONS.get((change["event_type"], change["new_status"]), "SLA re-evaluated"), ENGINE,
+         Jsonb({"response_target_status": state["response_target_status"],
+                "breach_detected_at": _iso(state["breach_detected_at"]),
+                "qualifying_followup_at": _iso(state["first_followup_at"])}), at))
+
+
+def _iso(moment):
+    return moment.isoformat(timespec="seconds") if moment else None
+
+
+def _save_sla_case(conn, change):
+    details = {k: v for k, v in change.items() if k not in ("kind", "key", "lead_key", "at", "reason_code")}
+    conn.execute(
+        """INSERT INTO review_cases (review_case_id, case_key, lead_id, reason_code, case_details, review_status,
+               opened_at, updated_at)
+           VALUES (%s, %s, %s, %s, %s, 'open', %s, %s) ON CONFLICT (case_key) DO NOTHING""",
+        (key_uuid("case", change["key"]), change["key"], key_uuid("lead", change["lead_key"]), change["reason_code"],
+         Jsonb(dict(details, queue=SLA_QUEUE)), change["at"], change["at"]))
+
+
+def _save_absence(conn, absence):
+    """Split the salesperson's eligibility: available until `from`, away until `until`, then available."""
+    rep, starts, until = absence["rep"], _at(absence["from"]), _at(absence.get("until"))
+    recorded = _at(absence.get("recorded_at")) or starts
+    owner_id = key_uuid("owner", rep)
+    if conn.execute("""SELECT 1 FROM owner_eligibility_history
+                       WHERE owner_id = %s AND NOT is_eligible AND effective_from = %s""",
+                    (owner_id, starts)).fetchone():
+        return  # already recorded
+    row = conn.execute(
+        """SELECT eligibility_id, country_code, is_eligible, effective_from, effective_to
+           FROM owner_eligibility_history
+           WHERE owner_id = %s AND effective_from <= %s AND (effective_to IS NULL OR effective_to > %s)""",
+        (owner_id, starts, starts)).fetchone()
+    if row is None or not row[2]:
+        raise ValueError(f"cannot record an absence for {rep} from {starts}: not in an available period")
+    eligibility_id, country, _, period_from, period_to = row
+    if until is not None and period_to is not None and until > period_to:
+        raise ValueError(f"absence for {rep} runs past the end of their current period ({period_to})")
+    if period_from < starts:
+        conn.execute("UPDATE owner_eligibility_history SET effective_to = %s WHERE eligibility_id = %s",
+                     (starts, eligibility_id))
+    else:
+        conn.execute("DELETE FROM owner_eligibility_history WHERE eligibility_id = %s", (eligibility_id,))
+    periods = [(starts, until, False, absence.get("reason") or "Unavailable")]
+    if until is not None and (period_to is None or until < period_to):
+        periods.append((until, period_to, True, "Available again"))
+    for period_from_, period_to_, eligible, reason in periods:
+        conn.execute(
+            """INSERT INTO owner_eligibility_history (eligibility_id, owner_id, country_code, is_eligible,
+                   effective_from, effective_to, change_reason, recorded_at)
+               VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
+            (key_uuid("eligibility", rep, period_from_.isoformat()), owner_id, country, eligible, period_from_,
+             period_to_, reason, recorded))
+
+
+def _save_reassignment(conn, change, store, rules):
+    """A Sales Manager moves a lead: a decision, a review action, the old assignment closed, a new one opened."""
+    lead_key, at, new_owner = change["lead_key"], change["at"], change["new_owner"]
+    lead = store.contact(lead_key)
+    lead_id, owner_id = key_uuid("lead", lead_key), key_uuid("owner", new_owner)
+    key = f"reassign:{lead_key}:{at.isoformat()}"
+    decision_id = key_uuid("decision", key)
+    conn.execute(
+        """INSERT INTO processing_decisions (decision_id, evaluation_key, lead_id, rule_version, evaluated_at,
+               input_snapshot, priority, decision_outcome, selected_owner_id, reason_codes, decision_details)
+           VALUES (%s, %s, %s, %s, %s, %s, %s, 'assignment_required', %s, %s, %s)
+           ON CONFLICT (evaluation_key) DO NOTHING""",
+        (decision_id, key, lead_id, rules.version, at,
+         Jsonb({"previous_owner": change["previous_owner"], "requested_by": change["by"]}), lead.get("priority"),
+         owner_id, [REASSIGNMENT],
+         Jsonb({"outcome": "reassigned", "owner": new_owner, "previous_owner": change["previous_owner"],
+                "priority": lead.get("priority"), "priority_rule": lead.get("priority_rule"),
+                "sla_deadline_kept": _iso(lead.get("sla_deadline")),
+                "resolved_alerts": change["resolved_alerts"]})))
+    if change["resolved_alerts"]:
+        case_key = change["resolved_alerts"][0]
+        conn.execute("""UPDATE review_cases SET review_status = 'resolved', resolved_at = %s, updated_at = %s
+                        WHERE case_key = ANY(%s) AND review_status <> 'resolved'""",
+                     (at, at, change["resolved_alerts"]))
+    else:  # a reassignment with no alert behind it still leaves a reviewable trail
+        case_key = f"{REASSIGNMENT}:{lead_key}:{at.isoformat()}"
+        conn.execute(
+            """INSERT INTO review_cases (review_case_id, case_key, lead_id, decision_id, reason_code, case_details,
+                   review_status, assigned_reviewer, opened_at, updated_at, resolved_at)
+               VALUES (%s, %s, %s, %s, %s, %s, 'resolved', %s, %s, %s, %s) ON CONFLICT (case_key) DO NOTHING""",
+            (key_uuid("case", case_key), case_key, lead_id, decision_id, REASSIGNMENT,
+             Jsonb({"queue": SLA_QUEUE, "action_owner": "sales_manager"}), change["by"], at, at, at))
+    action_key = f"owner_selected:{lead_key}:{at.isoformat()}"
+    action_id = key_uuid("review_action", action_key)
+    conn.execute(
+        """INSERT INTO review_actions (review_action_id, action_key, review_case_id, performed_by, performed_at,
+               action_type, action_reason, action_details, selected_owner_id)
+           VALUES (%s, %s, %s, %s, %s, 'owner_selected', %s, %s, %s) ON CONFLICT (action_key) DO NOTHING""",
+        (action_id, action_key, key_uuid("case", case_key), change["by"], at,
+         "Lead reassigned by the Sales Manager; SLA deadline and target kept",
+         Jsonb({"previous_owner": change["previous_owner"], "new_owner": new_owner}), owner_id))
+    conn.execute("""UPDATE assignments SET effective_to = %s
+                    WHERE lead_id = %s AND effective_to IS NULL AND effective_from < %s""", (at, lead_id, at))
+    conn.execute(
+        """INSERT INTO assignments (assignment_id, assignment_key, lead_id, owner_id, decision_id, review_action_id,
+               assignment_method, assignment_reason, effective_from, recorded_at)
+           VALUES (%s, %s, %s, %s, %s, %s, 'manual_review', %s, %s, %s) ON CONFLICT (assignment_key) DO NOTHING""",
+        (key_uuid("assignment", key), key, lead_id, owner_id, decision_id, action_id,
+         "Reassigned by the Sales Manager", at, at))

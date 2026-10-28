@@ -91,7 +91,7 @@ def reconcile(conn, dataset, rules):
     return source_checks(conn, dataset, rules) + consistency_checks(conn)
 
 
-def report_markdown(checks, title="LF-008 reconciliation", context=""):
+def report_markdown(checks, title="LeadFlow EU reconciliation", context=""):
     bad = [c for c in checks if c["difference"]]
     lines = [f"# {title}", ""]
     if context:

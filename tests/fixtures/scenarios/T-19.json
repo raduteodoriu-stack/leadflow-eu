@@ -1,0 +1,115 @@
+{
+  "id": "T-19",
+  "title": "Salesperson leaves the team (no end date): one alert per pending lead",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-10T09:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "t-fr-a@t-gaule.example",
+        "country_code": "FR",
+        "owner": "FR-02",
+        "assigned_at": "2026-11-09T14:00:00+01:00",
+        "priority": "P3",
+        "sla_deadline": "2026-11-10T13:00:00+01:00",
+        "response_target_at": "2026-11-10T13:00:00+01:00",
+        "first_qualifying_followup": null
+      },
+      {
+        "normalised_email": "t-fr-b@t-gaule.example",
+        "country_code": "FR",
+        "owner": "FR-02",
+        "assigned_at": "2026-11-09T10:00:00+01:00",
+        "priority": "P2",
+        "sla_deadline": "2026-11-09T18:00:00+01:00",
+        "response_target_at": "2026-11-09T14:00:00+01:00",
+        "first_qualifying_followup": {
+          "at": "2026-11-09T11:00:00+01:00",
+          "type": "call",
+          "owner": "FR-02"
+        }
+      },
+      {
+        "normalised_email": "t-fr-c@t-gaule.example",
+        "country_code": "FR",
+        "owner": "FR-02",
+        "assigned_at": "2026-11-09T15:00:00+01:00",
+        "priority": "P1",
+        "sla_deadline": "2026-11-10T14:00:00+01:00",
+        "response_target_at": "2026-11-09T16:00:00+01:00",
+        "first_qualifying_followup": null
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-02",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ],
+    "unavailability": []
+  },
+  "input": {
+    "source_system": "synthetic_crm",
+    "source_event_id": "SYN-T19",
+    "event_type": "sla_timeline",
+    "steps": [
+      {
+        "step": "absence",
+        "rep": "FR-02",
+        "from": "2026-11-10T00:00:00+01:00",
+        "until": null,
+        "recorded_at": "2026-11-09T18:30:00+01:00",
+        "reason": "Left the team"
+      },
+      {
+        "step": "evaluate",
+        "at": "2026-11-10T09:00:00+01:00"
+      }
+    ]
+  },
+  "expected": {
+    "owner": "FR-02",
+    "sla_deadline": "2026-11-10T13:00:00+01:00",
+    "sla_outcome": "pending",
+    "qualifying_followup_at": null,
+    "late_followup": false,
+    "response_target_at": "2026-11-10T13:00:00+01:00",
+    "response_target_outcome": "pending",
+    "history": [],
+    "review_cases": [
+      {
+        "reason_code": "OWNER_UNAVAILABLE_PENDING",
+        "lead_email": "t-fr-a@t-gaule.example",
+        "opened_at": "2026-11-10T00:00:00+01:00",
+        "action_owner": "sales_manager",
+        "status": "open",
+        "suggested_owner": "FR-01"
+      },
+      {
+        "reason_code": "OWNER_UNAVAILABLE_PENDING",
+        "lead_email": "t-fr-c@t-gaule.example",
+        "opened_at": "2026-11-10T00:00:00+01:00",
+        "action_owner": "sales_manager",
+        "status": "open",
+        "suggested_owner": "FR-01"
+      }
+    ]
+  },
+  "label": {
+    "rule_refs": [
+      "Decisions 2026-10-28 (LF-009)"
+    ],
+    "labelled_by": "Claude (draft from LF-002, option C and 2026-10-28 decisions)",
+    "labelled_on": "2026-10-28",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-28",
+    "notes": "FR-02 has three leads: A (P3, pending), B (followed up Monday 11:00) and C (P1, pending). Expected fields describe lead A; alerts cover A and C, not B."
+  }
+}

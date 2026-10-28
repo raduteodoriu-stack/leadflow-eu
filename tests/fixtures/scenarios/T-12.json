@@ -1,0 +1,90 @@
+{
+  "id": "T-12",
+  "title": "Absence starts after the lead was already followed up: no alert",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-10T09:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "t-lead@t-iberia.example",
+        "country_code": "ES",
+        "owner": "ES-01",
+        "assigned_at": "2026-11-09T14:00:00+01:00",
+        "priority": "P2",
+        "sla_deadline": "2026-11-10T13:00:00+01:00",
+        "response_target_at": "2026-11-09T18:00:00+01:00",
+        "first_qualifying_followup": null
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-02",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ],
+    "unavailability": []
+  },
+  "input": {
+    "source_system": "synthetic_crm",
+    "source_event_id": "SYN-T12",
+    "event_type": "sla_timeline",
+    "steps": [
+      {
+        "step": "activity",
+        "lead_email": "t-lead@t-iberia.example",
+        "type": "call",
+        "automated": false,
+        "owner": "ES-01",
+        "occurred_at": "2026-11-09T16:00:00+01:00",
+        "logged_at": "2026-11-09T16:00:00+01:00"
+      },
+      {
+        "step": "absence",
+        "rep": "ES-01",
+        "from": "2026-11-10T00:00:00+01:00",
+        "until": "2026-11-11T00:00:00+01:00",
+        "recorded_at": "2026-11-09T17:00:00+01:00",
+        "reason": "Day off"
+      },
+      {
+        "step": "evaluate",
+        "at": "2026-11-10T09:00:00+01:00"
+      }
+    ]
+  },
+  "expected": {
+    "owner": "ES-01",
+    "sla_deadline": "2026-11-10T13:00:00+01:00",
+    "sla_outcome": "met",
+    "qualifying_followup_at": "2026-11-09T16:00:00+01:00",
+    "late_followup": false,
+    "response_target_at": "2026-11-09T18:00:00+01:00",
+    "response_target_outcome": "met",
+    "history": [
+      {
+        "at": "2026-11-09T16:00:00+01:00",
+        "event_type": "status_changed",
+        "previous_status": "pending",
+        "new_status": "met"
+      }
+    ],
+    "review_cases": []
+  },
+  "label": {
+    "rule_refs": [
+      "Decisions 2026-10-28 (LF-009)"
+    ],
+    "labelled_by": "Claude (draft from LF-002, option C and 2026-10-28 decisions)",
+    "labelled_on": "2026-10-28",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-28",
+    "notes": "P2 lead assigned to ES-01 Mon 9 Nov 14:00: response target Mon 18:00, SLA deadline Tue 13:00. Called Monday 16:00, before the target, so nothing is waiting on ES-01."
+  }
+}

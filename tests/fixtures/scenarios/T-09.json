@@ -1,0 +1,91 @@
+{
+  "id": "T-09",
+  "title": "Call logged late and made after the deadline: breach stays, nothing flagged",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-10T14:30:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "t-lead@t-iberia.example",
+        "country_code": "ES",
+        "owner": "ES-01",
+        "assigned_at": "2026-11-09T14:00:00+01:00",
+        "priority": "P2",
+        "sla_deadline": "2026-11-10T13:00:00+01:00",
+        "response_target_at": "2026-11-09T18:00:00+01:00",
+        "first_qualifying_followup": null
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-02",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ],
+    "unavailability": []
+  },
+  "input": {
+    "source_system": "synthetic_crm",
+    "source_event_id": "SYN-T09",
+    "event_type": "sla_timeline",
+    "steps": [
+      {
+        "step": "evaluate",
+        "at": "2026-11-10T13:01:00+01:00"
+      },
+      {
+        "step": "activity",
+        "lead_email": "t-lead@t-iberia.example",
+        "type": "call",
+        "automated": false,
+        "owner": "ES-01",
+        "occurred_at": "2026-11-10T13:30:00+01:00",
+        "logged_at": "2026-11-10T14:30:00+01:00"
+      }
+    ]
+  },
+  "expected": {
+    "owner": "ES-01",
+    "sla_deadline": "2026-11-10T13:00:00+01:00",
+    "sla_outcome": "breached",
+    "breached_at": "2026-11-10T13:00:00+01:00",
+    "breach_detected_at": "2026-11-10T13:01:00+01:00",
+    "qualifying_followup_at": "2026-11-10T13:30:00+01:00",
+    "late_followup": true,
+    "response_target_at": "2026-11-09T18:00:00+01:00",
+    "response_target_outcome": "missed",
+    "history": [
+      {
+        "at": "2026-11-10T13:01:00+01:00",
+        "event_type": "status_changed",
+        "previous_status": "pending",
+        "new_status": "breached"
+      },
+      {
+        "at": "2026-11-10T14:30:00+01:00",
+        "event_type": "followup_recorded",
+        "previous_status": "breached",
+        "new_status": "breached"
+      }
+    ],
+    "review_cases": []
+  },
+  "label": {
+    "rule_refs": [
+      "LF-002 Completion and breaches",
+      "Decisions 2026-10-28 (LF-009)"
+    ],
+    "labelled_by": "Claude (draft from LF-002, option C and 2026-10-28 decisions)",
+    "labelled_on": "2026-10-28",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-28",
+    "notes": "P2 lead assigned to ES-01 Mon 9 Nov 14:00: response target Mon 18:00, SLA deadline Tue 13:00. Nothing is corrected, so there is nothing to flag."
+  }
+}

@@ -21,6 +21,8 @@ class ContactStore:
         self.crm_index = {}          # CRM contact ID -> normalised email
         self.company_first = {}      # company domain -> {"lead_key", "at"}
         self.rotation = {}           # country -> next representative to try (LF-007)
+        self.alerts = {}             # owner-unavailable alert key -> {"lead_key", "status"} (LF-009)
+        self.clock = None            # latest moment the SLA tracker has caught up to (LF-009)
 
     # events
     def was_processed(self, system, event_id):
@@ -54,7 +56,10 @@ class ContactStore:
                   "owner": owner, "engagement_events": [],
                   # set by LF-007 when a decision is made
                   "assigned_at": None, "initial_priority": None, "priority": None, "priority_rule": None,
-                  "sla_deadline": None, "target_at": None, "target_changes": [], "first_followup_at": None}
+                  "sla_deadline": None, "target_at": None, "target_changes": [], "first_followup_at": None,
+                  # set by LF-009 SLA tracking
+                  "owner_history": [], "sla_status": None, "breach_detected_at": None,
+                  "response_target_status": None}
         self.contacts[email] = record
         if crm_contact_id:
             self.crm_index.setdefault(crm_contact_id, email)

@@ -1,0 +1,103 @@
+{
+  "id": "T-16",
+  "title": "Reassigned to a colleague: original deadline kept, new owner calls in time",
+  "rule_version": "LF-RULES-v1.0",
+  "evaluation_time": "2026-11-10T12:00:00+01:00",
+  "prior_state": {
+    "existing_leads": [
+      {
+        "normalised_email": "t-lead@t-iberia.example",
+        "country_code": "ES",
+        "owner": "ES-01",
+        "assigned_at": "2026-11-09T14:00:00+01:00",
+        "priority": "P2",
+        "sla_deadline": "2026-11-10T13:00:00+01:00",
+        "response_target_at": "2026-11-09T18:00:00+01:00",
+        "first_qualifying_followup": null
+      }
+    ],
+    "round_robin_next": {
+      "ES": "ES-02",
+      "PT": "PT-01",
+      "FR": "FR-01"
+    },
+    "active_reps": [
+      "ES-01",
+      "ES-02",
+      "PT-01",
+      "PT-02",
+      "FR-01",
+      "FR-02"
+    ],
+    "unavailability": []
+  },
+  "input": {
+    "source_system": "synthetic_crm",
+    "source_event_id": "SYN-T16",
+    "event_type": "sla_timeline",
+    "steps": [
+      {
+        "step": "absence",
+        "rep": "ES-01",
+        "from": "2026-11-10T00:00:00+01:00",
+        "until": "2026-11-11T00:00:00+01:00",
+        "recorded_at": "2026-11-09T17:00:00+01:00",
+        "reason": "Day off"
+      },
+      {
+        "step": "reassign",
+        "lead_email": "t-lead@t-iberia.example",
+        "to": "ES-02",
+        "at": "2026-11-10T09:15:00+01:00",
+        "by": "SM-01"
+      },
+      {
+        "step": "activity",
+        "lead_email": "t-lead@t-iberia.example",
+        "type": "call",
+        "automated": false,
+        "owner": "ES-02",
+        "occurred_at": "2026-11-10T12:00:00+01:00",
+        "logged_at": "2026-11-10T12:00:00+01:00"
+      }
+    ]
+  },
+  "expected": {
+    "owner": "ES-02",
+    "sla_deadline": "2026-11-10T13:00:00+01:00",
+    "sla_outcome": "met",
+    "qualifying_followup_at": "2026-11-10T12:00:00+01:00",
+    "late_followup": false,
+    "response_target_at": "2026-11-09T18:00:00+01:00",
+    "response_target_outcome": "missed",
+    "history": [
+      {
+        "at": "2026-11-10T12:00:00+01:00",
+        "event_type": "status_changed",
+        "previous_status": "pending",
+        "new_status": "met"
+      }
+    ],
+    "review_cases": [
+      {
+        "reason_code": "OWNER_UNAVAILABLE_PENDING",
+        "lead_email": "t-lead@t-iberia.example",
+        "opened_at": "2026-11-10T00:00:00+01:00",
+        "action_owner": "sales_manager",
+        "status": "resolved",
+        "suggested_owner": "ES-02",
+        "resolved_at": "2026-11-10T09:15:00+01:00"
+      }
+    ]
+  },
+  "label": {
+    "rule_refs": [
+      "Decisions 2026-10-28 (LF-009): reassignment keeps the original SLA deadline and target"
+    ],
+    "labelled_by": "Claude (draft from LF-002, option C and 2026-10-28 decisions)",
+    "labelled_on": "2026-10-28",
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-28",
+    "notes": "P2 lead assigned to ES-01 Mon 9 Nov 14:00: response target Mon 18:00, SLA deadline Tue 13:00. The deadline stays Tue 13:00 and the target Mon 18:00."
+  }
+}

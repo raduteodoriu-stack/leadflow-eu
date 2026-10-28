@@ -16,16 +16,18 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 | LF-004 test scenarios, LF-005 synthetic dataset | 49 reviewed scenarios; 100 events with expected outcomes ([summary](docs/synthetic_dataset.md)) |
 | LF-006 / LF-007 Python engine | **Built and tested**: validation, identity, scoring, priority, routing, SLA; every decision saved to PostgreSQL ([LF-006](docs/engine_lf006.md), [LF-007](docs/engine_lf007.md)) |
 | LF-008 restart and reconciliation | **Built and tested**: memory rebuilt from the database; source-vs-database reconciliation report ([LF-008](docs/engine_lf008.md)) |
-| SLA tracking, HubSpot integration, Power BI reporting | Planned (LF-009 to LF-013) |
+| LF-009 SLA tracking | **Built and tested**: SLA met/breached, response targets, late-logged follow-ups, owner-unavailable alerts, reassignment ([LF-009](docs/engine_lf009.md)) |
+| HubSpot integration, reporting model, Power BI, portfolio | Planned (LF-010 to LF-013) |
+| Per-salesperson holiday calendars | Planned post-MVP (LF-014); public holidays are not counted yet |
 
 ## Repository layout
 
 ```
 leadflow/                   Python engine (standard library) + PostgreSQL recording (psycopg)
 leadflow/rules/             Versioned business rules (LF-RULES-v1.0.json)
-SQL/NNN_*.sql               Schema (001) and migrations (002, 003), applied in number order
+SQL/NNN_*.sql               Schema (001) and migrations (002 to 004), applied in number order
 SQL/tests/                  Constraint tests (each rolls back) and run_all_tests.sh
-SQL/reconciliation/         Database consistency checks (LF-008)
+SQL/reconciliation/         Database consistency checks (LF-008, LF-009)
 tests/                      pytest: unit, answer-key and PostgreSQL integration tests
 tools/                      Synthetic data generator, reconciliation report
 data/synthetic/             LF-005 dataset and expected outcomes

@@ -72,12 +72,14 @@ def store_from_prior_state(prior):
 
 
 LEAD_SCENARIOS = [p for p in SCENARIOS
-                  if json.loads(p.read_text(encoding="utf-8"))["input"].get("event_type") != "activities"]
+                  if json.loads(p.read_text(encoding="utf-8"))["input"].get("event_type") not in ("activities", "sla_timeline")]
 
 
 def test_every_scenario_is_covered():
-    # B-12, B-13, B-16 and B-17 are follow-up activity scenarios for LF-009, not inbound events.
-    assert len(SCENARIOS) == 49 and len(LEAD_SCENARIOS) == 45
+    # B-12, B-13, B-16 and B-17 are follow-up activity scenarios and T-01 to T-20 are SLA timelines
+    # (both LF-009), not inbound events.
+    lf004 = [p for p in SCENARIOS if p.stem[:2] in ("S-", "B-")]
+    assert len(lf004) == 49 and len(LEAD_SCENARIOS) == 45
 
 
 @pytest.mark.parametrize("path", LEAD_SCENARIOS, ids=lambda p: p.stem)

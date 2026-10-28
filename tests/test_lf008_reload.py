@@ -52,7 +52,8 @@ def comparable(store):
         record["engagement_events"] = sorted(actions)
         contacts[email] = record
     return {"processed": store.processed, "payload_hashes": store.payload_hashes, "contacts": contacts,
-            "crm_index": store.crm_index, "company_first": store.company_first, "rotation": store.rotation}
+            "crm_index": store.crm_index, "company_first": store.company_first, "rotation": store.rotation,
+            "alerts": store.alerts, "clock": store.clock}
 
 
 def test_reloaded_memory_equals_live_memory(uninterrupted):
@@ -119,7 +120,7 @@ def test_followups_saved_with_first_qualifying_time(uninterrupted):
 def test_reconciliation_balances(uninterrupted):
     conn, _, _, _ = uninterrupted
     checks = reconcile.reconcile(conn, DATASET, RULES)
-    assert len(checks) == 22
+    assert len(checks) == 25
     assert [c for c in checks if c["difference"]] == []
     totals = {c["id"]: c for c in checks}
     assert totals["S01"]["expected"] == 100

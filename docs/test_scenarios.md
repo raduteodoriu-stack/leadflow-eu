@@ -6,6 +6,8 @@ Times are Europe/Madrid. Expected outcomes are hand-labelled from LF-001, LF-002
 
 SLA: one deadline of 8 business hours for every assigned lead (breach if missed). Response target: P1 1 h, P2 4 h, P3 8 h, measured for reporting but never a breach.
 
+T- scenarios (LF-009) replay a timeline of steps (follow-ups with the time they were logged, checks, absences, reassignments) against one prior state; decisions of 2026-10-28.
+
 ## Scenarios (32)
 
 | ID | Scenario | Evaluated | Outcome | Owner / queue | Priority | Response target | SLA deadline (8 h) | Reason codes | Reviewed |
@@ -65,4 +67,29 @@ SLA: one deadline of 8 business hours for every assigned lead (breach if missed)
 | B-16 | No follow-up within 8 business hours; late call cannot erase the breach | Tue 03 Nov 17:31 | SLA breached, target missed | follow-up Tue 03 Nov 17:30 | — | Tue 03 Nov 10:00 | — | — | yes |
 | B-17 | Call exactly at the SLA deadline meets the SLA | Tue 03 Nov 17:01 | SLA met, target missed | follow-up Tue 03 Nov 17:00 | — | Tue 03 Nov 10:00 | — | — | yes |
 
-**Review status:** 49 of 49 labels independently reviewed.
+## SLA tracking and alerts (LF-009) (20)
+
+| ID | Scenario | Evaluated | Outcome | Owner / queue | Priority | Response target | SLA deadline (8 h) | Reason codes | Reviewed |
+|---|---|---|---|---|---|---|---|---|---|
+| T-01 | Nothing done yet, before the target: SLA and target both pending | Mon 09 Nov 17:00 | SLA pending, target pending | ES-01 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-02 | Target passed with no follow-up: target missed, SLA still pending | Tue 10 Nov 09:30 | SLA pending, target missed | ES-01 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-03 | Evaluated exactly at the SLA deadline with no follow-up: still pending | Tue 10 Nov 13:00 | SLA pending, target missed | ES-01 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-04 | One minute after the deadline with no follow-up: breached | Tue 10 Nov 13:01 | SLA breached, target missed | ES-01 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-05 | Checking twice at the same moment records the breach once | Tue 10 Nov 13:01 | SLA breached, target missed | ES-01 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-06 | A call by a colleague does not count for the owner's lead | Tue 10 Nov 13:01 | SLA breached, target missed | ES-01 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-07 | Owner calls before the deadline: SLA met, target missed | Tue 10 Nov 11:00 | SLA met, target missed | ES-01, follow-up Tue 10 Nov 11:00 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-08 | Call made on time but logged after the deadline: corrected to met and flagged | Tue 10 Nov 14:30 | SLA met, target missed | ES-01, follow-up Tue 10 Nov 12:50 + 1 LATE_LOGGED_FOLLOWUP | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-09 | Call logged late and made after the deadline: breach stays, nothing flagged | Tue 10 Nov 14:30 | SLA breached, target missed | ES-01, follow-up Tue 10 Nov 13:30 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-10 | Call logged late but before the deadline: met, no flag | Tue 10 Nov 12:30 | SLA met, target missed | ES-01, follow-up Tue 10 Nov 11:00 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-11 | Owner's absence starts while a lead is pending: Sales Manager alerted, colleague suggested | Tue 10 Nov 09:00 | SLA pending, target missed | ES-01 + 1 OWNER_UNAVAILABLE_PENDING | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-12 | Absence starts after the lead was already followed up: no alert | Tue 10 Nov 09:00 | SLA met, target met | ES-01, follow-up Mon 09 Nov 16:00 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-13 | Absence recorded after it started: alert when it is recorded | Tue 10 Nov 10:31 | SLA pending, target missed | ES-01 + 1 OWNER_UNAVAILABLE_PENDING | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-14 | Absence recorded after the deadline passed: no alert, the breach stands | Tue 10 Nov 14:00 | SLA breached, target missed | ES-01 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-15 | Next salesperson is away too: alert with no suggestion | Tue 10 Nov 09:00 | SLA pending, target missed | ES-01 + 1 OWNER_UNAVAILABLE_PENDING | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-16 | Reassigned to a colleague: original deadline kept, new owner calls in time | Tue 10 Nov 12:00 | SLA met, target missed | ES-02, follow-up Tue 10 Nov 12:00 + 1 OWNER_UNAVAILABLE_PENDING | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-17 | Reassigned, but the new owner calls after the original deadline: breached | Tue 10 Nov 15:00 | SLA breached, target missed | ES-02, follow-up Tue 10 Nov 15:00 + 1 OWNER_UNAVAILABLE_PENDING | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-18 | After reassignment, the previous owner's call no longer counts | Tue 10 Nov 13:01 | SLA breached, target missed | ES-02 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
+| T-19 | Salesperson leaves the team (no end date): one alert per pending lead | Tue 10 Nov 09:00 | SLA pending, target pending | FR-02 + 2 OWNER_UNAVAILABLE_PENDING | P3 (rule None) | Tue 10 Nov 13:00 | Tue 10 Nov 13:00 | — | yes |
+| T-20 | Call made by the owner before a reassignment but logged after it still counts | Tue 10 Nov 10:00 | SLA met, target met | ES-02, follow-up Mon 09 Nov 17:00 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | no |
+
+**Review status:** 68 of 69 labels independently reviewed.

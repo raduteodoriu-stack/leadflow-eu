@@ -37,13 +37,14 @@ def connect():
     return conn
 
 
-def rebuild(conn):
-    """Empty the test database, apply every migration in number order, seed reference data."""
+def rebuild(conn, seed=True):
+    """Empty the test database, apply every migration in number order, seed LF-005 reference data."""
     conn.execute("DROP SCHEMA IF EXISTS public CASCADE")
     conn.execute("CREATE SCHEMA public")
     for migration in sorted((ROOT / "SQL").glob("[0-9][0-9][0-9]_*.sql")):
         conn.execute(migration.read_text(encoding="utf-8"))
-    postgres.seed_reference_data(conn, RULES, SETTINGS, SEED_FROM)
+    if seed:
+        postgres.seed_reference_data(conn, RULES, SETTINGS, SEED_FROM)
 
 
 def snapshot(conn):

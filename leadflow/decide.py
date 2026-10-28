@@ -68,14 +68,23 @@ def record_activity(store, rules, activity):
         return False
     if activity.get("type") not in cfg["types"] or (cfg["exclude_automated"] and activity.get("automated")):
         return False
-    if cfg["by_owner_only"] and activity.get("owner") != lead["owner"]:
-        return False
     at = _at(activity["occurred_at"])
     if at < lead["assigned_at"]:
+        return False
+    if cfg["by_owner_only"] and activity.get("owner") != owner_at(lead, at):
         return False
     if lead["first_followup_at"] is None or at < lead["first_followup_at"]:
         lead["first_followup_at"] = at
     return True
+
+
+def owner_at(lead, moment):
+    """Who owned the lead at `moment` (LF-009: a call counts only if made by the owner at the time)."""
+    owner = lead.get("owner")
+    for period in lead.get("owner_history") or []:
+        if _at(period["from"]) <= moment:
+            owner = period["owner"]
+    return owner
 
 
 def decide(prepared, ctx, raw=None):
@@ -157,7 +166,8 @@ def _new_lead(prepared, ctx, lead, codes, score_codes, scored, priority, rule, t
         return decision
     sla_cfg = ctx.sla
     allowance = sla_cfg["response_target_business_minutes"][priority]
-    lead.update(owner=owner, assigned_at=t,
+    lead.update(owner=owner, assigned_at=t, owner_history=[{"owner": owner, "from": t}],
+                sla_status="pending", breach_detected_at=None, response_target_status="pending",
                 sla_deadline=ctx.calendar.add_working_minutes(t, sla_cfg["deadline_business_minutes"]),
                 target_at=ctx.calendar.add_working_minutes(t, allowance))
     decision.update(outcome=outcome, owner=owner, review_queue=None,
