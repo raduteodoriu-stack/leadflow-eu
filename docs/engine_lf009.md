@@ -48,7 +48,7 @@ Review cases from LF-009 sit in the `sla_review` queue (`case_details.queue`) wi
 
 | Test file | What it checks |
 |---|---|
-| `tests/fixtures/scenarios/T-01` to `T-20` | 20 SLA timelines reviewed on 2026-10-28 (T-20 added while building, see below) |
+| `tests/fixtures/scenarios/T-01` to `T-20` | 20 SLA timelines, all reviewed on 2026-10-28 (T-20 added while building, see below) |
 | `tests/test_lf009_sla.py` (27) | All 24 SLA scenarios (T-01 to T-20, B-12, B-13, B-16, B-17) in memory; every assigned LF-005 lead's SLA and target outcome at the cut-off (met 58, breached 5, pending 4; target met 44, missed 21, pending 2); no alerts or flags in LF-005 |
 | `tests/test_lf009_postgres.py` (28) | LF-005 outcomes saved at the cut-off and reconciliation balanced (25 checks); all 24 scenarios replayed through the database, with the saved statuses, history, alerts and owners matching the answers; the same scenarios with a full restart before every step leave identical rows; an alert raised before a restart is resolved after it; a failed save leaves nothing and memory unchanged |
 | `SQL/tests/017_test_response_target_status_constraints.sql` (7 checks) | The target outcome must match the evidence |
@@ -65,7 +65,7 @@ status, raised alerts or absences out of the reload: each makes at least one tes
 **T-20.** A call made by the owner before a reassignment, but logged after it, still
 counts. This follows the approved rules: the owner at the time of the call, and the time
 the call happened. No existing scenario covered it, so a mistake there would have gone
-unnoticed. It is the only scenario not yet reviewed.
+unnoticed. Reviewed and agreed on 2026-10-28.
 
 ## Limits
 

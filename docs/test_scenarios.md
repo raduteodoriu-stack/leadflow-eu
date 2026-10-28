@@ -90,6 +90,6 @@ T- scenarios (LF-009) replay a timeline of steps (follow-ups with the time they 
 | T-17 | Reassigned, but the new owner calls after the original deadline: breached | Tue 10 Nov 15:00 | SLA breached, target missed | ES-02, follow-up Tue 10 Nov 15:00 + 1 OWNER_UNAVAILABLE_PENDING | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
 | T-18 | After reassignment, the previous owner's call no longer counts | Tue 10 Nov 13:01 | SLA breached, target missed | ES-02 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
 | T-19 | Salesperson leaves the team (no end date): one alert per pending lead | Tue 10 Nov 09:00 | SLA pending, target pending | FR-02 + 2 OWNER_UNAVAILABLE_PENDING | P3 (rule None) | Tue 10 Nov 13:00 | Tue 10 Nov 13:00 | — | yes |
-| T-20 | Call made by the owner before a reassignment but logged after it still counts | Tue 10 Nov 10:00 | SLA met, target met | ES-02, follow-up Mon 09 Nov 17:00 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | no |
+| T-20 | Call made by the owner before a reassignment but logged after it still counts | Tue 10 Nov 10:00 | SLA met, target met | ES-02, follow-up Mon 09 Nov 17:00 | P2 (rule None) | Mon 09 Nov 18:00 | Tue 10 Nov 13:00 | — | yes |
 
-**Review status:** 68 of 69 labels independently reviewed.
+**Review status:** 69 of 69 labels independently reviewed.

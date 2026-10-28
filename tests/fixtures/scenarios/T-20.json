@@ -79,8 +79,8 @@
     ],
     "labelled_by": "Claude (draft from LF-002, option C and 2026-10-28 decisions)",
     "labelled_on": "2026-10-28",
-    "reviewed_by": null,
-    "reviewed_on": null,
+    "reviewed_by": "Radu Teodoriu",
+    "reviewed_on": "2026-10-28",
     "notes": "P2 lead assigned to ES-01 Mon 9 Nov 14:00: response target Mon 18:00, SLA deadline Tue 13:00. ES-01 owned the lead when calling at Monday 17:00; the Tuesday 09:00 reassignment does not undo that. Logged before the deadline, so no flag."
   }
 }
