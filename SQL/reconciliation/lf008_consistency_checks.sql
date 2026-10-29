@@ -1,4 +1,4 @@
--- LeadFlow EU: database consistency checks (reconciliation, part 1): LF-008, extended in LF-009
+-- LeadFlow EU: database consistency checks (reconciliation, part 1): LF-008, extended in LF-009 and LF-010
 --
 -- One row per check: how many records break it (0 = OK) and up to three examples.
 -- Read-only. Run on its own:
@@ -14,6 +14,19 @@ decision_count AS (
 ),
 assigned_leads AS (
     SELECT DISTINCT lead_id FROM assignments
+),
+crm_confirmed AS (
+    -- The value each CRM contact is known to show per property: the latest confirmed one.
+    SELECT DISTINCT ON (w.target_record_id, p.key) w.target_record_id, p.key, p.value
+    FROM crm_write_log AS w
+    CROSS JOIN LATERAL jsonb_each_text(w.request_payload -> 'properties') AS p
+    WHERE w.attempt_status IN ('succeeded', 'simulated')
+    ORDER BY w.target_record_id, p.key, w.completed_at DESC, w.logical_update_id DESC
+),
+crm_confirmed_state AS (
+    SELECT target_record_id,
+           coalesce(jsonb_object_agg(key, value) FILTER (WHERE value <> ''), '{}'::JSONB) AS properties
+    FROM crm_confirmed GROUP BY target_record_id
 ),
 latest_round_robin AS (
     SELECT DISTINCT ON (l.business_country_code)
@@ -157,6 +170,34 @@ checks (check_id, description, problems, examples) AS (
     JOIN owners o ON o.owner_id = a.owner_id
     WHERE c.reason_code = 'OWNER_UNAVAILABLE_PENDING' AND c.review_status <> 'resolved'
       AND o.staff_code IS DISTINCT FROM c.case_details ->> 'absent_owner'
+
+    -- LF-010: CRM write-back
+    UNION ALL
+    SELECT 'C19', 'Every CRM contact shows what LeadFlow decided (confirmed values = intended values)',
+           count(*), string_agg(d.normalised_email, ', ')
+    FROM crm_desired_contact_state AS d
+    LEFT JOIN crm_confirmed_state AS c ON c.target_record_id = d.target_record_id
+    WHERE coalesce(c.properties, '{}'::JSONB) <> d.properties
+
+    UNION ALL
+    SELECT 'C20', 'No intended CRM update is confirmed more than once',
+           count(*), string_agg(logical_update_id::TEXT, ', ')
+    FROM (SELECT logical_update_id FROM crm_write_log
+          WHERE attempt_status IN ('succeeded', 'simulated')
+          GROUP BY logical_update_id HAVING count(*) > 1) AS twice
+
+    UNION ALL
+    SELECT 'C21', 'Every CRM update given up on has a RevOps review case',
+           count(*), string_agg(w.logical_update_id::TEXT, ', ')
+    FROM crm_write_log AS w
+    WHERE w.attempt_status = 'failed'
+      AND w.is_retryable IS NOT TRUE
+      AND NOT (w.response_details ? 'superseded_at')
+      AND NOT EXISTS (SELECT 1 FROM crm_write_log AS later
+                      WHERE later.logical_update_id = w.logical_update_id
+                        AND later.attempt_number > w.attempt_number)
+      AND NOT EXISTS (SELECT 1 FROM review_cases AS c
+                      WHERE c.case_key = 'CRM_WRITE_FAILED:' || w.logical_update_id::TEXT)
 )
 SELECT check_id, description, problems,
        -- first three examples only

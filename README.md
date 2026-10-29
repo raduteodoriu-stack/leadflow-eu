@@ -17,7 +17,8 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 | LF-006 / LF-007 Python engine | **Built and tested**: validation, identity, scoring, priority, routing, SLA; every decision saved to PostgreSQL ([LF-006](docs/engine_lf006.md), [LF-007](docs/engine_lf007.md)) |
 | LF-008 restart and reconciliation | **Built and tested**: memory rebuilt from the database; source-vs-database reconciliation report ([LF-008](docs/engine_lf008.md)) |
 | LF-009 SLA tracking | **Built and tested**: SLA met/breached, response targets, late-logged follow-ups, owner-unavailable alerts, reassignment ([LF-009](docs/engine_lf009.md)) |
-| HubSpot integration, reporting model, Power BI, portfolio | Planned (LF-010 to LF-013) |
+| LF-010 CRM write-back | **Phase A built and tested**: every contact kept up to date with owner, priority, SLA and review reason; only changes sent; safe retries; simulated ([LF-010](docs/engine_lf010.md), [field mapping](docs/crm_field_mapping.md)). Phase B (live HubSpot test account): optional |
+| Reporting model, Power BI, portfolio | Planned (LF-011 to LF-013) |
 | Per-salesperson holiday calendars | Planned post-MVP (LF-014); public holidays are not counted yet |
 
 ## Repository layout
@@ -25,9 +26,9 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 ```
 leadflow/                   Python engine (standard library) + PostgreSQL recording (psycopg)
 leadflow/rules/             Versioned business rules (LF-RULES-v1.0.json)
-SQL/NNN_*.sql               Schema (001) and migrations (002 to 004), applied in number order
+SQL/NNN_*.sql               Schema (001) and migrations (002 to 005), applied in number order
 SQL/tests/                  Constraint tests (each rolls back) and run_all_tests.sh
-SQL/reconciliation/         Database consistency checks (LF-008, LF-009)
+SQL/reconciliation/         Database consistency checks (LF-008 to LF-010)
 tests/                      pytest: unit, answer-key and PostgreSQL integration tests
 tools/                      Synthetic data generator, reconciliation report
 data/synthetic/             LF-005 dataset and expected outcomes
@@ -65,4 +66,4 @@ tests and `reconcile.py --run` wipe `leadflow_eu_test` and refuse any other data
 
 ## Tools
 
-PostgreSQL, SQL, bash, Python, pytest, psycopg; planned: HubSpot test account, Power BI.
+PostgreSQL, SQL, bash, Python, pytest, psycopg; planned: HubSpot API (test account), Power BI.

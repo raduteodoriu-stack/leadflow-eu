@@ -165,6 +165,14 @@ def process_and_record(conn, raw, received_at, store, rules, settings=None, cale
     return prepared, decision
 
 
+def lead_key_of(prepared):
+    """The lead an event belongs to (its stored email), or None (rejected, participant, invalid email)."""
+    identity = prepared.get("identity") or {}
+    if identity.get("match") in (None, "unresolved", "replay"):
+        return identity.get("lead_key") if identity.get("match") == "replay" else None
+    return identity.get("lead_key") or prepared["contact"]["normalised_email"]
+
+
 def record_decision(conn, raw, prepared, decision, store, rules):
     """Write the rows for one decision. Call inside a transaction."""
     if decision["outcome"] == "duplicate_event_ignored":
