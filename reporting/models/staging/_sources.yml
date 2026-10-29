@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: leadflow
+    description: LeadFlow's operational tables (schema public), written by the engine. Read only.
+    schema: public
+    tables:
+      - name: ingestion_events
+        description: Every inbound enquiry stored (repeats are not stored).
+      - name: processing_decisions
+        description: One decision per stored enquiry, plus Sales Manager reassignments.
+      - name: leads
+      - name: owners
+      - name: owner_eligibility_history
+        description: When each salesperson could receive new leads, per country.
+      - name: assignments
+      - name: sla_tracking
+        description: One SLA per assigned lead, with its response target.
+      - name: followup_activities
+      - name: review_cases
+      - name: crm_write_log
+      - name: crm_desired_contact_state
+        description: View (migration 005) of what each CRM contact should show.
+      - name: reconciliation_runs
+        description: One row per reconciliation (migration 006, written by tools/reconcile.py).

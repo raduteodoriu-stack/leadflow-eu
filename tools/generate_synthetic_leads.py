@@ -1171,6 +1171,24 @@ def activities(state):
     return acts
 
 
+# Where each enquiry came from (LF-011 source mix). Drawn from its own random stream per
+# event, so adding it changes no other generated value. A replay repeats its original.
+CHANNEL_WEIGHTS = [("web_form", 45), ("event", 20), ("partner", 10), ("referral", 10),
+                   ("outbound", 10), ("unknown", 5)]
+
+
+def assign_channels(plans):
+    by_key = {p["key"]: p for p in plans}
+    names = [c for c, _ in CHANNEL_WEIGHTS]
+    weights = [w for _, w in CHANNEL_WEIGHTS]
+    for p in sorted(plans, key=lambda p: p.get("replay_of") is not None):
+        if p.get("replay_of") is not None:
+            p["input"]["source_channel"] = by_key[p["replay_of"]]["input"]["source_channel"]
+        else:
+            ident = p["input"].get("source_event_id") or f"key-{p['key']}"
+            p["input"]["source_channel"] = random.Random(f"{SEED}:channel:{ident}").choices(names, weights)[0]
+
+
 def build():
     b = Builder()
     build_base(b)
@@ -1179,6 +1197,7 @@ def build():
     base_state, base_results = simulate(b.plans)
     build_dependents(b, base_state)
     assign_ids(b.plans)
+    assign_channels(b.plans)
     state, results = simulate(b.plans, plans_cache=base_state["plans_cache"])
     for key, r in base_results.items():
         assert results[key].get("owner") == r.get("owner"), ("base owner changed", key)
@@ -1247,13 +1266,13 @@ def build():
                "summary": summary, "events": expected, "leads": leads}
     files = {DATA_FILE: json.dumps(data, indent=2, ensure_ascii=False) + "\n",
              EXPECTED_FILE: json.dumps(exp_doc, indent=2, ensure_ascii=False) + "\n",
-             DOC_FILE: render_doc(summary, expected, leads)}
+             DOC_FILE: render_doc(summary, expected, leads, events)}
     return files
 
 # ---------------------------------------------------------------------------
 # Documentation page
 # ---------------------------------------------------------------------------
-def render_doc(summary, expected, leads):
+def render_doc(summary, expected, leads, events):
     def table(counter, head):
         rows = [f"| {k} | {v} |" for k, v in counter.items()]
         return "\n".join([f"| {head} | Count |", "|---|---:|"] + rows)
@@ -1332,6 +1351,11 @@ def render_doc(summary, expected, leads):
         "participants, replays, invalid emails and malformed events.",
         "",
         table(summary["priority_rules"], "Priority rule"),
+        "",
+        table(dict(Counter(e["input"]["source_channel"] for e in events).most_common()), "Source channel"),
+        "",
+        "Source channels (added in LF-011 for reporting) come from a separate random stream, so they changed "
+        "no other value. They do not affect routing.",
         "",
         "## SLA and response targets at the cut-off",
         "",

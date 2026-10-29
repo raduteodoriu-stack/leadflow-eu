@@ -75,6 +75,17 @@ Leads created: **76** (assigned 67, waiting in review 9). The rest of the 100 ev
 | 6 | 20 |
 | 7 | 22 |
 
+| Source channel | Count |
+|---|---:|
+| web_form | 46 |
+| outbound | 18 |
+| event | 17 |
+| referral | 9 |
+| partner | 6 |
+| unknown | 4 |
+
+Source channels (added in LF-011 for reporting) come from a separate random stream, so they changed no other value. They do not affect routing.
+
 ## SLA and response targets at the cut-off
 
 | SLA outcome | Count |

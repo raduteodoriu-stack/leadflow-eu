@@ -1,0 +1,25 @@
+kpi_id,kpi_name,section,tier,unit,acts_on_it
+1,Enquiries received,Intake,Detail,count,Sales Manager plans capacity
+2,New leads,Intake,Detail,count,Sales Manager: context for every rate
+3,Leads by country,Intake,Detail,count,Sales Manager balances territories and headcount
+4,Leads by source,Intake,Detail,count,Marketing decides where to invest
+5,Rejected enquiries %,Intake,Detail,ratio,RevOps fixes the form or integration
+7,Incomplete data %,Intake,Detail,ratio,RevOps and Marketing improve form questions
+9,Auto-assignment rate,Routing,Headline,ratio,RevOps: a drop means rules or data need fixing
+10,Leads waiting for an owner,Routing,Headline,count,Sales Manager and RevOps clear the queue
+12,Leads per salesperson,Routing,Detail,count,Sales Manager checks the rotation is fair
+16,Urgency mix,Prioritisation,Detail,ratio,Sales Manager adds hands on P1 spikes
+17,Why leads were urgent,Prioritisation,Detail,count,Marketing and Sales Manager see which signals drive urgency
+20,SLA attainment,Response,Headline,ratio,Sales Manager coaches by salesperson / urgency / country
+21,SLA breaches,Response,Detail,count,Sales Manager follows up each one
+22,At-risk leads,Response,Headline,count,Salespeople and Sales Manager act today
+23,Response-target hit rate,Response,Headline,ratio,Sales Manager checks urgent leads get urgent answers
+24,Promise kept but target missed,Response,Detail,count,Sales Manager: the coaching gap the promise hides
+25,Time to first follow-up (median),Response,Detail,working minutes,Sales Manager tracks speed per salesperson
+26,Late-logged follow-ups,Response,Detail,count,Sales Manager makes back-dating visible
+28,Review backlog,Exceptions,Detail,count,Sales Manager and RevOps clear their own queue
+29,Backlog over time,Exceptions,Detail,count,Sales Manager: is the queue growing or shrinking?
+30,Absence alerts,Exceptions,Detail,count,Sales Manager plans cover
+31,CRM in sync,System health,Detail,ratio,RevOps: below 100% means updates are waiting or failed
+32,CRM update failures,System health,Detail,count,RevOps fixes the cause
+33,Reconciliation status,System health,Detail,ratio,RevOps investigates any difference before numbers are shared

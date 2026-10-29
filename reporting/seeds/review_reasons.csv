@@ -1,0 +1,15 @@
+reason_code,reason_label,action_owner,category
+COUNTRY_INVALID,Business country missing or not recognised,revops,Data problem
+COUNTRY_CONFLICT,Form and CRM give different countries,revops,Data problem
+EMAIL_INVALID,Email address not usable,revops,Data problem
+SOURCE_EVENT_INVALID,Enquiry could not be identified (no event id),revops,Integration problem
+CRM_WRITE_FAILED,CRM update refused or given up,revops,Integration problem
+IDENTITY_REVIEW,New email linked to an existing CRM contact,revops,Data problem
+NO_REDIRECT_RULE,Survey participant from a country with no partner,revops,Participant
+UNSUPPORTED_TERRITORY,Country outside Spain / Portugal / France,sales_manager,Routing
+NO_ELIGIBLE_OWNER,No salesperson available in the country,sales_manager,Routing
+OWNER_REVIEW,Returning contact whose owner needs checking,sales_manager,Routing
+SUPPLIER_REVIEW,Enquiry from a possible supplier,sales_manager,Routing
+OWNER_UNAVAILABLE_PENDING,Owner away with a lead still waiting,sales_manager,Response promise
+LATE_LOGGED_FOLLOWUP,Follow-up logged after the deadline,sales_manager,Response promise
+MANUAL_REASSIGNMENT,Lead moved to another salesperson,sales_manager,Response promise

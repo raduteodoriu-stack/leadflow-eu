@@ -6,8 +6,9 @@ Usage (from the repo root, .venv active):
     python tools/reconcile.py --dsn "..." --run     # rebuild leadflow_eu_test, process LF-005, then reconcile
 
 --run wipes the database, so it is only allowed on leadflow_eu_test. The report is
-printed and saved to docs/evidence/reconciliation_<date>_<time>.md. Exit code 0 only
-when every check balances.
+printed and saved to docs/evidence/reconciliation_<date>_<time>.md, and recorded in the
+reconciliation_runs table (LF-011) for the dashboard. Exit code 0 only when every check
+balances.
 """
 import argparse
 import json
@@ -53,11 +54,16 @@ def main():
                       until=dataset["metadata"].get("sla_cutoff"))  # SLA statuses as at the cut-off
         database = conn.execute("SELECT current_database()").fetchone()[0]
         checks = reconcile.reconcile(conn, dataset, rules)
-    stamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    context = (f"Database `{database}` · source `{pathlib.Path(args.source).name}` · rules `{rules.version}` · "
+        run_at = datetime.now().astimezone()
+        stamp = run_at.strftime("%Y-%m-%d_%H%M%S")
+        out = ROOT / "docs/evidence" / f"reconciliation_{stamp}.md"
+        source = pathlib.Path(args.source).name
+        if conn.execute("SELECT to_regclass('reconciliation_runs')").fetchone()[0]:  # LF-011, migration 006
+            reconcile.record_run(conn, checks, database=database, source=source, rule_version=rules.version,
+                                 run_at=run_at, report_path=str(out.relative_to(ROOT)))
+    context = (f"Database `{database}` · source `{source}` · rules `{rules.version}` · "
                f"run {stamp.replace('_', ' ')}")
     text = reconcile.report_markdown(checks, context=context)
-    out = ROOT / "docs/evidence" / f"reconciliation_{stamp}.md"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(text, encoding="utf-8")
     print(text)

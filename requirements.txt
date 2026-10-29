@@ -1,5 +1,8 @@
-# Python dependencies for LeadFlow EU (tests and tooling).
-# The generator and the engine use only the standard library (Python 3.9+).
+# Python dependencies for LeadFlow EU (tests, tooling and the reporting layer).
+# Python 3.10+ (dbt needs it). The generator and the engine use only the standard library.
 # psycopg is only needed to save decisions to PostgreSQL (leadflow/postgres.py).
 pytest==8.3.3
 psycopg[binary]==3.2.13
+# LF-011 reporting layer (reporting/, dbt Core v1)
+dbt-core==1.12.6
+dbt-postgres==1.11.0

@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: stg_enquiries
+    description: Stored inbound enquiries, renamed and with the Madrid received date.
+    columns:
+      - name: enquiry_id
+        data_tests: [unique, not_null]
+      - name: source_channel
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['web_form', 'event', 'referral', 'outbound', 'partner', 'unknown']}
+  - name: stg_decisions
+    columns:
+      - name: decision_id
+        data_tests: [unique, not_null]
+  - name: stg_leads
+    columns:
+      - name: lead_id
+        data_tests: [unique, not_null]
+  - name: stg_owners
+    columns:
+      - name: owner_id
+        data_tests: [unique, not_null]
+      - name: staff_code
+        data_tests: [unique, not_null]
+  - name: stg_owner_availability
+  - name: stg_assignments
+    columns:
+      - name: assignment_id
+        data_tests: [unique, not_null]
+  - name: stg_sla
+    columns:
+      - name: sla_id
+        data_tests: [unique, not_null]
+      - name: lead_id
+        data_tests: [unique, not_null]
+  - name: stg_followups
+    columns:
+      - name: activity_id
+        data_tests: [unique, not_null]
+  - name: stg_review_cases
+    columns:
+      - name: review_case_id
+        data_tests: [unique, not_null]
+  - name: stg_crm_writes
+    columns:
+      - name: write_attempt_id
+        data_tests: [unique, not_null]
+  - name: stg_reconciliation_runs
+  - name: int_lead_origin
+    description: The enquiry that created each lead and the decision made on it.
+    columns:
+      - name: lead_id
+        data_tests: [unique, not_null]
