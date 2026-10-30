@@ -1,0 +1,4 @@
+priority,priority_label,response_target_working_minutes,sla_working_minutes,sort_order
+P1,Urgent,60,480,1
+P2,High,240,480,2
+P3,Standard,480,480,3

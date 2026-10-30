@@ -7,7 +7,7 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 
 > All company and contact data is synthetic. No real customer information is used.
 
-## Status (2026-10-26)
+## Status (2026-10-29)
 
 | Area | Status |
 |---|---|
@@ -18,7 +18,8 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 | LF-008 restart and reconciliation | **Built and tested**: memory rebuilt from the database; source-vs-database reconciliation report ([LF-008](docs/engine_lf008.md)) |
 | LF-009 SLA tracking | **Built and tested**: SLA met/breached, response targets, late-logged follow-ups, owner-unavailable alerts, reassignment ([LF-009](docs/engine_lf009.md)) |
 | LF-010 CRM write-back | **Phase A built and tested**: every contact kept up to date with owner, priority, SLA and review reason; only changes sent; safe retries; simulated ([LF-010](docs/engine_lf010.md), [field mapping](docs/crm_field_mapping.md)). Phase B (live HubSpot test account): optional |
-| Reporting model, Power BI, portfolio | Planned (LF-011 to LF-013) |
+| LF-011 Reporting model | **Built and tested**: dbt star schema in PostgreSQL (schema `reporting`), 24 KPIs each defined once and checked against the LF-005 answer key ([model](docs/reporting_model.md), [KPI definitions](docs/kpi_definitions.md)) |
+| Power BI, portfolio | Planned (LF-012, LF-013) |
 | Per-salesperson holiday calendars | Planned post-MVP (LF-014); public holidays are not counted yet |
 
 ## Repository layout
@@ -26,18 +27,19 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 ```
 leadflow/                   Python engine (standard library) + PostgreSQL recording (psycopg)
 leadflow/rules/             Versioned business rules (LF-RULES-v1.0.json)
-SQL/NNN_*.sql               Schema (001) and migrations (002 to 005), applied in number order
+SQL/NNN_*.sql               Schema (001) and migrations (002 to 006), applied in number order
 SQL/tests/                  Constraint tests (each rolls back) and run_all_tests.sh
 SQL/reconciliation/         Database consistency checks (LF-008 to LF-010)
 tests/                      pytest: unit, answer-key and PostgreSQL integration tests
-tools/                      Synthetic data generator, reconciliation report
+tools/                      Synthetic data generator, reconciliation report, expected KPIs
+reporting/                  dbt project: staging views, star schema and KPI summary (LF-011)
 data/synthetic/             LF-005 dataset and expected outcomes
 docs/                       Data dictionary, database design, engine notes, evidence
 ```
 
 ## Build and test locally
 
-Requires PostgreSQL (tested on 18.1), bash and Python 3.9+.
+Requires PostgreSQL (tested on 18.1), bash and Python 3.10+ (the engine alone runs on 3.9+; dbt needs 3.10+).
 
 ```bash
 python -m venv .venv
@@ -49,6 +51,15 @@ createdb leadflow_eu_test
 export LEADFLOW_TEST_DSN="dbname=leadflow_eu_test user=postgres"
 python -m pytest
 python tools/reconcile.py --dsn "$LEADFLOW_TEST_DSN" --run
+```
+
+Reporting layer (LF-011, needs Python 3.10+ for dbt; connection in `~/.dbt/profiles.yml`,
+see `reporting/profiles.example.yml`):
+
+```bash
+python tools/reconcile.py --dsn "$LEADFLOW_TEST_DSN" --run
+cd reporting
+dbt build
 ```
 
 `run_all_tests.sh --rebuild` drops and recreates `leadflow_eu` and applies every migration. The PostgreSQL
@@ -66,4 +77,4 @@ tests and `reconcile.py --run` wipe `leadflow_eu_test` and refuse any other data
 
 ## Tools
 
-PostgreSQL, SQL, bash, Python, pytest, psycopg; planned: HubSpot API (test account), Power BI.
+PostgreSQL, SQL, bash, Python, pytest, psycopg, dbt; planned: HubSpot API (test account), Power BI.

@@ -45,7 +45,7 @@ These fields come from the source system or ingestion service, not the prospect.
 | event_type | TEXT | No at ingestion; required for normal processing | lead_created or lead_updated |
 | source_occurred_at | TIMESTAMPTZ | No at ingestion; required for normal processing | When the source event occurred |
 | received_at | TIMESTAMPTZ | Yes; defaults to CURRENT_TIMESTAMP | When LeadFlow received the event |
-| source_channel | TEXT | Yes; defaults to unknown | web_form, event, referral, outbound, partner or unknown |
+| source_channel | TEXT | Yes; defaults to unknown | web_form, event, referral, outbound, partner or unknown. Taken from the payload's `source_channel`; a missing or unrecognised value is stored as unknown (LF-011) |
 | raw_payload | JSONB | Yes | Original submitted data. The input contract expects an object; the current SQL does not enforce object shape |
 
 The combination of source_system and source_event_id is unique when source_event_id is populated. Events without it remain traceable through ingestion_event_id but are not deduplicated by that constraint.
@@ -623,6 +623,8 @@ These values match the current SQL constraints.
 | SLA changes and corrections | sla_history |
 | Selected participant-referral supplier and destination | participant_redirects snapshot columns |
 | CRM update payloads, attempts and outcomes | crm_write_log |
+| Reconciliation results (checks run, failed, balanced) | reconciliation_runs (migration 006, LF-011) |
+| Working minutes between two moments, for reporting | function working_minutes(a, b) (migration 006, LF-011) |
 
 The initial SLA allowances are P1: 60, P2: 240 and P3: 480 business
 minutes. Allowances are part of versioned rule configuration; there is
@@ -648,3 +650,4 @@ They do not implement the complete workflow or authorise transitions.
 | 2026-10-22 | Unknown stored as 'unknown', never NULL: companies (employee_band_declared, industry_code, research_use_case, research_frequency), leads (preferred_language, contact_function), ingestion_events.source_channel are NOT NULL DEFAULT 'unknown' (DR-018) | One representation of unknown for reporting |
 | 2026-10-22 | leads.normalised_email must match text@text (DR-017) | Minimal safety net; full validation in Python |
 | 2026-10-22 | Earlier-to-stored event name mapping assigned to the Python ingestion adapter (DR-002) | The database enforces stored values only; mapping belongs in the input adapter |
+| 2026-10-29 | ingestion_events.source_channel now stored from the payload (LF-011); reconciliation_runs table and working_minutes function added (migration 006) | Leads by source; reconciliation status and working-time ages on the dashboard |

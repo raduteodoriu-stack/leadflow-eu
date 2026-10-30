@@ -104,3 +104,19 @@ def report_markdown(checks, title="LeadFlow EU reconciliation", context=""):
         lines.append(f"| {c['id']} | {c['check']} | {c['expected']} | {c['actual']} | {c['difference']} | "
                      f"{c['examples']} |")
     return "\n".join(lines) + "\n"
+
+
+def record_run(conn, checks, *, database, source, rule_version, run_at, report_path=None):
+    """Save one reconciliation result in reconciliation_runs (LF-011), for the dashboard's trust badge.
+
+    Returns the run id. Needs migration 006.
+    """
+    from psycopg.types.json import Jsonb
+
+    failed = sum(1 for c in checks if c["difference"])
+    return conn.execute(
+        """INSERT INTO reconciliation_runs (run_at, database_name, source_name, rule_version, check_count,
+               failed_checks, is_balanced, results, report_path)
+           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING run_id""",
+        (run_at, database, source, rule_version, len(checks), failed, failed == 0, Jsonb(checks),
+         report_path)).fetchone()[0]

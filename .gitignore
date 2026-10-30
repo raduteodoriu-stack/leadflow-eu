@@ -9,3 +9,11 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+# dbt (LF-011): build output, logs and installed packages
+reporting/target/
+reporting/logs/
+reporting/dbt_packages/
+
+# Local scratch (database dumps, notes): never committed
+.local/

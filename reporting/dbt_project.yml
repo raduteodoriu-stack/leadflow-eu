@@ -1,0 +1,44 @@
+# LeadFlow EU reporting layer (LF-011)
+# Reads the operational tables in schema `public` and builds the reporting schema
+# `reporting` (dimensions, facts and kpi_summary) that Power BI (LF-012) connects to.
+# See docs/reporting_model.md and docs/kpi_definitions.md.
+
+name: leadflow_reporting
+version: "1.0.0"
+config-version: 2
+require-dbt-version: ">=1.10.0"
+
+profile: leadflow_eu
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages", "logs"]
+
+vars:
+  # The moment the numbers describe. Ages, waits and "at risk" are measured to it.
+  # Default: the LF-005 cut-off. The database must have been processed up to this moment
+  # (tools/reconcile.py --run does that for LF-005).
+  as_of: "2026-11-06T18:00:00+01:00"
+  # Calendar covered by dim_date.
+  calendar_start: "2026-10-01"
+  calendar_end: "2026-12-31"
+  # An open SLA is "at risk" when it is due within this many working minutes.
+  at_risk_working_minutes: 120
+  # Compare kpi_summary with the LF-005 answer key (seeds/expected_kpis.csv).
+  # Set to false for any other dataset.
+  check_expected_kpis: true
+
+models:
+  leadflow_reporting:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  leadflow_reporting:
+    +schema: reference

@@ -1,0 +1,4 @@
+country_code,country_name,is_served,sort_order
+ES,Spain,true,1
+PT,Portugal,true,2
+FR,France,true,3

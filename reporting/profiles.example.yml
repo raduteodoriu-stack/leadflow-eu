@@ -1,0 +1,15 @@
+# Copy to ~/.dbt/profiles.yml (outside the repository) and adjust user/database.
+# The password is read from the environment, never written in a file:
+#   export DBT_PG_PASSWORD='...'      (leave unset if your local PostgreSQL needs none)
+leadflow_eu:
+  target: test
+  outputs:
+    test:
+      type: postgres
+      host: localhost
+      port: 5432
+      user: postgres
+      password: "{{ env_var('DBT_PG_PASSWORD', '') }}"
+      dbname: leadflow_eu_test
+      schema: reporting
+      threads: 4

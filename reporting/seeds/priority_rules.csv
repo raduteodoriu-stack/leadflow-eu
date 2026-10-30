@@ -1,0 +1,7 @@
+priority_rule,reason_code,priority,rule_label
+2,PRIORITY_EXPLICIT_REQUEST,P1,Asked for a demo or to be contacted
+3,PRIORITY_HIGH_FIT_HIGH_ENGAGEMENT,P1,Strong fit and strong interest
+4,PRIORITY_HIGH_ENGAGEMENT,P2,Strong recent interest
+5,PRIORITY_STANDARD_FIT,P2,Good fit
+6,PRIORITY_MISSING_INFO,P2,Missing information (scored cautiously)
+7,PRIORITY_DEFAULT,P3,Everything else

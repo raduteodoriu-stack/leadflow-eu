@@ -1,0 +1,185 @@
+version: 2
+
+models:
+  # ---------------------------------------------------------------- dimensions
+  - name: dim_date
+    description: Calendar. Working day = Monday to Friday (public holidays come with LF-014).
+    columns:
+      - name: date_day
+        data_tests: [unique, not_null]
+
+  - name: dim_owner
+    description: >
+      Salespeople and the Sales Manager. user_principal_name is the sign-in Power BI
+      row-level security matches (USERPRINCIPALNAME()): salespeople see their own leads,
+      the Sales Manager and RevOps see everything (LF-012).
+    columns:
+      - name: owner_id
+        data_tests: [unique, not_null]
+      - name: staff_code
+        data_tests: [unique, not_null]
+      - name: user_principal_name
+        data_tests: [unique, not_null]
+      - name: owner_role
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['sales_rep', 'sales_manager']}
+
+  - name: dim_country
+    description: Served markets (ES, PT, FR), other countries seen in the data, and 'unknown'.
+    columns:
+      - name: country_code
+        data_tests: [unique, not_null]
+
+  - name: dim_priority
+    columns:
+      - name: priority
+        data_tests: [unique, not_null]
+
+  - name: dim_priority_rule
+    columns:
+      - name: priority_rule
+        data_tests: [unique, not_null]
+
+  - name: dim_review_reason
+    columns:
+      - name: reason_code
+        data_tests: [unique, not_null]
+
+  # ---------------------------------------------------------------- facts
+  - name: fact_enquiry
+    description: One row per stored inbound enquiry received up to as_of. KPIs 1 and 5.
+    columns:
+      - name: enquiry_id
+        data_tests: [unique, not_null]
+      - name: received_date
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_date'), field: date_day}
+      - name: lead_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('fact_lead'), field: lead_id}
+
+  - name: fact_lead
+    description: >
+      One row per lead: origin, routing, and the SLA and response target. KPIs 2-4, 7,
+      9-10, 12, 16-17, 20-25. Statuses are the engine's as saved; ages are measured to as_of.
+    columns:
+      - name: lead_id
+        data_tests: [unique, not_null]
+      - name: country_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_country'), field: country_code}
+      - name: source_channel
+        data_tests: [not_null]
+      - name: created_date
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_date'), field: date_day}
+      - name: first_owner_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_owner'), field: owner_id}
+      - name: current_owner_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_owner'), field: owner_id}
+      - name: priority_rule
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_priority_rule'), field: priority_rule}
+      - name: initial_priority
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_priority'), field: priority}
+      - name: assignment_route
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: {values: ['automatic', 'manual', 'waiting']}
+      - name: sla_status
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['pending', 'met', 'breached']}
+      - name: response_target_status
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['pending', 'met', 'missed']}
+
+  - name: fact_review_case
+    description: One row per review case opened up to as_of, with its age in working minutes. KPIs 26, 28, 30.
+    columns:
+      - name: review_case_id
+        data_tests: [unique, not_null]
+      - name: reason_code
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('dim_review_reason'), field: reason_code}
+      - name: action_owner
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: {values: ['revops', 'sales_manager']}
+
+  - name: fact_followup
+    description: One row per call or email logged up to as_of.
+    columns:
+      - name: activity_id
+        data_tests: [unique, not_null]
+      - name: owner_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_owner'), field: owner_id}
+
+  - name: fact_crm_update
+    description: One row per intended CRM update and where it stands. KPI 32.
+    columns:
+      - name: logical_update_id
+        data_tests: [unique, not_null]
+      - name: update_state
+        data_tests:
+          - accepted_values:
+              arguments: {values: ['confirmed', 'superseded', 'waiting_retry', 'given_up', 'unconfirmed']}
+      - name: lead_id
+        data_tests: [not_null]
+
+  - name: fact_crm_contact_sync
+    description: One row per managed CRM contact; does it show what LeadFlow decided? KPI 31 (same rule as check C19).
+    columns:
+      - name: target_record_id
+        data_tests: [unique, not_null]
+      - name: lead_id
+        data_tests: [unique, not_null]
+
+  - name: fact_daily_backlog
+    description: Open review cases at the end of each working day, by reason. KPI 29.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [date_day, reason_code, action_owner]
+
+  - name: fact_reconciliation_run
+    description: Reconciliation runs; the latest is the trust badge. KPI 33.
+    columns:
+      - name: run_id
+        data_tests: [unique, not_null]
+
+  - name: kpi_summary
+    description: >
+      One row per KPI value (KPI x breakdown x member), with numerator, denominator and
+      value. Compared with the LF-005 answer key by kpi_summary_matches_expected.
+    data_tests:
+      - unique_combination:
+          arguments:
+            columns: [kpi_id, breakdown, member]
+    columns:
+      - name: kpi_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('kpi_catalog'), field: kpi_id}

@@ -213,6 +213,9 @@ def _processing_status(decision):
     return "processed"
 
 
+SOURCE_CHANNELS = ("web_form", "event", "referral", "outbound", "partner", "unknown")
+
+
 def _write_ingestion_event(conn, raw, prepared, decision, t):
     event = prepared["event"]
     system = event["source_system"] or "unknown"
@@ -222,12 +225,14 @@ def _write_ingestion_event(conn, raw, prepared, decision, t):
         event_id = key_uuid("event-without-id", event["payload_hash"], event["received_at"])
     event_type = event["event_type"] if event["event_type"] in ("lead_created", "lead_updated") else None
     status = _processing_status(decision)
+    channel = raw.get("source_channel")
+    channel = channel if channel in SOURCE_CHANNELS else "unknown"
     conn.execute(
         """INSERT INTO ingestion_events (ingestion_event_id, source_system, source_event_id, source_record_id,
-               event_type, source_occurred_at, received_at, raw_payload, processing_status, error_code,
-               error_detail, processed_at)
-           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (ingestion_event_id) DO NOTHING""",
-        (event_id, system, event["source_event_id"], raw.get("crm_contact_id"), event_type,
+               event_type, source_channel, source_occurred_at, received_at, raw_payload, processing_status,
+               error_code, error_detail, processed_at)
+           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (ingestion_event_id) DO NOTHING""",
+        (event_id, system, event["source_event_id"], raw.get("crm_contact_id"), event_type, channel,
          _at(event["occurred_at"]), t, Jsonb(raw), status, decision.get("error_code"),
          ("; ".join(prepared["warnings"]) or None) if status == "rejected" else None, t))
     return event_id

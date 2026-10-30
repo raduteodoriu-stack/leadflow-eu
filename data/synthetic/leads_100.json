@@ -130,7 +130,8 @@
             "occurred_at": "2026-10-03T14:29:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -174,7 +175,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3002"
+        "crm_contact_id": "CRM-C-3002",
+        "source_channel": "referral"
       }
     },
     {
@@ -218,7 +220,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_business_country": "Spain"
+        "crm_business_country": "Spain",
+        "source_channel": "outbound"
       }
     },
     {
@@ -261,7 +264,8 @@
             "occurred_at": "2026-10-10T21:31:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -324,7 +328,8 @@
             "occurred_at": "2026-10-11T08:28:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -363,7 +368,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "enquiry_text": "We want your fieldwork platform and could also supply our own panel."
+        "enquiry_text": "We want your fieldwork platform and could also supply our own panel.",
+        "source_channel": "event"
       }
     },
     {
@@ -383,7 +389,8 @@
         "engagement_events": [],
         "engagement_coverage": "complete",
         "enquiry_type": "paid_survey_participant",
-        "enquiry_text": "Comment participer à des sondages rémunérés ?"
+        "enquiry_text": "Comment participer à des sondages rémunérés ?",
+        "source_channel": "event"
       }
     },
     {
@@ -431,7 +438,8 @@
             "occurred_at": "2026-10-11T22:43:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -476,7 +484,8 @@
         ],
         "engagement_coverage": "complete",
         "crm_contact_id": "CRM-C-3018",
-        "enquiry_text": "We want your fieldwork platform and could also supply our own panel."
+        "enquiry_text": "We want your fieldwork platform and could also supply our own panel.",
+        "source_channel": "unknown"
       }
     },
     {
@@ -539,7 +548,8 @@
             "occurred_at": "2026-10-12T08:24:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "referral"
       }
     },
     {
@@ -588,7 +598,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3019"
+        "crm_contact_id": "CRM-C-3019",
+        "source_channel": "referral"
       }
     },
     {
@@ -626,7 +637,8 @@
             "occurred_at": "2026-09-25T15:06:00+02:00"
           }
         ],
-        "engagement_coverage": "partial"
+        "engagement_coverage": "partial",
+        "source_channel": "outbound"
       }
     },
     {
@@ -674,7 +686,8 @@
             "occurred_at": "2026-10-11T12:11:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -712,7 +725,8 @@
             "occurred_at": "2026-09-24T11:28:00+02:00"
           }
         ],
-        "engagement_coverage": "partial"
+        "engagement_coverage": "partial",
+        "source_channel": "event"
       }
     },
     {
@@ -751,7 +765,8 @@
           }
         ],
         "engagement_coverage": "partial",
-        "crm_contact_id": "CRM-C-3020"
+        "crm_contact_id": "CRM-C-3020",
+        "source_channel": "web_form"
       }
     },
     {
@@ -794,7 +809,8 @@
             "occurred_at": "2026-10-19T01:17:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -848,7 +864,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3014"
+        "crm_contact_id": "CRM-C-3014",
+        "source_channel": "web_form"
       }
     },
     {
@@ -907,7 +924,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_business_country": "Portugal"
+        "crm_business_country": "Portugal",
+        "source_channel": "event"
       }
     },
     {
@@ -950,7 +968,8 @@
             "occurred_at": "2026-10-16T22:59:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1004,7 +1023,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3007"
+        "crm_contact_id": "CRM-C-3007",
+        "source_channel": "outbound"
       }
     },
     {
@@ -1052,7 +1072,8 @@
             "occurred_at": "2026-10-12T21:28:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1110,7 +1131,8 @@
             "occurred_at": "2026-10-12T11:55:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1153,7 +1175,8 @@
             "occurred_at": "2026-10-21T07:53:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -1192,7 +1215,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "enquiry_text": "We run a respondent panel and would like to supply participants."
+        "enquiry_text": "We run a respondent panel and would like to supply participants.",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1235,7 +1259,8 @@
             "occurred_at": "2026-10-16T10:06:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1283,7 +1308,8 @@
             "occurred_at": "2026-10-17T08:00:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1336,7 +1362,8 @@
             "occurred_at": "2026-10-15T08:01:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1395,7 +1422,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3006"
+        "crm_contact_id": "CRM-C-3006",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1439,7 +1467,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3011"
+        "crm_contact_id": "CRM-C-3011",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1492,7 +1521,8 @@
             "occurred_at": "2026-10-20T20:08:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -1531,7 +1561,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3006"
+        "crm_contact_id": "CRM-C-3006",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1574,7 +1605,8 @@
             "occurred_at": "2026-10-22T09:18:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1612,7 +1644,8 @@
             "occurred_at": "2026-10-22T09:11:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "referral"
       }
     },
     {
@@ -1660,7 +1693,8 @@
             "occurred_at": "2026-10-19T19:30:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1699,7 +1733,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "enquiry_text": "We run a respondent panel and would like to supply participants."
+        "enquiry_text": "We run a respondent panel and would like to supply participants.",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1742,7 +1777,8 @@
             "occurred_at": "2026-10-19T11:50:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1790,7 +1826,8 @@
             "occurred_at": "2026-10-14T09:17:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "referral"
       }
     },
     {
@@ -1838,7 +1875,8 @@
             "occurred_at": "2026-10-18T22:02:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1876,7 +1914,8 @@
             "occurred_at": "2026-10-25T07:09:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -1914,7 +1953,8 @@
             "occurred_at": "2026-10-25T07:09:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -1946,7 +1986,8 @@
           "adoption_unwilling_or_unable": null
         },
         "engagement_events": [],
-        "engagement_coverage": "failed"
+        "engagement_coverage": "failed",
+        "source_channel": "web_form"
       }
     },
     {
@@ -1984,7 +2025,8 @@
             "occurred_at": "2026-10-26T12:50:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -2027,7 +2069,8 @@
             "occurred_at": "2026-10-25T22:54:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "partner"
       }
     },
     {
@@ -2065,7 +2108,8 @@
             "occurred_at": "2026-10-26T16:47:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2109,7 +2153,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3009"
+        "crm_contact_id": "CRM-C-3009",
+        "source_channel": "partner"
       }
     },
     {
@@ -2147,7 +2192,8 @@
             "occurred_at": "2026-10-17T08:42:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2206,7 +2252,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3017"
+        "crm_contact_id": "CRM-C-3017",
+        "source_channel": "event"
       }
     },
     {
@@ -2238,7 +2285,8 @@
           "adoption_unwilling_or_unable": null
         },
         "engagement_events": [],
-        "engagement_coverage": "failed"
+        "engagement_coverage": "failed",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2291,7 +2339,8 @@
             "occurred_at": "2026-10-27T13:32:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "partner"
       }
     },
     {
@@ -2329,7 +2378,8 @@
             "occurred_at": "2026-10-28T06:32:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -2367,7 +2417,8 @@
             "occurred_at": "2026-10-24T09:56:00+02:00"
           }
         ],
-        "engagement_coverage": "partial"
+        "engagement_coverage": "partial",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2405,7 +2456,8 @@
             "occurred_at": "2026-10-28T16:16:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -2444,7 +2496,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3007"
+        "crm_contact_id": "CRM-C-3007",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2492,7 +2545,8 @@
             "occurred_at": "2026-10-20T10:20:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -2550,7 +2604,8 @@
             "occurred_at": "2026-10-23T08:21:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2589,7 +2644,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3009"
+        "crm_contact_id": "CRM-C-3009",
+        "source_channel": "outbound"
       }
     },
     {
@@ -2627,7 +2683,8 @@
             "occurred_at": "2026-10-11T09:18:00+02:00"
           }
         ],
-        "engagement_coverage": "partial"
+        "engagement_coverage": "partial",
+        "source_channel": "event"
       }
     },
     {
@@ -2647,7 +2704,8 @@
         "engagement_events": [],
         "engagement_coverage": "complete",
         "enquiry_type": "paid_survey_participant",
-        "enquiry_text": "Comment participer à des sondages rémunérés ?"
+        "enquiry_text": "Comment participer à des sondages rémunérés ?",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2685,7 +2743,8 @@
             "occurred_at": "2026-10-29T11:52:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2753,7 +2812,8 @@
             "occurred_at": "2026-10-27T15:46:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2821,7 +2881,8 @@
             "occurred_at": "2026-10-26T17:39:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -2875,7 +2936,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3004"
+        "crm_contact_id": "CRM-C-3004",
+        "source_channel": "partner"
       }
     },
     {
@@ -2923,7 +2985,8 @@
             "occurred_at": "2026-10-25T19:10:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -2967,7 +3030,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3013"
+        "crm_contact_id": "CRM-C-3013",
+        "source_channel": "event"
       }
     },
     {
@@ -3031,7 +3095,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3015"
+        "crm_contact_id": "CRM-C-3015",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3089,7 +3154,8 @@
             "occurred_at": "2026-10-22T18:34:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3138,7 +3204,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3003"
+        "crm_contact_id": "CRM-C-3003",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3182,7 +3249,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3016"
+        "crm_contact_id": "CRM-C-3016",
+        "source_channel": "unknown"
       }
     },
     {
@@ -3221,7 +3289,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3005"
+        "crm_contact_id": "CRM-C-3005",
+        "source_channel": "referral"
       }
     },
     {
@@ -3241,7 +3310,8 @@
         "engagement_events": [],
         "engagement_coverage": "complete",
         "enquiry_type": "paid_survey_participant",
-        "enquiry_text": "¿Cómo puedo participar en encuestas pagadas?"
+        "enquiry_text": "¿Cómo puedo participar en encuestas pagadas?",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3289,7 +3359,8 @@
             "occurred_at": "2026-10-28T16:56:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3327,7 +3398,8 @@
             "occurred_at": "2026-11-02T16:29:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3366,7 +3438,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "enquiry_text": "We want your fieldwork platform and could also supply our own panel."
+        "enquiry_text": "We want your fieldwork platform and could also supply our own panel.",
+        "source_channel": "partner"
       }
     },
     {
@@ -3409,7 +3482,8 @@
             "occurred_at": "2026-10-11T18:42:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "referral"
       }
     },
     {
@@ -3452,7 +3526,8 @@
             "occurred_at": "2026-10-11T18:42:00+02:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "referral"
       }
     },
     {
@@ -3495,7 +3570,8 @@
             "occurred_at": "2026-11-03T02:55:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3533,7 +3609,8 @@
             "occurred_at": "2026-11-03T00:39:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -3576,7 +3653,8 @@
             "occurred_at": "2026-11-03T01:36:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -3620,7 +3698,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "enquiry_text": "We run a respondent panel and would like to supply participants."
+        "enquiry_text": "We run a respondent panel and would like to supply participants.",
+        "source_channel": "unknown"
       }
     },
     {
@@ -3664,7 +3743,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "enquiry_text": "We run a respondent panel and would like to supply participants."
+        "enquiry_text": "We run a respondent panel and would like to supply participants.",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3684,7 +3764,8 @@
         "engagement_events": [],
         "engagement_coverage": "complete",
         "enquiry_type": "paid_survey_participant",
-        "enquiry_text": "Quero participar em inquéritos pagos."
+        "enquiry_text": "Quero participar em inquéritos pagos.",
+        "source_channel": "outbound"
       }
     },
     {
@@ -3716,7 +3797,8 @@
           "adoption_unwilling_or_unable": null
         },
         "engagement_events": [],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -3760,7 +3842,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3008"
+        "crm_contact_id": "CRM-C-3008",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3818,7 +3901,8 @@
             "occurred_at": "2026-10-31T18:58:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "partner"
       }
     },
     {
@@ -3872,7 +3956,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3010"
+        "crm_contact_id": "CRM-C-3010",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3920,7 +4005,8 @@
             "occurred_at": "2026-10-31T20:27:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -3963,7 +4049,8 @@
             "occurred_at": "2026-10-29T18:38:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -3988,7 +4075,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3016"
+        "crm_contact_id": "CRM-C-3016",
+        "source_channel": "outbound"
       }
     },
     {
@@ -4026,7 +4114,8 @@
             "occurred_at": "2026-11-05T14:03:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -4074,7 +4163,8 @@
             "occurred_at": "2026-11-01T18:34:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "event"
       }
     },
     {
@@ -4094,7 +4184,8 @@
         "engagement_events": [],
         "engagement_coverage": "complete",
         "enquiry_type": "paid_survey_participant",
-        "enquiry_text": "¿Cómo puedo participar en encuestas pagadas?"
+        "enquiry_text": "¿Cómo puedo participar en encuestas pagadas?",
+        "source_channel": "web_form"
       }
     },
     {
@@ -4132,7 +4223,8 @@
             "occurred_at": "2026-11-05T12:30:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "unknown"
       }
     },
     {
@@ -4165,7 +4257,8 @@
         },
         "engagement_events": [],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3012"
+        "crm_contact_id": "CRM-C-3012",
+        "source_channel": "event"
       }
     },
     {
@@ -4203,7 +4296,8 @@
             "occurred_at": "2026-11-06T10:54:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "web_form"
       }
     },
     {
@@ -4247,7 +4341,8 @@
           }
         ],
         "engagement_coverage": "complete",
-        "crm_contact_id": "CRM-C-3001"
+        "crm_contact_id": "CRM-C-3001",
+        "source_channel": "web_form"
       }
     },
     {
@@ -4279,7 +4374,8 @@
           "adoption_unwilling_or_unable": null
         },
         "engagement_events": [],
-        "engagement_coverage": "failed"
+        "engagement_coverage": "failed",
+        "source_channel": "outbound"
       }
     },
     {
@@ -4311,7 +4407,8 @@
           "adoption_unwilling_or_unable": null
         },
         "engagement_events": [],
-        "engagement_coverage": "failed"
+        "engagement_coverage": "failed",
+        "source_channel": "outbound"
       }
     },
     {
@@ -4343,7 +4440,8 @@
           "adoption_unwilling_or_unable": null
         },
         "engagement_events": [],
-        "engagement_coverage": "failed"
+        "engagement_coverage": "failed",
+        "source_channel": "outbound"
       }
     },
     {
@@ -4401,7 +4499,8 @@
             "occurred_at": "2026-11-04T15:34:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "outbound"
       }
     },
     {
@@ -4439,7 +4538,8 @@
             "occurred_at": "2026-10-30T12:31:00+01:00"
           }
         ],
-        "engagement_coverage": "complete"
+        "engagement_coverage": "complete",
+        "source_channel": "referral"
       }
     }
   ],
