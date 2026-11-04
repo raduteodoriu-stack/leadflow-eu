@@ -1,0 +1,61 @@
+relationship 0c013e24-5424-5ed8-bf95-0e21207d4fce
+	fromColumn: Enquiry.received_date
+	toColumn: Date.date_day
+
+relationship 441cdac2-71d1-5814-a7b8-cc2671e32875
+	fromColumn: Lead.created_date
+	toColumn: Date.date_day
+
+relationship e25113af-8909-5d0a-ad39-10b367c66107
+	fromColumn: Lead.current_owner_id
+	toColumn: Owner.owner_id
+
+relationship 3602bffe-bcd8-5f21-97c4-9fe4ca3fd069
+	isActive: false
+	fromColumn: Lead.first_owner_id
+	toColumn: Owner.owner_id
+
+relationship b4b2e1fd-7cf6-58e8-8a22-08cd7ea79026
+	fromColumn: Lead.country_code
+	toColumn: Country.country_code
+
+relationship 6aa22f0d-dd29-5db0-852e-51361433defc
+	fromColumn: Lead.initial_priority
+	toColumn: Priority.priority
+
+relationship 32924083-2217-593c-aaae-d7b8170a61d9
+	fromColumn: Lead.priority_rule
+	toColumn: 'Priority Rule'.priority_rule
+
+relationship 01961068-68bf-5f2c-a66d-f9b11a08e316
+	fromColumn: Follow-up.occurred_date
+	toColumn: Date.date_day
+
+relationship e589e647-b4bc-545e-b035-ad3fb9ce9a65
+	fromColumn: Follow-up.owner_id
+	toColumn: Owner.owner_id
+
+relationship 688d7d55-833c-51c8-8605-754f2582e216
+	fromColumn: 'Review Case'.opened_date
+	toColumn: Date.date_day
+
+relationship 839f93e9-a5fd-5cd2-8a8a-45fe2fe26300
+	fromColumn: 'Review Case'.reason_code
+	toColumn: 'Review Reason'.reason_code
+
+relationship b6a5a8a4-f2c3-55ae-add2-e94e24034e8e
+	fromColumn: 'Daily Backlog'.date_day
+	toColumn: Date.date_day
+
+relationship 080f7ee0-36ac-5ea1-9b65-321a55d0742e
+	fromColumn: 'Daily Backlog'.reason_code
+	toColumn: 'Review Reason'.reason_code
+
+relationship 4cd65975-df53-59dd-b5c6-aa197524228f
+	fromColumn: 'CRM Contact Sync'.lead_id
+	toColumn: Lead.lead_id
+
+relationship 70c41dea-822b-5cb9-b481-fbbbe563308e
+	fromColumn: 'CRM Update'.lead_id
+	toColumn: Lead.lead_id
+

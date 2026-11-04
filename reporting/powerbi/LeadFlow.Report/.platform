@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "LeadFlow"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "bd40808a-4013-4b0f-9dd1-999b8c0c4e64"
+  }
+}

@@ -1,0 +1,182 @@
+table 'Review Case'
+	lineageTag: e59d9f96-de95-4c99-b4b6-9209fac9aeac
+
+	column review_case_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: f138da20-3283-4ccb-819e-492fa3944e68
+		summarizeBy: none
+		sourceColumn: review_case_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column reason_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: f1bd86fd-a46e-43ac-bfeb-f2ae9cc5f680
+		summarizeBy: none
+		sourceColumn: reason_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column queue
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 0d1c5a97-5758-4e2c-bce0-46d9f867e50d
+		summarizeBy: none
+		sourceColumn: queue
+
+		annotation SummarizationSetBy = Automatic
+
+	column action_owner
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 4c104093-fa89-4de8-bb8b-e48c2ed169a7
+		summarizeBy: none
+		sourceColumn: action_owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: cf9d397e-9141-4ffd-b320-cd25b7570be5
+		summarizeBy: none
+		sourceColumn: lead_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column enquiry_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: b9a8c2f3-b4e1-4761-bc36-7aa32b1401fd
+		summarizeBy: none
+		sourceColumn: enquiry_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column opened_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: 5615352b-d053-444d-a8ec-ec301b82520d
+		summarizeBy: none
+		sourceColumn: opened_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column opened_date
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 4b66a29e-945e-4bf8-9cf3-fbe1cd5fe628
+		summarizeBy: none
+		sourceColumn: opened_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column resolved_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: 38c5f97e-832f-4261-b730-bc219235213e
+		summarizeBy: none
+		sourceColumn: resolved_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_open
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: f156a59d-9146-4e5d-8fcc-2d113d9ba825
+		summarizeBy: none
+		sourceColumn: is_open
+
+		annotation SummarizationSetBy = Automatic
+
+	column open_age_working_minutes
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 02b870f1-c6e4-4f11-9172-920325af5613
+		summarizeBy: sum
+		sourceColumn: open_age_working_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column resolution_working_minutes
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 101810d8-1a25-4662-ac8f-362df14a15ae
+		summarizeBy: sum
+		sourceColumn: resolution_working_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column case_ref
+		dataType: string
+		lineageTag: 1ddbab07-366a-5a65-99cc-f343b0c8efdb
+		summarizeBy: none
+		sourceColumn: case_ref
+
+		annotation SummarizationSetBy = Automatic
+
+	column enquiry_ref
+		dataType: string
+		lineageTag: 5df11ed3-ecb3-5f12-90c3-9b60adc5cdce
+		summarizeBy: none
+		sourceColumn: enquiry_ref
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_ref
+		dataType: string
+		lineageTag: 27819ea9-2c10-5b4a-94ee-bab903de24a9
+		summarizeBy: none
+		sourceColumn: lead_ref
+
+		annotation SummarizationSetBy = Automatic
+
+	column case_status
+		dataType: string
+		lineageTag: 644b30d6-b4b5-559c-8127-098319e32234
+		summarizeBy: none
+		sourceColumn: case_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column times_reopened
+		dataType: int64
+		lineageTag: a7b195ac-9a97-555f-94a0-a24fb489c395
+		summarizeBy: none
+		sourceColumn: times_reopened
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Working time a case has been open (1 d = 9 working hours).
+	column 'Open for' = VAR m = 'Review Case'[open_age_working_minutes] VAR d = INT ( m / 540 ) VAR h = INT ( MOD ( m, 540 ) / 60 ) RETURN IF ( ISBLANK ( m ), BLANK (), IF ( d > 0, d & " d ", "" ) & h & " h " & MOD ( m, 60 ) & " min" )
+		dataType: string
+		lineageTag: 810ae34a-b9ed-55cb-8652-54399c0acdf4
+		summarizeBy: none
+		sortByColumn: open_age_working_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Review Case' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "fact_review_case"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

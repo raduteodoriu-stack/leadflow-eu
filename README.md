@@ -7,7 +7,7 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 
 > All company and contact data is synthetic. No real customer information is used.
 
-## Status (2026-10-29)
+## Status (2026-11-04)
 
 | Area | Status |
 |---|---|
@@ -19,7 +19,8 @@ Lead validation, prioritisation and routing for a simulated B2B research-technol
 | LF-009 SLA tracking | **Built and tested**: SLA met/breached, response targets, late-logged follow-ups, owner-unavailable alerts, reassignment ([LF-009](docs/engine_lf009.md)) |
 | LF-010 CRM write-back | **Phase A built and tested**: every contact kept up to date with owner, priority, SLA and review reason; only changes sent; safe retries; simulated ([LF-010](docs/engine_lf010.md), [field mapping](docs/crm_field_mapping.md)). Phase B (live HubSpot test account): optional |
 | LF-011 Reporting model | **Built and tested**: dbt star schema in PostgreSQL (schema `reporting`), 24 KPIs each defined once and checked against the LF-005 answer key ([model](docs/reporting_model.md), [KPI definitions](docs/kpi_definitions.md)) |
-| Power BI, portfolio | Planned (LF-012, LF-013) |
+| LF-012 Power BI dashboard | **Built and tested**: 6 pages (Overview, Response, Intake & Routing, Exceptions, System health, QA), 46 measures equal to the tested KPI layer (QA check: 32 of 32), row-level security for salespeople ([guide](docs/dashboard_guide.md)) |
+| Portfolio | Planned (LF-013) |
 | Per-salesperson holiday calendars | Planned post-MVP (LF-014); public holidays are not counted yet |
 
 ## Repository layout
@@ -33,6 +34,8 @@ SQL/reconciliation/         Database consistency checks (LF-008 to LF-010)
 tests/                      pytest: unit, answer-key and PostgreSQL integration tests
 tools/                      Synthetic data generator, reconciliation report, expected KPIs
 reporting/                  dbt project: staging views, star schema and KPI summary (LF-011)
+reporting/powerbi/          Power BI project (.pbip): model, measures, roles and pages as text (LF-012)
+SQL/admin/                  One-off server set-up (read-only Power BI login)
 data/synthetic/             LF-005 dataset and expected outcomes
 docs/                       Data dictionary, database design, engine notes, evidence
 ```
@@ -77,4 +80,4 @@ tests and `reconcile.py --run` wipe `leadflow_eu_test` and refuse any other data
 
 ## Tools
 
-PostgreSQL, SQL, bash, Python, pytest, psycopg, dbt; planned: HubSpot API (test account), Power BI.
+PostgreSQL, SQL, bash, Python, pytest, psycopg, dbt, Power BI (DAX, TMDL, row-level security); planned: HubSpot API (test account).

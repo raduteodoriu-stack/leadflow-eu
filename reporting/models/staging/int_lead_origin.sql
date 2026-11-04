@@ -2,7 +2,7 @@
 -- A lead's first stored enquiry is the one that created it (tested: its time equals leads.created_at).
 with first_enquiry as (
     select distinct on (lead_id)
-        lead_id, enquiry_id, received_at, source_channel
+        lead_id, enquiry_id, source_event_id, received_at, source_channel
     from {{ ref('stg_enquiries') }}
     where lead_id is not null
     order by lead_id, received_at, enquiry_id
@@ -10,6 +10,7 @@ with first_enquiry as (
 select
     f.lead_id,
     f.enquiry_id                     as creating_enquiry_id,
+    f.source_event_id                as lead_ref,
     f.received_at                    as created_at,
     f.source_channel,
     d.decision_id                    as creating_decision_id,

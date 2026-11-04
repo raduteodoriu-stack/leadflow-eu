@@ -1,0 +1,129 @@
+table Enquiry
+	lineageTag: 31173f68-f559-4ea2-9e37-a7f529c80df1
+
+	column enquiry_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: 703fabcf-b2d3-453c-a642-f3204fbfc98a
+		summarizeBy: none
+		sourceColumn: enquiry_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_event_id
+		dataType: string
+		isHidden
+		sourceProviderType: nvarchar(max)
+		lineageTag: d3b2d5a2-c0b4-454c-a3b1-daed9933d282
+		summarizeBy: none
+		sourceColumn: source_event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column received_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: ad14e136-ad57-416c-85f8-4eb4f49ca90d
+		summarizeBy: none
+		sourceColumn: received_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column received_date
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 5be38e90-3dae-455d-b665-4fce6c2f0cdf
+		summarizeBy: none
+		sourceColumn: received_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column source_channel
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c00671c6-b33c-461b-b74c-d07f656d3d43
+		summarizeBy: none
+		sourceColumn: source_channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 216df87a-a8ac-4864-82cc-468679c597f8
+		summarizeBy: none
+		sourceColumn: event_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column processing_status
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2affe27b-daf9-493f-beed-a974e99f8719
+		summarizeBy: none
+		sourceColumn: processing_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column decision_outcome
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c83ee85f-e382-46f1-a5fa-a270b7d08a27
+		summarizeBy: none
+		sourceColumn: decision_outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column priority
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 8c24051a-499c-430c-988f-7cfbc6370913
+		summarizeBy: none
+		sourceColumn: priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: d433bceb-c5f7-409f-b933-d3bd82975688
+		summarizeBy: none
+		sourceColumn: lead_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_lead
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: d66d1fd6-5d25-4e1f-bb30-74a62d07c482
+		summarizeBy: none
+		sourceColumn: created_lead
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rejected
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 8b56f320-c7da-485d-9ed0-bf7d055367c8
+		summarizeBy: none
+		sourceColumn: is_rejected
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Enquiry = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "fact_enquiry"]}[Data]
+				in
+				  #"Navigation 1"
+

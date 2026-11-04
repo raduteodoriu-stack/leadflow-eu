@@ -1,0 +1,60 @@
+table Priority
+	lineageTag: 304731f3-feac-4641-9ef6-cb271dcff6a7
+
+	column priority
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c4c2c990-187b-4ee4-a37b-ed35e38edc37
+		summarizeBy: none
+		sourceColumn: priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column priority_label
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3238d56e-1e1c-4514-a1e2-5e880ea26160
+		summarizeBy: none
+		sourceColumn: priority_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column response_target_working_minutes
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8fd59e70-9e52-464d-b4d7-ffdb93ddc6c0
+		summarizeBy: sum
+		sourceColumn: response_target_working_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column sla_working_minutes
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 83f53c36-36c4-437d-a504-12435ab9c3c1
+		summarizeBy: sum
+		sourceColumn: sla_working_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column sort_order
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1d037149-eee6-454f-a9f2-9c22f69c7dfb
+		summarizeBy: sum
+		sourceColumn: sort_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Priority = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "dim_priority"]}[Data]
+				in
+				  #"Navigation 1"
+

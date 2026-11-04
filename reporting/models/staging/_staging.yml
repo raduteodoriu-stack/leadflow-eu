@@ -43,6 +43,10 @@ models:
     columns:
       - name: review_case_id
         data_tests: [unique, not_null]
+  - name: stg_review_actions
+    columns:
+      - name: review_action_id
+        data_tests: [unique, not_null]
   - name: stg_crm_writes
     columns:
       - name: write_attempt_id

@@ -1,0 +1,194 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "826c173dc775e1bfdc7b",
+  "position": {
+    "x": 24,
+    "y": 622,
+    "z": 3000,
+    "height": 434,
+    "width": 1872,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "run_at"
+                }
+              },
+              "queryRef": "Reconciliation Run.run_at",
+              "nativeQueryRef": "run_at",
+              "displayName": "Run at"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "database_name"
+                }
+              },
+              "queryRef": "Reconciliation Run.database_name",
+              "nativeQueryRef": "database_name",
+              "displayName": "Database"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "source_name"
+                }
+              },
+              "queryRef": "Reconciliation Run.source_name",
+              "nativeQueryRef": "source_name",
+              "displayName": "Source"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "rule_version"
+                }
+              },
+              "queryRef": "Reconciliation Run.rule_version",
+              "nativeQueryRef": "rule_version",
+              "displayName": "Rules"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "check_count"
+                }
+              },
+              "queryRef": "Reconciliation Run.check_count",
+              "nativeQueryRef": "check_count",
+              "displayName": "Checks"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "failed_checks"
+                }
+              },
+              "queryRef": "Reconciliation Run.failed_checks",
+              "nativeQueryRef": "failed_checks",
+              "displayName": "With differences"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "is_balanced"
+                }
+              },
+              "queryRef": "Reconciliation Run.is_balanced",
+              "nativeQueryRef": "is_balanced",
+              "displayName": "Balanced"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Reconciliation Run"
+                    }
+                  },
+                  "Property": "report_path"
+                }
+              },
+              "queryRef": "Reconciliation Run.report_path",
+              "nativeQueryRef": "report_path",
+              "displayName": "Report"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Reconciliation runs'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

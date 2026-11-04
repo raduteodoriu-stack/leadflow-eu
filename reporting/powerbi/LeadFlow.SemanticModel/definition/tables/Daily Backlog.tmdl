@@ -1,0 +1,72 @@
+table 'Daily Backlog'
+	lineageTag: f1d71fdd-d102-4090-a581-d23baac72aef
+
+	column date_day
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: b3618f1c-018d-405b-8ceb-bfa5023dc492
+		summarizeBy: none
+		sourceColumn: date_day
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column snapshot_at
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 66c16f3a-9595-41a6-a16b-67cafb5be30b
+		summarizeBy: none
+		sourceColumn: snapshot_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column reason_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bb3b5d04-4b7d-48f8-a5d3-52e0fd3d5694
+		summarizeBy: none
+		sourceColumn: reason_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column action_owner
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b88ffd0c-3263-4d44-bf33-8e6845fafc1b
+		summarizeBy: none
+		sourceColumn: action_owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column open_cases
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5f0bdebf-75bb-4bba-bb21-d3dc22d20bb5
+		summarizeBy: sum
+		sourceColumn: open_cases
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_open_age_working_minutes
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: a979f6a5-06a6-4f42-ad52-933b6f2aa3e6
+		summarizeBy: sum
+		sourceColumn: total_open_age_working_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Daily Backlog' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "fact_daily_backlog"]}[Data]
+				in
+				  #"Navigation 1"
+

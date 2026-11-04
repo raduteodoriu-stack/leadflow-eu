@@ -17,3 +17,7 @@ reporting/dbt_packages/
 
 # Local scratch (database dumps, notes): never committed
 .local/
+
+# Power BI project (LF-012): local settings and the data cache stay on this machine
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

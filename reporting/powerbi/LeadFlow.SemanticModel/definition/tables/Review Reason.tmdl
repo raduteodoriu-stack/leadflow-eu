@@ -1,0 +1,48 @@
+table 'Review Reason'
+	lineageTag: c4fd7dc1-55b0-4fc4-931d-7e7681a5ea72
+
+	column reason_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b526d038-1135-4993-8408-ac4a687f81f2
+		summarizeBy: none
+		sourceColumn: reason_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column reason_label
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: de50a676-b8ae-4633-b42f-3b0566a24fc9
+		summarizeBy: none
+		sourceColumn: reason_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column action_owner
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b0fd6e4f-d2f6-4e61-9bee-30841817d515
+		summarizeBy: none
+		sourceColumn: action_owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 9f283ad3-d3dd-4ec0-998f-162fb294b9d5
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Review Reason' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "dim_review_reason"]}[Data]
+				in
+				  #"Navigation 1"
+

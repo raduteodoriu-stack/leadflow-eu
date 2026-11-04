@@ -1,0 +1,121 @@
+table 'KPI Summary'
+	lineageTag: 8cc414d7-49f9-406f-800e-c7caabeb6355
+
+	column kpi_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 72f8b4c8-f4b8-4c53-be9a-ca96c79184c0
+		summarizeBy: none
+		sourceColumn: kpi_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column kpi_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 4267acab-58f5-45b3-ac86-b5c0f53804c8
+		summarizeBy: none
+		sourceColumn: kpi_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column section
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 1a86415c-3408-4da3-a36c-23d630a4d9da
+		summarizeBy: none
+		sourceColumn: section
+
+		annotation SummarizationSetBy = Automatic
+
+	column tier
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ab9e91c9-a1a1-4679-aba1-28b355578b02
+		summarizeBy: none
+		sourceColumn: tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: a6a9581a-af92-460c-8ce3-3a0f36e7e46d
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column breakdown
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 460936d3-e907-472f-848b-fb692b4263f5
+		summarizeBy: none
+		sourceColumn: breakdown
+
+		annotation SummarizationSetBy = Automatic
+
+	column member
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bd496c33-6c76-40d3-9f85-63de34a0b241
+		summarizeBy: none
+		sourceColumn: member
+
+		annotation SummarizationSetBy = Automatic
+
+	column numerator
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 82e0e56b-e89f-4f03-8099-bdd2a992386c
+		summarizeBy: sum
+		sourceColumn: numerator
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column denominator
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: f2b26bb8-5545-465f-bdbf-4423f5ad8914
+		summarizeBy: sum
+		sourceColumn: denominator
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column value
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 75db355a-c2db-4db1-b6a0-904faff7fb32
+		summarizeBy: sum
+		sourceColumn: value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column as_of
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: 085a9dd7-1b8f-4546-8403-70c6a1d6e8c7
+		summarizeBy: none
+		sourceColumn: as_of
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'KPI Summary' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "kpi_summary"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

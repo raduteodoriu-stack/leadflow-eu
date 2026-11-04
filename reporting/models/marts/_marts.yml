@@ -69,6 +69,9 @@ models:
     columns:
       - name: lead_id
         data_tests: [unique, not_null]
+      - name: lead_ref
+        description: The source system's id of the enquiry that created the lead (what a salesperson looks up).
+        data_tests: [unique, not_null]
       - name: country_code
         data_tests:
           - not_null
@@ -115,6 +118,13 @@ models:
     columns:
       - name: review_case_id
         data_tests: [unique, not_null]
+      - name: case_ref
+        data_tests: [unique, not_null]
+      - name: case_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: {values: ['New', 'In progress', 'Reopened', 'Resolved']}
       - name: reason_code
         data_tests:
           - not_null

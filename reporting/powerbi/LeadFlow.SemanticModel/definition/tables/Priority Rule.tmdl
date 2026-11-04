@@ -1,0 +1,49 @@
+table 'Priority Rule'
+	lineageTag: 974aaea8-f6aa-4333-bbe3-b5e675e9e62a
+
+	column priority_rule
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6bbf8ef0-3d41-4c45-87c6-278669e8a418
+		summarizeBy: sum
+		sourceColumn: priority_rule
+
+		annotation SummarizationSetBy = Automatic
+
+	column reason_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: e145e76b-3a47-48a8-b392-879c9243913e
+		summarizeBy: none
+		sourceColumn: reason_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column priority
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 240a012c-9a96-4a1a-bcd6-0ad8dd7e396d
+		summarizeBy: none
+		sourceColumn: priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column rule_label
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 27f0269d-afd4-4411-99d1-ad557912da3c
+		summarizeBy: none
+		sourceColumn: rule_label
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Priority Rule' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "dim_priority_rule"]}[Data]
+				in
+				  #"Navigation 1"
+
