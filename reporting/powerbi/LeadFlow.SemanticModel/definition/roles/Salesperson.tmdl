@@ -1,0 +1,9 @@
+/// A salesperson sees only the leads and follow-ups they own. Matches the Power BI sign-in
+/// (USERPRINCIPALNAME) to Owner[user_principal_name], e.g. es-01@mop-cloud.example (synthetic).
+role Salesperson
+	modelPermission: read
+
+	tablePermission Owner = 'Owner'[user_principal_name] = USERPRINCIPALNAME()
+
+	annotation PBI_Id = 4e878fad440f4c2db0844bb384302b78
+

@@ -1,0 +1,86 @@
+table Owner
+	lineageTag: fa7e2ba7-467e-4786-a81b-5ec5049adaee
+
+	column owner_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: 47d8a6a8-c6da-4f39-9a36-47b32dee953c
+		summarizeBy: none
+		sourceColumn: owner_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column staff_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2bf256a5-12a0-4ba5-baef-7972a27fc00f
+		summarizeBy: none
+		sourceColumn: staff_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column display_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 965f77bb-ac11-4f2e-bd6a-8aac74cbb2fe
+		summarizeBy: none
+		sourceColumn: display_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column owner_role
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b5dc8b3e-0625-4d0f-a869-4032a8f5d71d
+		summarizeBy: none
+		sourceColumn: owner_role
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3cd3818d-bd67-499d-a608-10dcef8473a6
+		summarizeBy: none
+		sourceColumn: country_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column manager_staff_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 28fe0292-061d-40e1-8ec8-03ec0eee9c71
+		summarizeBy: none
+		sourceColumn: manager_staff_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_principal_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2c5e3831-1e2c-4430-8e04-47589442a858
+		summarizeBy: none
+		sourceColumn: user_principal_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_available_at_as_of
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 03b86f43-b28a-402f-8d55-807003e4ee60
+		summarizeBy: none
+		sourceColumn: is_available_at_as_of
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Owner = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "dim_owner"]}[Data]
+				in
+				  #"Navigation 1"
+

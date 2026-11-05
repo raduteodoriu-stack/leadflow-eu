@@ -1,0 +1,159 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "4583e00e703b77ae1e5d",
+  "position": {
+    "x": 24,
+    "y": 208,
+    "z": 2000,
+    "height": 400,
+    "width": 924,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Owner"
+                    }
+                  },
+                  "Property": "staff_code"
+                }
+              },
+              "queryRef": "Owner.staff_code",
+              "nativeQueryRef": "staff_code",
+              "displayName": "Salesperson"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Assigned Leads"
+                }
+              },
+              "queryRef": "_Measures.Assigned Leads",
+              "nativeQueryRef": "Assigned Leads"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "SLA Met"
+                }
+              },
+              "queryRef": "_Measures.SLA Met",
+              "nativeQueryRef": "SLA Met"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "SLA Breached"
+                }
+              },
+              "queryRef": "_Measures.SLA Breached",
+              "nativeQueryRef": "SLA Breached"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "SLA Attainment %"
+                }
+              },
+              "queryRef": "_Measures.SLA Attainment %",
+              "nativeQueryRef": "SLA Attainment %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Response-Target Hit Rate %"
+                }
+              },
+              "queryRef": "_Measures.Response-Target Hit Rate %",
+              "nativeQueryRef": "Response-Target Hit Rate %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Median Time to First Follow-up (working min)"
+                }
+              },
+              "queryRef": "_Measures.Median Time to First Follow-up (working min)",
+              "nativeQueryRef": "Median Time to First Follow-up (working min)",
+              "displayName": "Median min to 1st follow-up"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'By salesperson, for coaching (current owner)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

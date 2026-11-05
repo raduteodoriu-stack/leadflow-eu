@@ -1,0 +1,115 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "1ceca93ee0ae3ababc04",
+  "position": {
+    "x": 972,
+    "y": 24,
+    "z": 1000,
+    "height": 160,
+    "width": 924,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Response-Target Hit Rate %"
+                }
+              },
+              "queryRef": "_Measures.Response-Target Hit Rate %",
+              "nativeQueryRef": "Response-Target Hit Rate %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Target Met"
+                }
+              },
+              "queryRef": "_Measures.Target Met",
+              "nativeQueryRef": "Target Met"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Target Missed"
+                }
+              },
+              "queryRef": "_Measures.Target Missed",
+              "nativeQueryRef": "Target Missed"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Kept Promise, Missed Target"
+                }
+              },
+              "queryRef": "_Measures.Kept Promise, Missed Target",
+              "nativeQueryRef": "Kept Promise, Missed Target"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'The urgency target: P1 1 h, P2 4 h, P3 8 h'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

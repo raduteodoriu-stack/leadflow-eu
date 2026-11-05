@@ -1,0 +1,124 @@
+table Follow-up
+	lineageTag: 4a4c5465-03c1-4e8b-9f6b-509cf23e0b4d
+
+	column activity_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: 4028a159-f3db-4507-856f-babe57377bdc
+		summarizeBy: none
+		sourceColumn: activity_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: 64fc3a78-3811-4dde-b7fc-8e880921bf89
+		summarizeBy: none
+		sourceColumn: lead_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column owner_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: 7a735efc-a8b2-4041-a67f-01bf8b809961
+		summarizeBy: none
+		sourceColumn: owner_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column activity_type
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dd00d756-5073-4895-9302-0e76c32e3732
+		summarizeBy: none
+		sourceColumn: activity_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column activity_outcome
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 7e815667-2403-452b-acc5-f21f2d197726
+		summarizeBy: none
+		sourceColumn: activity_outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_automated
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 025d53e2-4aac-41b1-9074-8636e366ef26
+		summarizeBy: none
+		sourceColumn: is_automated
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_qualifying
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 34510de3-e326-4241-b392-feeb768b9ce4
+		summarizeBy: none
+		sourceColumn: is_qualifying
+
+		annotation SummarizationSetBy = Automatic
+
+	column occurred_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: 67de361d-bc50-4298-a723-ba3a4fa4076b
+		summarizeBy: none
+		sourceColumn: occurred_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column occurred_date
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: c100c872-f8f0-4f92-96b9-60f78374171c
+		summarizeBy: none
+		sourceColumn: occurred_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column recorded_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: b9da095f-e2ab-422f-9c6a-cdfcb37b1fcd
+		summarizeBy: none
+		sourceColumn: recorded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_logged_late
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 1d4eef6b-e50d-4da5-8e28-88fb7ece16b8
+		summarizeBy: none
+		sourceColumn: is_logged_late
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Follow-up = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "fact_followup"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

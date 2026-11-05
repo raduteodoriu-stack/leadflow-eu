@@ -1,0 +1,109 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "31dbd86199e52b289940",
+  "position": {
+    "x": 24,
+    "y": 24,
+    "z": 0,
+    "height": 150,
+    "width": 1872,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Open Review Cases"
+                }
+              },
+              "queryRef": "_Measures.Open Review Cases",
+              "nativeQueryRef": "Open Review Cases"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Oldest Open Case (working days)"
+                }
+              },
+              "queryRef": "_Measures.Oldest Open Case (working days)",
+              "nativeQueryRef": "Oldest Open Case (working days)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Leads Waiting for Owner"
+                }
+              },
+              "queryRef": "_Measures.Leads Waiting for Owner",
+              "nativeQueryRef": "Leads Waiting for Owner"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Absence Alerts"
+                }
+              },
+              "queryRef": "_Measures.Absence Alerts",
+              "nativeQueryRef": "Absence Alerts"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Late-Logged Follow-ups"
+                }
+              },
+              "queryRef": "_Measures.Late-Logged Follow-ups",
+              "nativeQueryRef": "Late-Logged Follow-ups"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

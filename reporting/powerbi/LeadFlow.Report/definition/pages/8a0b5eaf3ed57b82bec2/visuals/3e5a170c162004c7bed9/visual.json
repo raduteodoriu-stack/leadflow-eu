@@ -1,0 +1,226 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "3e5a170c162004c7bed9",
+  "position": {
+    "x": 24.285714285714288,
+    "y": 71.428571428571431,
+    "z": 1000,
+    "height": 1011.4285714285714,
+    "width": 1310,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "kpi_id"
+                }
+              },
+              "queryRef": "KPI Summary.kpi_id",
+              "nativeQueryRef": "kpi_id",
+              "displayName": "KPI"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "kpi_name"
+                }
+              },
+              "queryRef": "KPI Summary.kpi_name",
+              "nativeQueryRef": "kpi_name",
+              "displayName": "Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "tier"
+                }
+              },
+              "queryRef": "KPI Summary.tier",
+              "nativeQueryRef": "tier",
+              "displayName": "Tier"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "breakdown"
+                }
+              },
+              "queryRef": "KPI Summary.breakdown",
+              "nativeQueryRef": "breakdown",
+              "displayName": "Breakdown"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "member"
+                }
+              },
+              "queryRef": "KPI Summary.member",
+              "nativeQueryRef": "member",
+              "displayName": "Member"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "numerator"
+                }
+              },
+              "queryRef": "KPI Summary.numerator",
+              "nativeQueryRef": "numerator",
+              "displayName": "Numerator"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "denominator"
+                }
+              },
+              "queryRef": "KPI Summary.denominator",
+              "nativeQueryRef": "denominator",
+              "displayName": "Denominator"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "KPI Summary"
+                    }
+                  },
+                  "Property": "value"
+                }
+              },
+              "queryRef": "KPI Summary.value",
+              "nativeQueryRef": "value",
+              "displayName": "Value"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "defaultColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Left'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {}
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'kpi_summary from the reporting layer: the reference the QA check uses. View as Salesperson: QA shows differences by design'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Minimal'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

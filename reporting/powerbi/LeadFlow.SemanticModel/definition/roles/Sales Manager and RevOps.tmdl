@@ -1,0 +1,6 @@
+/// The Sales Manager and RevOps see every lead, case and system check.
+role 'Sales Manager and RevOps'
+	modelPermission: read
+
+	annotation PBI_Id = eb4f034016d2491baa0ad85b157e6c83
+

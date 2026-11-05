@@ -1,0 +1,149 @@
+table 'CRM Update'
+	lineageTag: 9743debb-2ea1-4fad-a86e-ebd25ea11aa6
+
+	column logical_update_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: 406a38e2-7a51-43f2-98bc-21d4249ab5a0
+		summarizeBy: none
+		sourceColumn: logical_update_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_record_id
+		dataType: string
+		isHidden
+		sourceProviderType: nvarchar(max)
+		lineageTag: 05670413-4c37-4e37-9b5d-2543977bbcfb
+		summarizeBy: none
+		sourceColumn: target_record_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column attempts
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 0e0aa63f-2ec9-4190-8891-ebfea79d8239
+		summarizeBy: sum
+		sourceColumn: attempts
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_attempt_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: 3a63b8d5-5384-4e39-8e11-7b6d744afe2f
+		summarizeBy: none
+		sourceColumn: first_attempt_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_completed_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: 40375b08-51fe-4612-8e40-30a7e092aebc
+		summarizeBy: none
+		sourceColumn: last_completed_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_confirmed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 90543dd8-702c-465d-a354-2ea4f69afec7
+		summarizeBy: none
+		sourceColumn: is_confirmed
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_simulated
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 56adaea6-7122-4388-b618-7baa93e695ba
+		summarizeBy: none
+		sourceColumn: is_simulated
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_superseded
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 112ad1e9-36d9-4b96-a623-390b0ce31050
+		summarizeBy: none
+		sourceColumn: is_superseded
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_status
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 75e15263-23f5-4c79-a0e3-a9dd114e2674
+		summarizeBy: none
+		sourceColumn: last_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_retryable
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 754f9bd7-bfb3-41f3-8825-4722c7aafc4e
+		summarizeBy: none
+		sourceColumn: last_retryable
+
+		annotation SummarizationSetBy = Automatic
+
+	column next_retry_at
+		dataType: dateTime
+		formatString: ddd d mmm yyyy hh:nn
+		sourceProviderType: datetime2
+		lineageTag: 76f815f6-9766-4068-a8f2-eb9341254b16
+		summarizeBy: none
+		sourceColumn: next_retry_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_error_code
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 5e1430b7-a3ab-4f34-8fa3-ae1aec3789ec
+		summarizeBy: none
+		sourceColumn: last_error_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column update_state
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 5e364196-9792-47ad-935f-43020aa232b9
+		summarizeBy: none
+		sourceColumn: update_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: a8991935-bf04-4015-a662-b5c1f9af3998
+		summarizeBy: none
+		sourceColumn: lead_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'CRM Update' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "fact_crm_update"]}[Data]
+				in
+				  #"Navigation 1"
+

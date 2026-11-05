@@ -1,0 +1,52 @@
+table 'CRM Contact Sync'
+	lineageTag: d57d351a-dcac-4ed8-8cf2-1dc4e10669a5
+
+	column target_record_id
+		dataType: string
+		isHidden
+		sourceProviderType: nvarchar(max)
+		lineageTag: b2352d3e-4aad-441c-bfad-0b5da3124f7d
+		summarizeBy: none
+		sourceColumn: target_record_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_id
+		dataType: string
+		isHidden
+		sourceProviderType: nchar
+		lineageTag: 7998e999-2eea-420b-9fb5-a8994c636cd6
+		summarizeBy: none
+		sourceColumn: lead_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_in_sync
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 96c3a24e-e8ab-4bf9-8bde-28c92259ca8b
+		summarizeBy: none
+		sourceColumn: is_in_sync
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_confirmed_update
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 8258499b-cf47-4cdb-8ebb-8f9d09da6d7a
+		summarizeBy: none
+		sourceColumn: has_confirmed_update
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'CRM Contact Sync' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "fact_crm_contact_sync"]}[Data]
+				in
+				  #"Navigation 1"
+

@@ -1,0 +1,269 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "edc19e2a66dec2f8063e",
+  "position": {
+    "x": 24,
+    "y": 622,
+    "z": 3000,
+    "height": 434,
+    "width": 1212,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Case"
+                    }
+                  },
+                  "Property": "case_ref"
+                }
+              },
+              "queryRef": "Review Case.case_ref",
+              "nativeQueryRef": "case_ref",
+              "displayName": "Case"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Case"
+                    }
+                  },
+                  "Property": "lead_ref"
+                }
+              },
+              "queryRef": "Review Case.lead_ref",
+              "nativeQueryRef": "lead_ref",
+              "displayName": "Lead"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Case"
+                    }
+                  },
+                  "Property": "enquiry_ref"
+                }
+              },
+              "queryRef": "Review Case.enquiry_ref",
+              "nativeQueryRef": "enquiry_ref",
+              "displayName": "Enquiry"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Reason"
+                    }
+                  },
+                  "Property": "reason_label"
+                }
+              },
+              "queryRef": "Review Reason.reason_label",
+              "nativeQueryRef": "reason_label",
+              "displayName": "Reason"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Case"
+                    }
+                  },
+                  "Property": "action_owner"
+                }
+              },
+              "queryRef": "Review Case.action_owner",
+              "nativeQueryRef": "action_owner",
+              "displayName": "Who must act"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Case"
+                    }
+                  },
+                  "Property": "case_status"
+                }
+              },
+              "queryRef": "Review Case.case_status",
+              "nativeQueryRef": "case_status",
+              "displayName": "Status"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Case"
+                    }
+                  },
+                  "Property": "opened_at"
+                }
+              },
+              "queryRef": "Review Case.opened_at",
+              "nativeQueryRef": "opened_at",
+              "displayName": "Opened"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Review Case"
+                    }
+                  },
+                  "Property": "Open for"
+                }
+              },
+              "queryRef": "Review Case.Open for",
+              "nativeQueryRef": "Open for",
+              "displayName": "Open for (working time)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Review Case"
+                  }
+                },
+                "Property": "opened_at"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Open review cases, oldest first'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "1372e9b1e46ef1cd094f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Review Case"
+              }
+            },
+            "Property": "is_open"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "t",
+              "Entity": "Review Case",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "t"
+                          }
+                        },
+                        "Property": "is_open"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

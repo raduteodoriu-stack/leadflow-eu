@@ -1,0 +1,370 @@
+table _Measures
+	lineageTag: b092f8af-c126-58d8-af74-1c8660304220
+
+	/// KPI 1. Stored inbound enquiries (repeats are never stored).
+	measure 'Enquiries Received' = COUNTROWS ( 'Enquiry' )
+		formatString: #,0
+		displayFolder: 1 Intake
+		lineageTag: 6d5c95b6-7c99-5182-91e9-cd5935a76936
+
+	/// Enquiries rejected because they could not be identified.
+	measure 'Rejected Enquiries' = CALCULATE ( COUNTROWS ( 'Enquiry' ), 'Enquiry'[is_rejected] = TRUE () )
+		formatString: #,0
+		displayFolder: 1 Intake
+		lineageTag: 91dab2f9-f308-5a3b-abaa-4da6e5981ffa
+
+	/// KPI 5. Rejected enquiries / enquiries received.
+	measure 'Rejected Enquiries %' = DIVIDE ( [Rejected Enquiries], [Enquiries Received] )
+		formatString: 0.0%
+		displayFolder: 1 Intake
+		lineageTag: 30f63d6e-a878-5955-8d69-732184a3853a
+
+	/// KPI 2-4. Leads created (new contacts).
+	measure 'New Leads' = COUNTROWS ( 'Lead' )
+		formatString: #,0
+		displayFolder: 1 Intake
+		lineageTag: ac77fddb-d8f6-58f9-9a71-f49c0af26f07
+
+	/// New leads whose company data was incomplete or interest unknown when created.
+	measure 'Leads with Incomplete Data' = CALCULATE ( [New Leads], 'Lead'[has_incomplete_data] = TRUE () )
+		formatString: #,0
+		displayFolder: 1 Intake
+		lineageTag: b989fe99-cf78-5d00-868c-cfd5f1a7dbe0
+
+	/// KPI 7. Leads with incomplete data / new leads.
+	measure 'Incomplete Data %' = DIVIDE ( [Leads with Incomplete Data], [New Leads] )
+		formatString: 0.0%
+		displayFolder: 1 Intake
+		lineageTag: c9411b8a-31a1-5ff8-9a13-5a08c7d548fe
+
+	/// New leads given an owner automatically by the decision on their creating enquiry.
+	measure 'Auto-Assigned Leads' = CALCULATE ( [New Leads], 'Lead'[is_auto_assigned] = TRUE () )
+		formatString: #,0
+		displayFolder: 2 Routing
+		lineageTag: 571af852-6ebb-5774-89f8-74bbc20f7858
+
+	/// KPI 9. Auto-assigned leads / new leads.
+	measure 'Auto-Assignment Rate' = DIVIDE ( [Auto-Assigned Leads], [New Leads] )
+		formatString: 0.0%
+		displayFolder: 2 Routing
+		lineageTag: fa908383-cdb7-5012-b3fd-b680103d81ae
+
+	/// KPI 10. New leads in review with no owner yet.
+	measure 'Leads Waiting for Owner' = CALCULATE ( [New Leads], 'Lead'[is_waiting_for_owner] = TRUE () )+0
+		formatString: #,0
+		displayFolder: 2 Routing
+		lineageTag: 0c8d8da2-2912-536f-8b5b-345c2ba1e1f2
+
+	/// KPI 10. Longest wait of a lead without an owner, in working minutes, to as_of.
+	measure 'Longest Wait (working min)' = CALCULATE ( MAX ( 'Lead'[waiting_working_minutes] ), 'Lead'[is_waiting_for_owner] = TRUE () )
+		formatString: #,0
+		displayFolder: 2 Routing
+		lineageTag: 711c325b-e52e-57cc-aa16-25eacd770fc5
+
+	/// KPI 10. Longest wait in 9-hour working days.
+	measure 'Longest Wait (working days)' = DIVIDE ( [Longest Wait (working min)], 540 )
+		formatString: 0.0
+		displayFolder: 2 Routing
+		lineageTag: 350a98b8-3255-5f32-998b-6a891d891465
+
+	/// KPI 12. Leads by the salesperson who first received them.
+	measure 'Leads by First Owner' = CALCULATE ( [New Leads], USERELATIONSHIP ( 'Lead'[first_owner_id], 'Owner'[owner_id] ) )
+		formatString: #,0
+		displayFolder: 2 Routing
+		lineageTag: cd426ad9-284e-50b3-8320-abb008339ac8
+
+	/// Leads with an owner and an SLA.
+	measure 'Assigned Leads' = CALCULATE ( [New Leads], NOT ISBLANK ( 'Lead'[sla_id] ) )
+		formatString: #,0
+		displayFolder: 3 Prioritisation
+		lineageTag: eabae20b-967c-5427-ac3a-07a19ed13fc3
+
+	/// KPI 16. Share of assigned leads at each priority when assigned.
+	measure 'Urgency Mix %' = DIVIDE ( [Assigned Leads], CALCULATE ( [Assigned Leads], REMOVEFILTERS ( 'Priority' ) ) )
+		formatString: 0.0%
+		displayFolder: 3 Prioritisation
+		lineageTag: 22eb4bb4-8627-5fb1-9cc7-3aa3562db147
+
+	/// Leads first followed up within 8 working hours.
+	measure 'SLA Met' = CALCULATE ( [Assigned Leads], 'Lead'[sla_status] = "met" )
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 84c480c2-0ffa-5145-8aa0-cc4bb9ec6f35
+
+	/// KPI 21. Leads whose 8-working-hour promise was broken.
+	measure 'SLA Breached' = CALCULATE ( [Assigned Leads], 'Lead'[sla_status] = "breached" )
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 7c717f82-c82d-522e-8f53-12c86cc99ddf
+
+	/// Leads whose SLA is still open at as_of.
+	measure 'SLA Pending' = CALCULATE ( [Assigned Leads], 'Lead'[sla_status] = "pending" )
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: bd7503e4-3140-546d-8669-c70815b63808
+
+	/// Met + breached (open SLAs excluded).
+	measure 'SLA Decided' = [SLA Met] + [SLA Breached]
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 3acd6a95-1218-5e55-820d-0fa6e343aa6e
+
+	/// KPI 20 (headline). SLA met / (met + breached).
+	measure 'SLA Attainment %' = DIVIDE ( [SLA Met], [SLA Decided] )
+		formatString: 0.0%
+		displayFolder: 4 Response
+		lineageTag: 174846b3-adc4-5718-9427-2be2179ac393
+
+	/// Leads first followed up within their priority target (P1 1 h, P2 4 h, P3 8 h).
+	measure 'Target Met' = CALCULATE ( [Assigned Leads], 'Lead'[response_target_status] = "met" )
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 605fa923-b5e8-5a20-9265-3a8aebe9c67f
+
+	/// Leads whose priority response target was missed.
+	measure 'Target Missed' = CALCULATE ( [Assigned Leads], 'Lead'[response_target_status] = "missed" )
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 8f2cb1d4-1073-5424-b2cc-e3320b3b466d
+
+	/// Met + missed targets.
+	measure 'Target Decided' = [Target Met] + [Target Missed]
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 47dd0a4c-1fc6-510d-94e9-af60b1e35a8b
+
+	/// KPI 23 (headline). Targets met / (met + missed).
+	measure 'Response-Target Hit Rate %' = DIVIDE ( [Target Met], [Target Decided] )
+		formatString: 0.0%
+		displayFolder: 4 Response
+		lineageTag: cee9156e-2431-5d8c-a079-34997d559b41
+
+	/// KPI 22 (headline). Open SLAs due within the next 2 working hours.
+	measure 'At-Risk Leads' = CALCULATE ( [Assigned Leads], 'Lead'[is_at_risk] = TRUE () )+0
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 2939a238-1853-5e61-92e7-09a74376d9b8
+
+	/// KPI 24. Answered within 8 working hours but slower than the priority target.
+	measure 'Kept Promise, Missed Target' = CALCULATE ( [Assigned Leads], 'Lead'[kept_promise_missed_target] = TRUE () )
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 93ea4999-c604-543f-a2d1-dc81f8d84850
+
+	/// KPI 25. Median working minutes from assignment to the first qualifying follow-up.
+	measure 'Median Time to First Follow-up (working min)' =
+			MEDIANX (
+			    FILTER ( 'Lead', NOT ISBLANK ( 'Lead'[sla_id] ) && NOT ISBLANK ( 'Lead'[first_followup_at] ) ),
+			    'Lead'[time_to_first_followup_working_minutes]
+			)
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 3f8e7054-2a05-525b-9d00-911232195434
+
+	/// KPI 26. Follow-ups made on time but logged after the deadline.
+	measure 'Late-Logged Follow-ups' = CALCULATE ( COUNTROWS ( 'Review Case' ), 'Review Case'[reason_code] = "LATE_LOGGED_FOLLOWUP" ) + 0
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 28610b45-6c85-5a05-b825-4d335830d0e0
+
+	/// KPI 28. Review cases still open at as_of.
+	measure 'Open Review Cases' = CALCULATE ( COUNTROWS ( 'Review Case' ), 'Review Case'[is_open] = TRUE () )
+		formatString: #,0
+		displayFolder: 5 Exceptions
+		lineageTag: 006c1dfb-a88f-56e0-96df-3ab1090f76ff
+
+	/// KPI 28. Age of the oldest open case, in working minutes.
+	measure 'Oldest Open Case (working min)' = CALCULATE ( MAX ( 'Review Case'[open_age_working_minutes] ), 'Review Case'[is_open] = TRUE () )
+		formatString: #,0
+		displayFolder: 5 Exceptions
+		lineageTag: db5909ec-bdb4-5acd-8ee3-2b2092bcffd3
+
+	/// KPI 29. Open review cases at 18:00 on the (last) working day in context.
+	measure 'Open Cases at Day End' =
+			VAR lastDay = MAX ( 'Daily Backlog'[date_day] )
+			RETURN
+			    CALCULATE ( SUM ( 'Daily Backlog'[open_cases] ), 'Daily Backlog'[date_day] = lastDay )
+		formatString: #,0
+		displayFolder: 5 Exceptions
+		lineageTag: 1ba5814d-418b-53b7-a082-e0d655de22f3
+
+	/// KPI 30. Alerts raised because a salesperson was away with leads waiting.
+	measure 'Absence Alerts' = CALCULATE ( COUNTROWS ( 'Review Case' ), 'Review Case'[reason_code] = "OWNER_UNAVAILABLE_PENDING" ) + 0
+		formatString: #,0
+		displayFolder: 5 Exceptions
+		lineageTag: b90d56cb-c246-5761-92d1-6556a0f436c6
+
+	/// CRM contacts managed by LeadFlow.
+	measure 'CRM Contacts' = COUNTROWS ( 'CRM Contact Sync' )
+		formatString: #,0
+		displayFolder: 6 System health
+		lineageTag: 520480b1-0f2a-5ea6-b47f-fc58d68ccd58
+
+	/// Contacts whose CRM values equal LeadFlow's decision (rule C19).
+	measure 'CRM Contacts in Sync' = CALCULATE ( [CRM Contacts], 'CRM Contact Sync'[is_in_sync] = TRUE () )
+		formatString: #,0
+		displayFolder: 6 System health
+		lineageTag: ff6dbac0-fa3a-5e46-afff-6039766972dd
+
+	/// KPI 31. Contacts in sync / contacts.
+	measure 'CRM in Sync %' = DIVIDE ( [CRM Contacts in Sync], [CRM Contacts] )
+		formatString: 0.0%
+		displayFolder: 6 System health
+		lineageTag: 452a6771-7eab-5134-a990-6770a9bef3c8
+
+	/// KPI 32. CRM updates waiting to retry, given up or not yet confirmed.
+	measure 'CRM Updates Needing Attention' =
+			CALCULATE (
+			    COUNTROWS ( 'CRM Update' ),
+			    'CRM Update'[update_state] IN { "waiting_retry", "given_up", "unconfirmed" }
+			)
+		formatString: #,0
+		displayFolder: 6 System health
+		lineageTag: 3de6be26-53af-5af7-8017-9e04fdfb10e0
+
+	/// KPI 33. Checks in the latest reconciliation run.
+	measure 'Checks Run' = CALCULATE ( MAX ( 'Reconciliation Run'[check_count] ), 'Reconciliation Run'[is_latest] = TRUE () )
+		formatString: #,0
+		displayFolder: 6 System health
+		lineageTag: 650bb059-9773-555c-8741-1c34466ce354
+
+	/// KPI 33. Checks with no difference in the latest run.
+	measure 'Checks Balanced' =
+			CALCULATE (
+			    SUMX ( 'Reconciliation Run', 'Reconciliation Run'[check_count] - 'Reconciliation Run'[failed_checks] ),
+			    'Reconciliation Run'[is_latest] = TRUE ()
+			)
+		formatString: #,0
+		displayFolder: 6 System health
+		lineageTag: 6c88e475-ac9a-572a-8335-b322cb04785d
+
+	/// KPI 33. Trust badge for the dashboard.
+	measure 'Reconciliation Status' =
+			VAR runChecks = [Checks Run]
+			VAR differences = runChecks - [Checks Balanced]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( runChecks ), "No reconciliation recorded",
+			        differences = 0, "Balanced: " & runChecks & " of " & runChecks & " checks",
+			        differences & " of " & runChecks & " checks with differences"
+			    )
+		displayFolder: 6 System health
+		lineageTag: 47eb6147-3a18-5c91-aa9a-c5146e12a74e
+
+	/// QA: number of the 32 checked values where a DAX measure differs from kpi_summary. Must be 0 (view as the Sales Manager, no filters).
+	measure 'QA Differences' =
+			VAR checks =
+			    UNION (
+			        ROW ( "kpi", 1, "breakdown", "total", "member", "all", "part", "n", "dax", [Enquiries Received] ),
+			        ROW ( "kpi", 2, "breakdown", "total", "member", "all", "part", "n", "dax", [New Leads] ),
+			        ROW ( "kpi", 5, "breakdown", "total", "member", "all", "part", "n", "dax", [Rejected Enquiries] ),
+			        ROW ( "kpi", 5, "breakdown", "total", "member", "all", "part", "d", "dax", [Enquiries Received] ),
+			        ROW ( "kpi", 7, "breakdown", "total", "member", "all", "part", "n", "dax", [Leads with Incomplete Data] ),
+			        ROW ( "kpi", 7, "breakdown", "total", "member", "all", "part", "d", "dax", [New Leads] ),
+			        ROW ( "kpi", 9, "breakdown", "total", "member", "all", "part", "n", "dax", [Auto-Assigned Leads] ),
+			        ROW ( "kpi", 9, "breakdown", "total", "member", "all", "part", "d", "dax", [New Leads] ),
+			        ROW ( "kpi", 10, "breakdown", "total", "member", "all", "part", "n", "dax", [Leads Waiting for Owner] ),
+			        ROW ( "kpi", 10, "breakdown", "longest_wait_working_minutes", "member", "all", "part", "n", "dax", [Longest Wait (working min)] ),
+			        ROW ( "kpi", 20, "breakdown", "total", "member", "all", "part", "n", "dax", [SLA Met] ),
+			        ROW ( "kpi", 20, "breakdown", "total", "member", "all", "part", "d", "dax", [SLA Decided] ),
+			        ROW ( "kpi", 21, "breakdown", "total", "member", "all", "part", "n", "dax", [SLA Breached] ),
+			        ROW ( "kpi", 22, "breakdown", "total", "member", "all", "part", "n", "dax", [At-Risk Leads] ),
+			        ROW ( "kpi", 23, "breakdown", "total", "member", "all", "part", "n", "dax", [Target Met] ),
+			        ROW ( "kpi", 23, "breakdown", "total", "member", "all", "part", "d", "dax", [Target Decided] ),
+			        ROW ( "kpi", 24, "breakdown", "total", "member", "all", "part", "n", "dax", [Kept Promise, Missed Target] ),
+			        ROW ( "kpi", 26, "breakdown", "total", "member", "all", "part", "n", "dax", [Late-Logged Follow-ups] ),
+			        ROW ( "kpi", 28, "breakdown", "total", "member", "all", "part", "n", "dax", [Open Review Cases] ),
+			        ROW ( "kpi", 30, "breakdown", "total", "member", "all", "part", "n", "dax", [Absence Alerts] ),
+			        ROW ( "kpi", 31, "breakdown", "total", "member", "all", "part", "n", "dax", [CRM Contacts in Sync] ),
+			        ROW ( "kpi", 31, "breakdown", "total", "member", "all", "part", "d", "dax", [CRM Contacts] ),
+			        ROW ( "kpi", 32, "breakdown", "total", "member", "all", "part", "n", "dax", [CRM Updates Needing Attention] ),
+			        ROW ( "kpi", 16, "breakdown", "priority", "member", "P1", "part", "n", "dax", CALCULATE ( [Assigned Leads], 'Priority'[priority] = "P1" ) ),
+			        ROW ( "kpi", 16, "breakdown", "priority", "member", "P2", "part", "n", "dax", CALCULATE ( [Assigned Leads], 'Priority'[priority] = "P2" ) ),
+			        ROW ( "kpi", 16, "breakdown", "priority", "member", "P3", "part", "n", "dax", CALCULATE ( [Assigned Leads], 'Priority'[priority] = "P3" ) ),
+			        ROW ( "kpi", 25, "breakdown", "priority", "member", "P1", "part", "n", "dax", CALCULATE ( [Median Time to First Follow-up (working min)], 'Priority'[priority] = "P1" ) ),
+			        ROW ( "kpi", 25, "breakdown", "priority", "member", "P2", "part", "n", "dax", CALCULATE ( [Median Time to First Follow-up (working min)], 'Priority'[priority] = "P2" ) ),
+			        ROW ( "kpi", 25, "breakdown", "priority", "member", "P3", "part", "n", "dax", CALCULATE ( [Median Time to First Follow-up (working min)], 'Priority'[priority] = "P3" ) ),
+			        ROW ( "kpi", 20, "breakdown", "priority", "member", "P1", "part", "n", "dax", CALCULATE ( [SLA Met], 'Priority'[priority] = "P1" ) ),
+			        ROW ( "kpi", 20, "breakdown", "priority", "member", "P2", "part", "n", "dax", CALCULATE ( [SLA Met], 'Priority'[priority] = "P2" ) ),
+			        ROW ( "kpi", 20, "breakdown", "priority", "member", "P3", "part", "n", "dax", CALCULATE ( [SLA Met], 'Priority'[priority] = "P3" ) )
+			    )
+			RETURN
+			    SUMX (
+			        checks,
+			        VAR k = [kpi]
+			        VAR b = [breakdown]
+			        VAR m = [member]
+			        VAR p = [part]
+			        VAR actual = COALESCE ( [dax], 0 )
+			        VAR expected =
+			            CALCULATE (
+			                COALESCE ( IF ( p = "n", SUM ( 'KPI Summary'[numerator] ), SUM ( 'KPI Summary'[denominator] ) ), 0 ),
+			                REMOVEFILTERS ( 'KPI Summary' ),
+			                'KPI Summary'[kpi_id] = k,
+			                'KPI Summary'[breakdown] = b,
+			                'KPI Summary'[member] = m
+			            )
+			        RETURN IF ( ROUND ( actual, 4 ) <> ROUND ( expected, 4 ), 1, 0 )
+			    )
+		formatString: #,0
+		displayFolder: 9 QA
+		lineageTag: 043ae868-4661-5126-8300-be0b4a7cf359
+
+	/// QA: text for the QA page.
+	measure 'QA Status' =
+			VAR d = [QA Differences]
+			RETURN IF ( d = 0, "All 32 checked values match kpi_summary", d & " of 32 values differ from kpi_summary" )
+		displayFolder: 9 QA
+		lineageTag: 56165e67-a740-5c36-bcec-87de8797ec35
+
+	/// The moment every number describes (dbt variable as_of).
+	measure 'Data As Of' = "Data as of " & FORMAT ( MAX ( 'KPI Summary'[as_of] ), "ddd d mmm yyyy hh:nn" )
+		displayFolder: 6 System health
+		lineageTag: ef190c16-eaf3-5cbd-b621-8c92a207e983
+
+	/// Response target of the priority in context: 60 / 240 / 480 working minutes (P1 / P2 / P3).
+	measure 'Response Target (working min)' = MAX ( 'Priority'[response_target_working_minutes] )
+		formatString: #,0
+		displayFolder: 4 Response
+		lineageTag: 0ad84a31-82eb-5f5e-9469-cfed5b951277
+
+	/// KPI 28. Age of the oldest open review case, in 9-hour working days.
+	measure 'Oldest Open Case (working days)' = DIVIDE ( [Oldest Open Case (working min)], 540 )
+		formatString: 0.0
+		displayFolder: 5 Exceptions
+		lineageTag: 21d5b0e2-9c20-58aa-a868-dfc3c6a8ba48
+
+	/// KPI 29. Open review cases at 18:00 that the Sales Manager must act on.
+	measure 'Open Cases at Day End (Sales Manager)' = CALCULATE ( [Open Cases at Day End], 'Daily Backlog'[action_owner] = "sales_manager" )
+		formatString: #,0
+		displayFolder: 5 Exceptions
+		lineageTag: 139c91f5-0b43-5c73-881f-f429d7763d4c
+
+	/// KPI 29. Open review cases at 18:00 that RevOps must act on.
+	measure 'Open Cases at Day End (RevOps)' = CALCULATE ( [Open Cases at Day End], 'Daily Backlog'[action_owner] = "revops" )
+		formatString: #,0
+		displayFolder: 5 Exceptions
+		lineageTag: 0434205d-1a9d-5eca-acc0-9f5a2f35b1e5
+
+	/// Intended CRM updates (one per change of a contact's values, however many attempts it took).
+	measure 'CRM Updates' = COUNTROWS ( 'CRM Update' )
+		formatString: #,0
+		displayFolder: 6 System health
+		lineageTag: 416f3c48-aba3-586e-b159-315c6b7f1900
+
+	column Value
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d0350e6c-7b87-57c7-be42-62393fc09026
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW ( "Value", 0 )
+

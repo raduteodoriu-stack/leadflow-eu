@@ -1,0 +1,123 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "ed0e6fe4a13475f0862c",
+  "position": {
+    "x": 24,
+    "y": 24,
+    "z": 0,
+    "height": 150,
+    "width": 1872,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "CRM in Sync %"
+                }
+              },
+              "queryRef": "_Measures.CRM in Sync %",
+              "nativeQueryRef": "CRM in Sync %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "CRM Contacts in Sync"
+                }
+              },
+              "queryRef": "_Measures.CRM Contacts in Sync",
+              "nativeQueryRef": "CRM Contacts in Sync"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "CRM Contacts"
+                }
+              },
+              "queryRef": "_Measures.CRM Contacts",
+              "nativeQueryRef": "CRM Contacts"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "CRM Updates Needing Attention"
+                }
+              },
+              "queryRef": "_Measures.CRM Updates Needing Attention",
+              "nativeQueryRef": "CRM Updates Needing Attention"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Reconciliation Status"
+                }
+              },
+              "queryRef": "_Measures.Reconciliation Status",
+              "nativeQueryRef": "Reconciliation Status"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Data As Of"
+                }
+              },
+              "queryRef": "_Measures.Data As Of",
+              "nativeQueryRef": "Data As Of"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

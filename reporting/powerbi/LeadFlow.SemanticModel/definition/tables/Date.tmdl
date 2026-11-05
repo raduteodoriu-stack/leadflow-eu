@@ -1,0 +1,85 @@
+table Date
+	lineageTag: 887c1e1c-4238-4cb1-990d-1c55972aaf53
+	dataCategory: Time
+
+	column date_day
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: ef8913c8-0ca1-4bf8-9e67-70ece65b2a0e
+		summarizeBy: none
+		sourceColumn: date_day
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column iso_week
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 28527f69-5fc2-4457-85a6-b82a159f0d30
+		summarizeBy: none
+		sourceColumn: iso_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_start
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 4b226df8-e500-410c-91a6-94ed07e7044e
+		summarizeBy: none
+		sourceColumn: week_start
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year_month
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: a3fe7de0-32b2-4dc2-9107-42d7c091e9af
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column iso_weekday
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5e33459c-774d-4ce0-806f-9fcaf83cb555
+		summarizeBy: sum
+		sourceColumn: iso_weekday
+
+		annotation SummarizationSetBy = Automatic
+
+	column weekday_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: a9104f46-eecc-43c2-a3d5-32fad99b7bf3
+		summarizeBy: none
+		sourceColumn: weekday_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_working_day
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: d50c44e1-6386-428a-9be2-274a9d766356
+		summarizeBy: none
+		sourceColumn: is_working_day
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("10.211.55.2", "leadflow_eu_test"),
+				  #"Navigation 1" = Source{[Schema = "reporting", Item = "dim_date"]}[Data]
+				in
+				  #"Navigation 1"
+

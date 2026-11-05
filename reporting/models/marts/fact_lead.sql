@@ -18,6 +18,7 @@ current_assignment as (
 )
 select
     l.lead_id,
+    o.lead_ref,
     l.created_at,
     l.created_date,
     l.country_code,

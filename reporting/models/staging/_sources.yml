@@ -18,6 +18,8 @@ sources:
         description: One SLA per assigned lead, with its response target.
       - name: followup_activities
       - name: review_cases
+      - name: review_actions
+        description: What people did on each review case (started, resolved, reopened, ...).
       - name: crm_write_log
       - name: crm_desired_contact_state
         description: View (migration 005) of what each CRM contact should show.
