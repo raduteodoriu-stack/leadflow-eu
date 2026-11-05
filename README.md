@@ -151,6 +151,7 @@ docs/                       Design, rules, engine notes, KPIs, dashboard guide, 
 | [crm_field_mapping.md](docs/crm_field_mapping.md) | What LeadFlow writes on each CRM contact |
 | [reporting_model.md](docs/reporting_model.md), [kpi_definitions.md](docs/kpi_definitions.md) | dbt reporting layer and the 24 KPIs |
 | [dashboard_guide.md](docs/dashboard_guide.md) | Power BI set-up, pages, security |
+| [pitch.md](docs/pitch.md), [interview_prep.md](docs/interview_prep.md) | The 3-minute pitch; interview questions and answers |
 
 ## Run it locally
 
